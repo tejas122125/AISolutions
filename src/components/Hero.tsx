@@ -20,7 +20,7 @@ const Hero = () => {
 
 
                 <Separator orientation="vertical" />
-                <div>vfgydgvfdvfhdvfdh</div>
+                <div><img src="../../public/image.png" alt="" /></div>
             </div>
         </div>
     )
