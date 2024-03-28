@@ -1,5 +1,7 @@
 import React from 'react'
 import ModeToggle from './Modetoggle'
+import { Button } from "@/components/ui/button"
+
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -26,7 +28,7 @@ import {
 
 const Navbar = () => {
   return (
-    <nav className="fixed top-0 left-0 w-full px-4 py-2 z-50 transition-all duration-300 bg-green-500">
+    <nav className="fixed top-0 left-0 w-full px-4 py-2 z-50 transition-all duration-300 bg-transparent border-y-4">
       <div className="flex flex-row justify-between items-center w-full">
         <div className='flex flex-row justify-evenly items-center gap-4'>
           <a href="#" className="text-xl font-bold text-white">Brand Name</a>
@@ -39,7 +41,7 @@ const Navbar = () => {
                 <NavigationMenuItem>
                   <NavigationMenuTrigger className='bg-transparent text-lg '>Technologies</NavigationMenuTrigger>
                   <NavigationMenuContent>
-                    <div className='w-[200px] h-fit p-4 bg-yellow-300'>
+                    <div className='w-[200px] h-fit p-4 '>
                       <ul className='dark:text-white text-black'>
                         <li className=' p-2 hover:scale-110 transition-all duration-300'>Images</li>
                         <Separator />
@@ -66,12 +68,12 @@ const Navbar = () => {
               </NavigationMenuList>
             </NavigationMenu>
             </li>
-            <li><a href="#" className="hover:dark:text-gray-400  hover:text-black">Contact</a></li>
+            <li><a href="#" className="hover:dark:text-gray-400 font-semibold hover:text-black">Contact</a></li>
           </ul>
         </div>
         <div>
           <ul className='hidden md:flex flex-row space-x-4 dark:text-white'>
-            <li><button>signin</button></li>
+            <li><Button className='bg-blue-400 dark:text-white text-black hover:bg-blue-300 hover:dark:bg-blue-700 '>Button</Button></li>
             <li><ModeToggle /></li>
 
           </ul>
