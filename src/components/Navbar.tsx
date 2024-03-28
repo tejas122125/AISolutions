@@ -8,6 +8,9 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+
+import { Separator } from "@/components/ui/separator"
+
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -29,20 +32,28 @@ const Navbar = () => {
           <a href="#" className="text-xl font-bold text-white">Brand Name</a>
 
           <ul className="hidden md:flex space-x-4 dark:text-white">
-            <li><a href="#" className="hover:dark:text-gray-400  hover:text-black">Home</a></li>
-            <li><a href="#" className="hover:dark:text-gray-400  hover:text-black">About</a></li>
+            <li><a href="#" className="hover:dark:text-gray-400 hover:text-black text-lg font-semibold">Home</a></li>
+            <li><a href="#" className="hover:dark:text-gray-400  hover:text-black text-lg font-semibold">About</a></li>
             <li><NavigationMenu >
               <NavigationMenuList>
                 <NavigationMenuItem>
                   <NavigationMenuTrigger className='bg-transparent text-lg '>Technologies</NavigationMenuTrigger>
                   <NavigationMenuContent>
                     <div className='w-[200px] h-fit p-4 bg-yellow-300'>
-                      <ul>
-                        <li>bfjhb</li>
-                        <li>bfjhb</li>
-                        <li>bfjhb</li>
-                        <li>bfjhb</li>
-                        <li>bfjhb</li>
+                      <ul className='dark:text-white text-black'>
+                        <li className=' p-2 hover:scale-110 transition-all duration-300'>Images</li>
+                        <Separator />
+
+                        <li className=' p-2 hover:scale-110 transition-all duration-300'>Generative AI</li>
+                        <Separator />
+
+                        <li className=' p-2 hover:scale-110 transition-all duration-300'>Video</li>
+                        <Separator />
+
+                        <li className='p-2 hover:scale-110 transition-all duration-300'>Audio</li>
+                        <Separator />
+
+                        <li className=' p-2 hover:scale-110 transition-all duration-300'>Text</li>
 
 
 
