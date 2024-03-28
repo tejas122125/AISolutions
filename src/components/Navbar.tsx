@@ -31,12 +31,25 @@ const Navbar = () => {
           <ul className="hidden md:flex space-x-4 dark:text-white">
             <li><a href="#" className="hover:dark:text-gray-400  hover:text-black">Home</a></li>
             <li><a href="#" className="hover:dark:text-gray-400  hover:text-black">About</a></li>
-            <li><NavigationMenu>
+            <li><NavigationMenu >
               <NavigationMenuList>
                 <NavigationMenuItem>
-                  <NavigationMenuTrigger>Tchnologies</NavigationMenuTrigger>
+                  <NavigationMenuTrigger className='bg-transparent text-lg '>Technologies</NavigationMenuTrigger>
                   <NavigationMenuContent>
-                    <NavigationMenuLink>Link</NavigationMenuLink>
+                    <div className='w-[200px] h-fit p-4 bg-yellow-300'>
+                      <ul>
+                        <li>bfjhb</li>
+                        <li>bfjhb</li>
+                        <li>bfjhb</li>
+                        <li>bfjhb</li>
+                        <li>bfjhb</li>
+
+
+
+
+                      </ul>
+                   
+                    </div>
                   </NavigationMenuContent>
                 </NavigationMenuItem>
               </NavigationMenuList>
