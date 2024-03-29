@@ -32,27 +32,27 @@ const Testimonial = () => {
     ];
 
     return (
-        <div className='w-full h-fit  flex flex-col justify-center items-center gap-4 px-40'>
-            <div className='w-full bg-blue-400 flex-col flex items-center justify-center gap-4'>
+        <div className='w-full h-fit bg-pink-400 flex flex-col justify-center items-center gap-4 md:px-40  px-10'>
+            <div className='w-full  flex-col flex items-center justify-center gap-2'>
 <div className='bg-pink-300 z-10 w-28 h-28 relative blur-3xl top-64 -left-32  rounded-full'></div>
 
-                <h3 className='text-xl md:text-4xl py-6 md:py-10'> Listen From Our Customers</h3>
+                <h3 className='text-xl  py-3 md:text-4xl md:py-10  w-full text-center'> Listen From Our Customers</h3>
                 <div>
-                    <Carousel className=" w-96 ">
+                    <Carousel className="flex w-64 md:w-full ">
                         <CarouselContent>
                             {
                                 testimonials.map((value, index) => {
 
                                     return <CarouselItem key={index}>
-                                        <div className=" relative  shadow-md rounded-md p-6 w-96">
+                                        <div className="shadow-md rounded-md md:p-6 w-64 md:w-full ">
                                             {/* Glassy overlay */}
-                                            <div className="glass ">
+                                            <div className="glass flex flex-col gap-2 justify-center items-center p-1 md:p-6 text-center  ">
 
                                                 {/* Content */}
-                                                <div className=' flex flex-col justify-center items-center'>
-                                                    <h2 className="text-xl font-bold mb-4">{value.companyName}</h2>
-                                                    <p className="text-gray-600">{value.testimonial}</p>
-                                                    {/* Add more content as needed */}
+                                                <div className=' flex flex-col  justify-center items-center'>
+                                                    <h2 className="text-xl font-bold mb-4 md:text-2xl">{value.companyName}</h2>
+                                                    <p className="text-gray-600 md:text-xl">{value.testimonial}</p>
+                                                  
                                                 </div>
                                             </div>
                                         </div>

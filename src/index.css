@@ -9,15 +9,9 @@
 
 
 .glass{
-
-    display: flex;
-    position: relative;
+    
   /* Setting the size of the upper layer to 80% of the screen size*/
     height:40vh;
-   
-    align-items: center;
-    justify-content: space-between;
-    padding: 50px;
   
   /*the alpha value controls the transparency*/
     background: rgba( 255, 255, 255, 0.3 );
