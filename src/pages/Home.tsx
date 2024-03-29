@@ -8,7 +8,7 @@ import React from 'react'
 
 const Home = () => {
   return (
-    <div className='w-full h-full  overflow-x-hidden'>
+    <div className='w-full h-full  overflow-x-hidden dark:bg-monu bg-light'>
             <Navbar/>
             <Hero/>
             <Partners/>

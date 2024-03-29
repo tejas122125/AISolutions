@@ -20,6 +20,7 @@ module.exports = {
     },
     extend: {
       colors: {
+        light:'#DEE4E7',
         monu:'#2a4e6c',
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",

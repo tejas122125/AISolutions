@@ -23,7 +23,7 @@ const Hero = () => {
         };
     }, [])
     return (
-        <div className='w-full h-fit  md:pt-10 pb-16 flex flex-col gap-8 justify-center items-center px-10  bg-pink-400'>
+        <div className='w-full h-fit  md:pt-10 pb-16 flex flex-col gap-8 justify-center items-center px-10 '>
             <div className='w-full h-full p-2  flex flex-col md:flex-row md:gap-8 md:px-40 md:pt-40  justify-between'>
                 <div className=" flex flex-col gap-4 pt-20 dark:text-white text-black">
                     <div className="w-full p-2 ">
