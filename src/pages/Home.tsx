@@ -1,6 +1,7 @@
 import Hero from '@/components/Hero'
 import Navbar from '@/components/Navbar'
 import Partners from '@/components/Partners'
+import Scroller from '@/components/Scroller'
 import React from 'react'
 
 const Home = () => {
@@ -9,6 +10,7 @@ const Home = () => {
             <Navbar/>
             <Hero/>
             <Partners/>
+            <Scroller/>
 
         
     </div>
