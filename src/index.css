@@ -7,6 +7,35 @@
 }
 
 
+
+.glass{
+
+    display: flex;
+    position: relative;
+  /* Setting the size of the upper layer to 80% of the screen size*/
+    height:40vh;
+   
+    align-items: center;
+    justify-content: space-between;
+    padding: 50px;
+  
+  /*the alpha value controls the transparency*/
+    background: rgba( 255, 255, 255, 0.3 );
+  
+  /* This controls the blurring effect*/
+  backdrop-filter: blur( 7.5px );
+    -webkit-backdrop-filter: blur( 7.5px );
+  
+  /*Adding the shadow*/
+  box-shadow: 0 4px 3px 0 rgba( 0, 0, 0, 0.18 );
+  
+  /* Adding our borders*/
+    border-radius: 10px;
+    border: 1px solid rgba( 255, 255, 255, 0.18 );
+    z-index: 4;
+  
+}
+
 @layer base {
   :root {
     --background: 0 0% 100%;
