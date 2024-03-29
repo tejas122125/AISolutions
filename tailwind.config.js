@@ -9,6 +9,8 @@ module.exports = {
   ],
   prefix: "",
   theme: {
+    
+
     container: {
       center: true,
       padding: "2rem",
@@ -18,6 +20,7 @@ module.exports = {
     },
     extend: {
       colors: {
+        monu:'#2a4e6c',
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
