@@ -2,29 +2,29 @@ import React from 'react'
 import styled,{keyframes,css} from 'styled-components'
 const Scroller = () => {
     const row1 = [
-        "https://assets.algoexpert.io/spas/main/prod/g523bdeb478-prod/dist/images/7ae42bac3b34999c0db3.png",
-        "https://assets.algoexpert.io/spas/main/prod/g523bdeb478-prod/dist/images/b2bd91d7b87b2181ca45.png",
-        "https://assets.algoexpert.io/spas/main/prod/g523bdeb478-prod/dist/images/6591cdc0702b32310306.png",
-        "https://assets.algoexpert.io/spas/main/prod/g523bdeb478-prod/dist/images/3b7d9f4b073deb6a9b74.png",
-        "https://assets.algoexpert.io/spas/main/prod/g523bdeb478-prod/dist/images/3cd767dea94a85078ca4.png",
-        "https://assets.algoexpert.io/spas/main/prod/g523bdeb478-prod/dist/images/a2b3c3709ffedce2a22a.png",
+        "../../public/langchain.jpeg",
+        "../../public/gemini.png",
+        "../../public/opensource.png",
+        "../../public/robot.png",
+        "../../public/stablediffusion.jpeg",
+        "../../public/pinecone.png",
       ];
     
       const row2 = [
-        "https://assets.algoexpert.io/spas/main/prod/g523bdeb478-prod/dist/images/6c585c33ca6c71c79bb7.png",
-        "https://assets.algoexpert.io/spas/main/prod/g523bdeb478-prod/dist/images/9dd55e54b5a28658bf4e.png",
-        "https://assets.algoexpert.io/spas/main/prod/g523bdeb478-prod/dist/images/0384060dcbf73b6a707c.png",
-        "https://assets.algoexpert.io/spas/main/prod/g523bdeb478-prod/dist/images/35e044b3354aaa0caed5.png",
-        "https://assets.algoexpert.io/spas/main/prod/g523bdeb478-prod/dist/images/f50ae7cbf6cc805bdadc.png",
-        "https://assets.algoexpert.io/spas/main/prod/g523bdeb478-prod/dist/images/6c585c33ca6c71c79bb7.png",
+        "../../public/gemini.png",
+        "../../public/python.png",
+        "../../public/huggingface.png",
+        "../../public/Meta-Logo.png",
+        "../../public/Mistral.png",
+        "../../public/llamaindex.png",
       ];
 
 
   return (
     <AppContainer >
       <Wrapper >
-        <Text className='dark:text-white text-black' >With Great Outcomes.</Text>
-        <Note className='dark:text-white text-black'>Our customers have gotten offers from awesome companies.</Note>
+        <Text className='dark:text-white text-black md:text-5xl  text-center px-3' >With The State Of The Art Models</Text>
+        <Note className='dark:text-white text-black text-center'>One stop. Endless solutions. AI powered.</Note>
         <Marquee>
           <MarqueeGroup>
             {row1.map((el) => (
@@ -97,7 +97,7 @@ const Note = styled.div`
   font-size: 18px;
   font-weight: 200;
   margin-bottom: 40px;
-  color: #7c8e9a;
+  
 `;
 
 const Marquee = styled.div`
