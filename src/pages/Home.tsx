@@ -3,6 +3,7 @@ import Navbar from '@/components/Navbar'
 import Partners from '@/components/Partners'
 import Scroller from '@/components/Scroller'
 import Section3 from '@/components/Section3'
+import Testimonial from '@/components/Testimonial'
 import React from 'react'
 
 const Home = () => {
@@ -13,6 +14,7 @@ const Home = () => {
             <Partners/>
             <Scroller/>
             <Section3/>
+            <Testimonial/>
 
         
     </div>

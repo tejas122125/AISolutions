@@ -2,21 +2,22 @@ import React from 'react'
 import styled,{keyframes,css} from 'styled-components'
 const Scroller = () => {
     const row1 = [
-        "../../public/langchain.jpeg",
-        "../../public/gemini.png",
-        "../../public/opensource.png",
-        "../../public/robot.png",
-        "../../public/stablediffusion.jpeg",
-        "../../public/pinecone.png",
+        "https://assets-global.website-files.com/61e7d259b7746e2d1df0b68d/6437f6a78547cc72b9575994_voci.png",
+        "https://assets-global.website-files.com/61e7d259b7746e2d1df0b68d/6437f6a7b8b8f9d99a8467e3_voxist.png",
+        "	https://assets-global.website-files.com/61e7d259b7746e2d1df0b68d/6437f6a3df145bba2eb03139_symbl.png",
+        "https://assets-global.website-files.com/61e7d259b7746e2d1df0b68d/6437f6a0863fc9ea50e46179_aws.png",
+        "https://assets-global.website-files.com/61e7d259b7746e2d1df0b68d/6437f6a286f44b760ba104bf_revai.png",
+        "https://assets-global.website-files.com/61e7d259b7746e2d1df0b68d/6437f6a0cefb7828d17a8b6a_deepl.png",
       ];
     
       const row2 = [
         "../../public/gemini.png",
-        "../../public/python.png",
+        "../../public/mistral.png",
+        "https://assets-global.website-files.com/61e7d259b7746e2d1df0b68d/6437f6a29874809bd29bb662_openai.png",
         "../../public/huggingface.png",
         "../../public/Meta-Logo.png",
-        "../../public/Mistral.png",
         "../../public/llamaindex.png",
+        "https://assets-global.website-files.com/61e7d259b7746e2d1df0b68d/6437f6a1098d982c7db45a47_ibm.png"
       ];
 
 
