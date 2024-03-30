@@ -11,21 +11,6 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 
-import { Separator } from "@/components/ui/separator"
-
-import {
-  NavigationMenu,
-  NavigationMenuContent,
-  NavigationMenuIndicator,
-  NavigationMenuItem,
-  NavigationMenuLink,
-  NavigationMenuList,
-  NavigationMenuTrigger,
-  NavigationMenuViewport,
-} from "@/components/ui/navigation-menu"
-
-
-
 const Navbar = () => {
   return (
     <nav className="fixed top-0 left-0 w-screen px-4 py-2 z-50 transition-all duration-300 bg-transparent border-y-4">
@@ -36,37 +21,29 @@ const Navbar = () => {
           <ul className="hidden md:flex space-x-4 dark:text-white">
             <li><a href="#" className="hover:dark:text-gray-400 hover:text-black text-lg font-semibold">Home</a></li>
             <li><a href="#" className="hover:dark:text-gray-400  hover:text-black text-lg font-semibold">About</a></li>
-            <li><NavigationMenu >
-              <NavigationMenuList>
-                <NavigationMenuItem>
-                  <NavigationMenuTrigger className='bg-transparent text-lg '>Technologies</NavigationMenuTrigger>
-                  <NavigationMenuContent>
-                    <div className='w-[200px] h-fit p-4 '>
-                      <ul className='dark:text-white text-black'>
-                        <li className=' p-2 hover:scale-110 transition-all duration-300'>Images</li>
-                        <Separator />
+            <li>
+              <button id="dropdownDefaultButton" data-dropdown-toggle="dropdown" className="dark:text-white text-black bg-pink-300 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">Technologies <svg className="w-2.5 h-2.5 ms-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4" />
+              </svg>
+              </button>
 
-                        <li className=' p-2 hover:scale-110 transition-all duration-300'>Generative AI</li>
-                        <Separator />
+              <div id="dropdown" className="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700">
+                <ul className="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDefaultButton">
+                  <li>
+                    <a href="#" className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Dashboard</a>
+                  </li>
+                  <li>
+                    <a href="#" className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Settings</a>
+                  </li>
+                  <li>
+                    <a href="#" className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Earnings</a>
+                  </li>
+                  <li>
+                    <a href="#" className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Sign out</a>
+                  </li>
+                </ul>
+              </div>
 
-                        <li className=' p-2 hover:scale-110 transition-all duration-300'>Video</li>
-                        <Separator />
-
-                        <li className='p-2 hover:scale-110 transition-all duration-300'>Audio</li>
-                        <Separator />
-
-                        <li className=' p-2 hover:scale-110 transition-all duration-300'>Text</li>
-
-
-
-
-                      </ul>
-                   
-                    </div>
-                  </NavigationMenuContent>
-                </NavigationMenuItem>
-              </NavigationMenuList>
-            </NavigationMenu>
             </li>
             <li><a href="#" className="hover:dark:text-gray-400 font-semibold hover:text-black">Contact</a></li>
           </ul>

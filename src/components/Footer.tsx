@@ -4,13 +4,13 @@ const Footer = () => {
   return (
     
 
-<footer className="bg-green-400 w-screen dark:bg-gray-900 ">
+<footer className=" w-screen dark:bg-gray-900 ">
     <div className="mx-auto w-full max-w-screen-xl p-4 py-6 lg:py-8">
         <div className="md:flex md:justify-between">
           <div className="mb-6 md:mb-0">
-              <a href="https://flowbite.com/" className="flex items-center">
-                  <img src="https://flowbite.com/docs/images/logo.svg" className="h-8 me-3" alt="FlowBite Logo" />
-                  <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">Flowbite</span>
+              <a href="./" className="flex items-center">
+                  <img src="../../public/robot.png" className="h-14 me-3 rounded-md" alt="FlowBite Logo" />
+                  <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">AI-Solution</span>
               </a>
           </div>
           <div className="grid grid-cols-2 gap-8 sm:gap-6 sm:grid-cols-3">
@@ -18,10 +18,10 @@ const Footer = () => {
                   <h2 className="mb-6 text-sm font-semibold text-gray-900 uppercase dark:text-white">Resources</h2>
                   <ul className="text-gray-500 dark:text-gray-400 font-medium">
                       <li className="mb-4">
-                          <a href="https://flowbite.com/" className="hover:underline">Flowbite</a>
+                          <a href="./" className="hover:underline">AI-Solution</a>
                       </li>
                       <li>
-                          <a href="https://tailwindcss.com/" className="hover:underline">Tailwind CSS</a>
+                          <a href="https://langchain.com/" className="hover:underline">LangChain</a>
                       </li>
                   </ul>
               </div>
@@ -29,7 +29,7 @@ const Footer = () => {
                   <h2 className="mb-6 text-sm font-semibold text-gray-900 uppercase dark:text-white">Follow us</h2>
                   <ul className="text-gray-500 dark:text-gray-400 font-medium">
                       <li className="mb-4">
-                          <a href="https://github.com/themesberg/flowbite" className="hover:underline ">Github</a>
+                          <a href="https://github.com/tejas122125/" className="hover:underline ">Github</a>
                       </li>
                       <li>
                           <a href="https://discord.gg/4eeurUVvTy" className="hover:underline">Discord</a>
