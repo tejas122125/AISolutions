@@ -33,7 +33,9 @@ console.log("first")
                 <div className='flex flex-col justify-center items-center gap-4'>
                     <h3 className='text-3xl '>GENERATIVE AI</h3>
                     <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Deleniti nesciunt magnam laborum et, velit quas odit, nemo possimus inventore aperiam distinctio.</p>
+                    <a href="./GeneartiveAI">
                     <Button className='bg-green-600 dark:text-white text-blue-900  hover:bg-green-300'> Learb More</Button>
+                    </a>
 
                 </div>
             </div>}
