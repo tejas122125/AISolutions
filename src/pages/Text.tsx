@@ -23,7 +23,7 @@ const Text = () => {
                     <p className=' text-pretty text-sm md:text-base  '> Techniques like information retrieval systems would be used to efficiently find the most appropriate information on the website based on the conversation. This could involve searching through text, images, or even videos hosted on the website.
                         </p>
                 </div>
-                <img className='w-full  md:w-1/2 h-fit rounded-tr-md rounded-bl-md ' src="../../public/caption.png" alt=" Image Generation " />
+                <img className='w-full  md:w-1/2 h-fit rounded-tr-md rounded-bl-md ' src="chatwithwebsite.png" alt=" Image Generation " />
 
             </div>
             <div className='w-full flex flex-row justify-end items-center'>
