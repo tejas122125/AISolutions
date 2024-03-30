@@ -1,6 +1,7 @@
 import React, { FormEventHandler, useState } from 'react'
 
 import { Button } from "@/components/ui/button"
+import { uploadPdf } from '@/utils/appwrite/funtions';
 
 
 
@@ -26,7 +27,14 @@ const chatwithpdf = () => {
         formdata.append("file", files)
         console.log(files)
         // uploading to appwrite
+        try {
+            const res = await uploadPdf(files[0])
+        console.log(res)
 
+        } catch (error) {
+            console.log(error)
+        }
+        
     }
 
 

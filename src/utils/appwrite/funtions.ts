@@ -2,7 +2,7 @@
 
 import { client, storage } from "./confis"
 import { ID } from "appwrite"
-const uploadpdf = async( file : File)=>{
+export const uploadPdf = async( file : File)=>{
     const clt:any = client
     const stg:any = storage
     try {
@@ -13,7 +13,7 @@ const uploadpdf = async( file : File)=>{
         )
         return  response
     } catch (error) {
-        console.log(error)
+       return error
     }
     
 }
