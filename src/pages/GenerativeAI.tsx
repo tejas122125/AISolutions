@@ -6,7 +6,7 @@ const GenerativeAI = () => {
     return (
 
         // image generation 
-        <div className='w-full h-full flex flex-col gap-2 p-2 md:px-40 px-10 bg-monu dark:text-white text-black '>
+        <div className='w-full h-full flex flex-col gap-2  md:px-40 px-3 bg-monu dark:text-white text-black '>
             <h1 className='md:text-5xl text-4xl text-center mt-2  md:mt-14 font-bold '> Generative Ai</h1>
             <h3 className='md:text-2xl text-center mt-2 md:mt-8'> Our platform provides access to best state of the art model</h3>
             <div className=' mt-4 md:mt-14  w-full flex flex-col md:flex-row gap-4 justify-center items-center bg-pink-300 p-4 hover:shadow-2xl  rounded-xl ' >
