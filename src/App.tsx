@@ -6,14 +6,10 @@ import { Route, Routes } from "react-router-dom";
 
 function App() {
   return (
-   <div className="w-screen h-screen dark:bg-blue-500 flex flex-col">
+ 
     <Routes>
-      <Route path="/" element={<Home/>}/>
-      
+      <Route path="/" element={<Home/>}/>     
     </Routes>
-  
-  
-   </div>
   )
 }
 

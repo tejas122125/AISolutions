@@ -17,7 +17,7 @@ console.log("first")
 
 
     return (
-        <div className=' mt-28  w-full h-fit flex flex-col justify-center items-center px-2 md:px-40 dark:text-white text-black'>
+        <div className=' mt-28  w-screen h-fit flex flex-col justify-center items-center px-2 md:px-40 dark:text-white text-black'>
             <div className=' w-full p-3 '>
                 <h3 className='text-5xl text-center'> Pick The Right AI Technology </h3>  </div>
             <ul className=' mt-10 flex flex-row items-center justify-evenly w-full  py-4  text-xl'>

@@ -32,7 +32,7 @@ const Testimonial = () => {
     ];
 
     return (
-        <div className='w-full h-fit  dark:text-white flex flex-col justify-center items-start gap-4 md:px-40  px-10'>
+        <div className='w-screen h-fit  dark:text-white flex flex-col justify-center items-start gap-4 md:px-40  px-10'>
             <div className='w-full  flex-col flex items-center justify-center gap-2'>
 <div className='bg-pink-300 z-10 w-28 h-28 relative blur-3xl top-64 -left-32  rounded-full'></div>
 

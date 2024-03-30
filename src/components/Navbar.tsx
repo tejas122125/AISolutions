@@ -28,7 +28,7 @@ import {
 
 const Navbar = () => {
   return (
-    <nav className="fixed top-0 left-0 w-full px-4 py-2 z-50 transition-all duration-300 bg-transparent border-y-4">
+    <nav className="fixed top-0 left-0 w-screen px-4 py-2 z-50 transition-all duration-300 bg-transparent border-y-4">
       <div className="flex flex-row justify-between items-center w-full">
         <div className='flex flex-row justify-evenly items-center gap-4'>
           <a href="#" className="text-xl font-bold text-white">Brand Name</a>

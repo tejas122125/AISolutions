@@ -66,7 +66,7 @@ const Scroller = () => {
 export default Scroller
 
 const AppContainer = styled.div`
-  width: 100vw;
+  width: 90vw;
   height: fit;
   color: #000000;
   background-color:;
