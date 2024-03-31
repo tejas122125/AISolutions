@@ -29,6 +29,11 @@ openaikey = os.environ.get("OPENAI_API_KEY")
 embeddings = OpenAIEmbeddings(model="text-embedding-3-large",api_key=openaikey)
 
 def chat_pdf_history(pdf_docs_path):
+    chat_history =[
+        HumanMessage(content="""Hello I Need Help to answer some qquestion from the given pdfs please help"""),
+        AIMessage(content = "Yes I am Ready for the job I will skillfully read give accurate results")
+     ] 
+    
     text = ""
     for path in pdf_docs_path:      
        loader = PyPDFLoader(pdf_docs_path)
@@ -82,7 +87,13 @@ def chat_pdf_history(pdf_docs_path):
       ("user", "{input}"),      
     ])
     
-    stuff_documents_chain = create_stuff_documents_chain(llm,prompt)    
+    stuff_documents_chain = create_stuff_documents_chain(llm,prompt) 
+    rag_chain = create_retrieval_chain(retriever_chain, stuff_documents_chain)   
+    response = rag_chain.invoke({
+    "chat_history":chat_history,
+    "input": "what is amount in rupees"
+    })
+    print(response['answer'])
 
     
 
@@ -163,24 +174,25 @@ def chat_pdf_history(pdf_docs_path):
 
     
 def main():
-    chat_history =[
-        HumanMessage(content="""Hello I Need Help to answer some qquestion from the given pdfs please help"""
-                  )
-        A
-    ] 
-    raw_text = get_pdf_text("monu.pdf")
-    text_chunks = get_text_chunks(raw_text)
-    vector_store = get_vectorstore(text_chunks) 
-    # conversation_chain = get_conversational_chain(vector_store)   
-    # response  = conversation_chain.invoke("List out the marketing strategies of Blackberry.")
-    # print (response)
-    conversational_chain = get_context_retriever_chain(vector_store)
-    rag_chain = get_conversational_rag_chain(conversational_chain)
-    response = rag_chain.invoke({
-    "chat_history":chat_history,
-    "input": "List out some more"
-    })
-    print(response['answer'])
+    chat_pdf_history(["test0.pdf","test1.pdf"])
+    # chat_history =[
+    #     HumanMessage(content="""Hello I Need Help to answer some qquestion from the given pdfs please help"""
+    #               )
+    #     AIMessage(content = "Yes I am Ready for the job I will skillfully read give accurate results")
+    # ] 
+    # raw_text = get_pdf_text("monu.pdf")
+    # text_chunks = get_text_chunks(raw_text)
+    # vector_store = get_vectorstore(text_chunks) 
+    # # conversation_chain = get_conversational_chain(vector_store)   
+    # # response  = conversation_chain.invoke("List out the marketing strategies of Blackberry.")
+    # # print (response)
+    # conversational_chain = get_context_retriever_chain(vector_store)
+    # rag_chain = get_conversational_rag_chain(conversational_chain)
+    # response = rag_chain.invoke({
+    # "chat_history":chat_history,
+    # "input": "List out some more"
+    # })
+    # print(response['answer'])
     
 
 
