@@ -2,6 +2,7 @@ import React, { FormEventHandler, useState } from 'react'
 
 import { Button } from "@/components/ui/button"
 import { uploadPdf } from '@/utils/appwrite/funtions';
+import { type Models } from 'appwrite';
 
 
 
@@ -22,19 +23,25 @@ const chatwithpdf = () => {
     };
 
     const onsubmit = async (e: any) => {
+        let resid = []
         e.preventDefault()
         const formdata = new FormData()
         formdata.append("file", files)
         console.log(files)
         // uploading to appwrite
-        try {
-            const res = await uploadPdf(files[0])
-        console.log(res)
+        for (let i = 0; i < files.length; i++) {
+            try {
+                const res: Models.File | undefined = await uploadPdf(files[i])
+                resid.push(res!.$id)
+                console.log(resid)
 
-        } catch (error) {
-            console.log(error)
+            } catch (error) {
+                console.log(error)
+            }
+
         }
-        
+
+
     }
 
 

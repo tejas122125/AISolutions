@@ -1,8 +1,10 @@
 // uploading pdf files in appwrite 
 
 import { client, storage } from "./confis"
+import { type Models } from 'appwrite';
+
 import { ID } from "appwrite"
-export const uploadPdf = async( file : File)=>{
+export const uploadPdf = async( file : File) :Promise<Models.File |undefined>=>{
     const clt:any = client
     const stg:any = storage
     try {
@@ -12,8 +14,8 @@ export const uploadPdf = async( file : File)=>{
             file
         )
         return  response
-    } catch (error) {
-       return error
+    } catch (error:any) {
+      console.log(error)
     }
     
 }
