@@ -1,7 +1,7 @@
 import React, { FormEventHandler, useState } from 'react'
 import axios from 'axios';
 import { Button } from "@/components/ui/button"
-import { uploadPdf } from '@/utils/appwrite/funtions';
+import { getDownloadLink, uploadPdf } from '@/utils/appwrite/funtions';
 import { type Models } from 'appwrite';
 
 
@@ -24,6 +24,7 @@ const chatwithpdf = () => {
 
     const onsubmit = async (e: any) => {
         let resid = []
+        let reslink = []
         e.preventDefault()
         const formdata = new FormData()
         formdata.append("file", files)
@@ -41,8 +42,14 @@ const chatwithpdf = () => {
 
         }
 // sending the ndownloaD links to flask api
+for(let i=0;i<resid.length;i++){
+const link = getDownloadLink(resid[i])
+reslink.push(link)
+}
+console.log(reslink)
+
         try {
-            const response = await axios.post("http://127.0.0.1:5000/pdffiles",resid)
+            const response = await axios.post("http://127.0.0.1:5000/pdffiles",reslink)
             console.log(response)
         } catch (error) {
             console.log(error)
