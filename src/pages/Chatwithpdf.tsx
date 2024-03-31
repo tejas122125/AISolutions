@@ -40,11 +40,12 @@ const chatwithpdf = () => {
             }
 
         }
-
+// sending the ndownloaD links to flask api
         try {
-            const response = await axios.post("http://127.0.0.1:5000/getpdffile")
+            const response = await axios.post("http://127.0.0.1:5000/pdffiles",resid)
+            console.log(response)
         } catch (error) {
-            
+            console.log(error)
         }
 
 
