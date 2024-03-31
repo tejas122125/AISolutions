@@ -22,10 +22,10 @@ from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 from langchain.prompts.prompt import PromptTemplate
 
 
-# load_dotenv()
-# openaikey = os.environ.get("OPENAI_API_KEY")
+load_dotenv()
+openaikey = os.environ.get("OPENAI_API_KEY")
 # print("fbvjhvb"+openaikey)
-openaikey = "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"
+
 embeddings = OpenAIEmbeddings(model="text-embedding-3-large",api_key=openaikey)
 
 def chat_pdf_history(pdf_docs_path):
@@ -47,7 +47,42 @@ def chat_pdf_history(pdf_docs_path):
     
     embeddings = OpenAIEmbeddings(api_key=openaikey)
     # embeddings = HuggingFaceInstructEmbeddings(model_name="hkunlp/instructor-xl")
-    vectorstore = FAISS.from_texts(texts=chunks, embedding=embeddings)       
+    vectorstore = FAISS.from_texts(texts=chunks, embedding=embeddings) 
+    
+    llm = ChatOpenAI(temperature=0.9,api_key=openaikey)
+    template = """Answer the question based only on the following context:
+    {context}   
+
+    Question: {question}
+    """
+    prompt = ChatPromptTemplate.from_template(template)
+    chain = (
+    {"context": vectorstore.as_retriever(), "question": RunnablePassthrough()}
+    | prompt
+    | llm
+    | StrOutputParser()
+    )  
+    llm = ChatOpenAI(api_key=openaikey)
+    
+    retriever = vectorstore.as_retriever()
+    
+    prompt = ChatPromptTemplate.from_messages([
+      MessagesPlaceholder(variable_name="chat_history"),
+      ("user", "{input}"),
+      ("user", "Given the above conversation, generate a search query to look up in order to get information relevant to the conversation")
+    ])
+    
+    retriever_chain = create_history_aware_retriever(llm, retriever, prompt)
+        
+    llm = ChatOpenAI(api_key=openaikey)
+    
+    prompt = ChatPromptTemplate.from_messages([
+      ("system", "Answer the user's questions based on the below context:\n\n{context}"),
+      MessagesPlaceholder(variable_name="chat_history"),
+      ("user", "{input}"),      
+    ])
+    
+    stuff_documents_chain = create_stuff_documents_chain(llm,prompt)    
 
     
 
@@ -78,63 +113,60 @@ def chat_pdf_history(pdf_docs_path):
 #     vectorstore = FAISS.from_texts(texts=text_chunks, embedding=embeddings)
 #     return vectorstore
 
-def get_conversational_chain(vectorstore):
-    llm = ChatOpenAI(temperature=0.9,api_key=openaikey)
-    template = """Answer the question based only on the following context:
-    {context}   
+# def get_conversational_chain(vectorstore):
+#     llm = ChatOpenAI(temperature=0.9,api_key=openaikey)
+#     template = """Answer the question based only on the following context:
+#     {context}   
 
-    Question: {question}
-    """
-    prompt = ChatPromptTemplate.from_template(template)
-    chain = (
-    {"context": vectorstore.as_retriever(), "question": RunnablePassthrough()}
-    | prompt
-    | llm
-    | StrOutputParser()
-    )
-    return chain
+#     Question: {question}
+#     """
+#     prompt = ChatPromptTemplate.from_template(template)
+#     chain = (
+#     {"context": vectorstore.as_retriever(), "question": RunnablePassthrough()}
+#     | prompt
+#     | llm
+#     | StrOutputParser()
+#     )
+#     return chain
     
     
-def get_context_retriever_chain(vectorstore):
-    llm = ChatOpenAI(api_key=openaikey)
+# def get_context_retriever_chain(vectorstore):
+#     llm = ChatOpenAI(api_key=openaikey)
     
-    retriever = vectorstore.as_retriever()
+#     retriever = vectorstore.as_retriever()
     
-    prompt = ChatPromptTemplate.from_messages([
-      MessagesPlaceholder(variable_name="chat_history"),
-      ("user", "{input}"),
-      ("user", "Given the above conversation, generate a search query to look up in order to get information relevant to the conversation")
-    ])
+#     prompt = ChatPromptTemplate.from_messages([
+#       MessagesPlaceholder(variable_name="chat_history"),
+#       ("user", "{input}"),
+#       ("user", "Given the above conversation, generate a search query to look up in order to get information relevant to the conversation")
+#     ])
     
-    retriever_chain = create_history_aware_retriever(llm, retriever, prompt)
+#     retriever_chain = create_history_aware_retriever(llm, retriever, prompt)
     
-    return retriever_chain    
+#     return retriever_chain    
 
 
-def get_conversational_rag_chain(retriever_chain): 
+# def get_conversational_rag_chain(retriever_chain): 
     
-    llm = ChatOpenAI(api_key=openaikey)
+#     llm = ChatOpenAI(api_key=openaikey)
     
-    prompt = ChatPromptTemplate.from_messages([
-      ("system", "Answer the user's questions based on the below context:\n\n{context}"),
-      MessagesPlaceholder(variable_name="chat_history"),
-      ("user", "{input}"),      
-    ])
+#     prompt = ChatPromptTemplate.from_messages([
+#       ("system", "Answer the user's questions based on the below context:\n\n{context}"),
+#       MessagesPlaceholder(variable_name="chat_history"),
+#       ("user", "{input}"),      
+#     ])
     
-    stuff_documents_chain = create_stuff_documents_chain(llm,prompt)
+#     stuff_documents_chain = create_stuff_documents_chain(llm,prompt)
     
-    return create_retrieval_chain(retriever_chain, stuff_documents_chain)
+#     return create_retrieval_chain(retriever_chain, stuff_documents_chain)
 
 
     
 def main():
     chat_history =[
-        HumanMessage(content="""Blackberry implemented the following marketing strategies:
-1. "Blackberry Thumb" campaign to highlight the durability and reliability of the QWERTY keyboard.
-2. Guerilla marketing by giving devices to business people at conferences to create word-of-mouth marketing.
-3. Integration of more features for everyday users with the introduction of the 'Blackberry Pearl'.
-4. Targeting non-business users by featuring multimedia elements and introducing 'Blackberry Messenger (BBM)'."""
+        HumanMessage(content="""Hello I Need Help to answer some qquestion from the given pdfs please help"""
                   )
+        A
     ] 
     raw_text = get_pdf_text("monu.pdf")
     text_chunks = get_text_chunks(raw_text)
