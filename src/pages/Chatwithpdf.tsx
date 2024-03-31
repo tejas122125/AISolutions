@@ -1,5 +1,5 @@
 import React, { FormEventHandler, useState } from 'react'
-
+import axios from 'axios';
 import { Button } from "@/components/ui/button"
 import { uploadPdf } from '@/utils/appwrite/funtions';
 import { type Models } from 'appwrite';
@@ -39,6 +39,12 @@ const chatwithpdf = () => {
                 console.log(error)
             }
 
+        }
+
+        try {
+            const response = await axios.post("http://127.0.0.1:5000/getpdffile")
+        } catch (error) {
+            
         }
 
 
