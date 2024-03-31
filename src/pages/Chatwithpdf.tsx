@@ -7,16 +7,45 @@ import { type Models } from 'appwrite';
 
 
 const chatwithpdf = () => {
+    const msg: { text: any; fromUser: boolean; }[] = []
     const [files, setFile] = useState<any>([])
     const [messages, setMessages] = useState<{ text: string; fromUser: boolean }[]>([{ text: "dfvhdvfvfhgv", fromUser: false }]);
     const [inputText, setInputText] = useState('');
+    const [submitted, setSubmitted] = useState<boolean>(false)
+    const [airesponse, setAiResponse] = useState<boolean>(false)
+    // handling the backen api call toflkaslk api
 
-    const handleSendMessage = () => {
-        const input: HTMLElement = document.getElementById('textinput')!
-        input.innerText = ''
+    const handleSendMessage = async () => {
 
+        console.log(inputText)
         if (inputText.trim() === '') return;
-        setMessages([...messages, { text: inputText, fromUser: true }]);
+        setMessages((prevMessages => [...prevMessages, { "text": inputText, "fromUser": true }]));
+        msg.push({ "text": inputText, "fromUser": true })
+        const post = {
+            "length": 2,
+            "question": inputText
+
+        }
+        console.log(messages)
+
+        const response = await axios.post("http://127.0.0.1:5000/chatpdffiles", post)
+        if (response.data.AI) {
+            const res = response.data.AI
+            setAiResponse(true)
+            msg.push({ "text": res, "fromUser": false })
+            console.log(`response from ai is ${res}`)
+            console.log(msg)
+
+            // setMessages([...messages, { text: response.data, fromUser: false }]);
+            setMessages((prv) => {
+                return [...prv, { text: res, fromUser: false }]
+            })
+
+            // setMessages([...messages, { text: "AIIII", fromUser: false }]);
+
+        }
+
+        console.log(messages)
 
         // Simulate AI response (replace this with actual AI response logic)
 
@@ -46,11 +75,15 @@ const chatwithpdf = () => {
             const link = getDownloadLink(resid[i])
             reslink.push(link.href)
         }
-        console.log(reslink)
 
         try {
-            const response = await axios.post("http://127.0.0.1:5000/pdffiles", reslink)
+            const response = await axios.post("http://127.0.0.1:5000/uploadpdffiles", reslink)
             console.log(response)
+            if (response.data) {
+                setSubmitted(true)
+
+            }
+
         } catch (error) {
             console.log(error)
         }
@@ -76,13 +109,14 @@ const chatwithpdf = () => {
             <div className='bg-purple-800 w-full h-full p-2 relative'>
 
                 <div className="flex flex-col  h-full w-full relative overflow-y-scroll">
-                    {messages.map((value, index) => {
+                    {msg.map((value, index) => {
+
                         if (value.fromUser === true) {
                             return <div key={index} className=' mt-2 md:mt-7 flex w-full p-3 rounded-md justify-start items-center bg-white dark:text-white text-black text-base md:text-xl  '>User :  {value.text}</div>
                         }
                         else {
 
-                            return <div className=' flex w-full p-3 rounded-md justify-end items-center dark:text-white text-black text-base md:text-xl  '>AI :  {value.text}</div>
+                            return <div key={index} className=' flex w-full p-3 rounded-md justify-end items-center dark:text-white text-black text-base md:text-xl  '>AI :  {value.text}</div>
                         }
 
                     })
