@@ -22,40 +22,64 @@ from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 from langchain.prompts.prompt import PromptTemplate
 
 
-load_dotenv()
-openaikey = os.environ.get("OPENAI_API_KEY")
+# load_dotenv()
+# openaikey = os.environ.get("OPENAI_API_KEY")
 # print("fbvjhvb"+openaikey)
-
+openaikey = "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"
 embeddings = OpenAIEmbeddings(model="text-embedding-3-large",api_key=openaikey)
-def get_pdf_text(pdf_docs_path):
-    loader = PyPDFLoader(pdf_docs_path)
-    pages = loader.load_and_split()
+
+def chat_pdf_history(pdf_docs_path):
     text = ""
-    for page in pages:
-         text += page.page_content
-    return text
-
-
-
-def get_text_chunks(text):
+    for path in pdf_docs_path:      
+       loader = PyPDFLoader(pdf_docs_path)
+       pages = loader.load_and_split()
+       for page in pages:
+           text += page.page_content
+           
     text_splitter = CharacterTextSplitter(
-        separator="\n",
-        chunk_size=1000,
-        chunk_overlap=200,
-        length_function=len
+    separator="\n",
+    chunk_size=1000,
+    chunk_overlap=200,
+    length_function=len
     )
     chunks = text_splitter.split_text(text)
-    return chunks
-
-
-def get_vectorstore(text_chunks):
+    
+    
     embeddings = OpenAIEmbeddings(api_key=openaikey)
     # embeddings = HuggingFaceInstructEmbeddings(model_name="hkunlp/instructor-xl")
-    vectorstore = FAISS.from_texts(texts=text_chunks, embedding=embeddings)
-    return vectorstore
+    vectorstore = FAISS.from_texts(texts=chunks, embedding=embeddings)       
+
+    
+
+# def get_pdf_text(pdf_docs_path):
+#     loader = PyPDFLoader(pdf_docs_path)
+#     pages = loader.load_and_split()
+#     text = ""
+#     for page in pages:
+#          text += page.page_content
+#     return text
+
+
+
+# def get_text_chunks(text):
+#     text_splitter = CharacterTextSplitter(
+#         separator="\n",
+#         chunk_size=1000,
+#         chunk_overlap=200,
+#         length_function=len
+#     )
+#     chunks = text_splitter.split_text(text)
+#     return chunks
+
+
+# def get_vectorstore(text_chunks):
+#     embeddings = OpenAIEmbeddings(api_key=openaikey)
+#     # embeddings = HuggingFaceInstructEmbeddings(model_name="hkunlp/instructor-xl")
+#     vectorstore = FAISS.from_texts(texts=text_chunks, embedding=embeddings)
+#     return vectorstore
 
 def get_conversational_chain(vectorstore):
-    llm = ChatOpenAI(temperature=0.2,api_key=openaikey)
+    llm = ChatOpenAI(temperature=0.9,api_key=openaikey)
     template = """Answer the question based only on the following context:
     {context}   
 
@@ -70,16 +94,47 @@ def get_conversational_chain(vectorstore):
     )
     return chain
     
+    
+def get_context_retriever_chain(vectorstore):
+    llm = ChatOpenAI(api_key=openaikey)
+    
+    retriever = vectorstore.as_retriever()
+    
+    prompt = ChatPromptTemplate.from_messages([
+      MessagesPlaceholder(variable_name="chat_history"),
+      ("user", "{input}"),
+      ("user", "Given the above conversation, generate a search query to look up in order to get information relevant to the conversation")
+    ])
+    
+    retriever_chain = create_history_aware_retriever(llm, retriever, prompt)
+    
+    return retriever_chain    
 
 
+def get_conversational_rag_chain(retriever_chain): 
+    
+    llm = ChatOpenAI(api_key=openaikey)
+    
+    prompt = ChatPromptTemplate.from_messages([
+      ("system", "Answer the user's questions based on the below context:\n\n{context}"),
+      MessagesPlaceholder(variable_name="chat_history"),
+      ("user", "{input}"),      
+    ])
+    
+    stuff_documents_chain = create_stuff_documents_chain(llm,prompt)
+    
+    return create_retrieval_chain(retriever_chain, stuff_documents_chain)
 
 
     
 def main():
     chat_history =[
-        HumanMessage(content="hello"),
-        AIMessage(content="hello i am a excellent rag bot")
-        
+        HumanMessage(content="""Blackberry implemented the following marketing strategies:
+1. "Blackberry Thumb" campaign to highlight the durability and reliability of the QWERTY keyboard.
+2. Guerilla marketing by giving devices to business people at conferences to create word-of-mouth marketing.
+3. Integration of more features for everyday users with the introduction of the 'Blackberry Pearl'.
+4. Targeting non-business users by featuring multimedia elements and introducing 'Blackberry Messenger (BBM)'."""
+                  )
     ] 
     raw_text = get_pdf_text("monu.pdf")
     text_chunks = get_text_chunks(raw_text)
@@ -91,9 +146,9 @@ def main():
     rag_chain = get_conversational_rag_chain(conversational_chain)
     response = rag_chain.invoke({
     "chat_history":chat_history,
-    "input": "List out the marketing strategies of Blackberry."
+    "input": "List out some more"
     })
-    print(response)
+    print(response['answer'])
     
 
 

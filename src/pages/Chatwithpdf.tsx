@@ -41,15 +41,15 @@ const chatwithpdf = () => {
             }
 
         }
-// sending the ndownloaD links to flask api
-for(let i=0;i<resid.length;i++){
-const link = getDownloadLink(resid[i])
-reslink.push(link)
-}
-console.log(reslink)
+        // sending the ndownloaD links to flask api
+        for (let i = 0; i < resid.length; i++) {
+            const link = getDownloadLink(resid[i])
+            reslink.push(link.href)
+        }
+        console.log(reslink)
 
         try {
-            const response = await axios.post("http://127.0.0.1:5000/pdffiles",reslink)
+            const response = await axios.post("http://127.0.0.1:5000/pdffiles", reslink)
             console.log(response)
         } catch (error) {
             console.log(error)
