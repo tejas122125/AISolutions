@@ -1,11 +1,12 @@
 from flask import Flask, jsonify,request,session
-
+import re
 import requests
-
 from flask_cors import CORS, cross_origin
 # # from backend.python.chatwithpdf import chat_pdf_history
 # from backend.python.chatwithpdf import chat_pdf_history
 # from backend.python.functions import download_pdf
+
+
 import os
 from dotenv import load_dotenv
 from PyPDF2 import PdfReader
@@ -125,7 +126,13 @@ app = Flask(__name__)
 app.secret_key = 'tejas'
 CORS(app)
 
-
+def extract_string_between(source_string, start_string, end_string):
+    pattern = re.compile(f'{re.escape(start_string)}(.*?){re.escape(end_string)}')
+    match = pattern.search(source_string)
+    if match:
+        return match.group(1)
+    else:
+        return None
 
 @app.route('/chatpdffiles', methods=['POST'])
 def getChat():
@@ -145,6 +152,8 @@ def getChat():
     filename = []
     question = request.json['question']
     length = request.json['length']
+    
+    
     # print(session('chathistory'))
     
     
@@ -152,11 +161,27 @@ def getChat():
     for i in range(length):
         filename.append(f'test{i}.pdf')
         
+    file_path = 'chathistory.txt'  
+    
+    if os.path.exists(file_path):
+        with open('chathistory.txt', 'r') as file:
+            file_content = file.read()
+            
+            
+        print(f"The file '{file_path}' exists.")
+    else:
+        print(f"The file '{file_path}' does not exist.")  
+        
     # creating chat history  
   
     response = chat_pdf_history(filename,question,chathistory)
  
     print(response)
+    chthist=f"start123  {chathistory}  end123"
+    
+    with open('chathistory.txt', 'w') as file:
+    # Write the string to the file
+        file.write(chthist)
     # session['chathistory'] = response['chat_history']
 
     return jsonify({"AI" : response['answer']})
