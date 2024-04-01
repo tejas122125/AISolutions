@@ -19,12 +19,14 @@ def create_chathistory (client,email='tejaswee@gmail.com',userchat='',airesponse
         updated_array = document.get('userquestion', []) + new_elements
     
         # Update the document in the collection
-        collection.update_one({'email': email}, {'$set': {'strings': updated_array}})
+        collection.update_one({'email': email}, {'$set': {'userquestion': updated_array}})
         print('Document updated successfully')
     else:
         print('Document not found for email:', email)
+        document = {'email':email, 'userquestion': [userchat]}
+        print("created a new document")
 
 # Insert a document with email and array of strings
-    document = {'email': 'example@example.com', 'userquestion': ['string1', 'string2', 'string3']}
+    # document = {'email': 'example@example.com', 'userquestion': ['string1', 'string2', 'string3']}
     collection.insert_one(document)
     
