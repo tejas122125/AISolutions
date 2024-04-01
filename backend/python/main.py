@@ -25,17 +25,28 @@ from langchain_core.output_parsers import StrOutputParser
 from langchain_core.runnables import RunnableLambda, RunnablePassthrough
 from langchain_core.messages import AIMessage, HumanMessage, get_buffer_string
 from langchain.chains.combine_documents import create_stuff_documents_chain
-
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
-
 from langchain.prompts.prompt import PromptTemplate
+from langchain_community.llms import HuggingFaceEndpoint
+from langchain_community.embeddings import HuggingFaceInferenceAPIEmbeddings
+
 
 
 load_dotenv()
-openaikey = os.environ.get("OPENAI_API_KEY")
+huggingface = os.environ.get("HUGGINGFACEHUB_API_TOKEN")
 # print("fbvjhvb"+openaikey)
 
-embeddings = OpenAIEmbeddings(model="text-embedding-3-large",api_key=openaikey)
+# embeddings = OpenAIEmbeddings(model="text-embedding-3-large",api_key=openaikey)
+
+embeddings = HuggingFaceInferenceAPIEmbeddings(
+    api_key=huggingface, model_name="sentence-transformers/all-MiniLM-l6-v2"
+)
+
+repo_id = "mistralai/Mistral-7B-Instruct-v0.2"
+
+llm = HuggingFaceEndpoint(
+    repo_id=repo_id, max_length=128, temperature=0.5, token=huggingface
+)
 
 # chathistory =[
 #         HumanMessage(content="Hello I Need Help to answer some qquestion from the given pdfs please help"),
@@ -61,11 +72,11 @@ def chat_pdf_history(pdf_docs_path,question,chathistory):
     chunks = text_splitter.split_text(text)
     
     
-    embeddings = OpenAIEmbeddings(api_key=openaikey)
+    # embeddings = OpenAIEmbeddings(api_key=openaikey)
     # embeddings = HuggingFaceInstructEmbeddings(model_name="hkunlp/instructor-xl")
     vectorstore = FAISS.from_texts(texts=chunks, embedding=embeddings) 
     
-    llm = ChatOpenAI(temperature=0.9,api_key=openaikey)
+    # llm = ChatOpenAI(temperature=0.9,api_key=openaikey)
     template = """Answer the question based only on the following context:
     {context}   
 
@@ -78,7 +89,7 @@ def chat_pdf_history(pdf_docs_path,question,chathistory):
     | llm
     | StrOutputParser()
     )  
-    llm = ChatOpenAI(api_key=openaikey)
+    # llm = ChatOpenAI(api_key=openaikey)
     
     retriever = vectorstore.as_retriever()
     
@@ -90,7 +101,7 @@ def chat_pdf_history(pdf_docs_path,question,chathistory):
     
     retriever_chain = create_history_aware_retriever(llm, retriever, prompt)
         
-    llm = ChatOpenAI(api_key=openaikey)
+    # llm = ChatOpenAI(api_key=openaikey)
     
     prompt = ChatPromptTemplate.from_messages([
       ("system", "Answer the user's questions based on the below context:\n\n{context}"),
@@ -134,6 +145,16 @@ def extract_string_between(source_string, start_string, end_string):
     else:
         return None
 
+app.secret_key = 'monu'
+
+@app.before_request
+def before_request():
+    if 'chathistory' not in session:
+       session['chathistory'] = [
+        HumanMessage(content="Hello I Need Help to answer some qquestion from the given pdfs please help"),
+        AIMessage(content = "Yes I am Ready for the job I will skillfully read give accurate results")     ] 
+
+
 @app.route('/chatpdffiles', methods=['POST'])
 def getChat():
     # if 'chathistory' not in session:
@@ -144,7 +165,7 @@ def getChat():
         
     # print(session['chathistory'])
     
-    chathistory = []
+    # chathistory = []
     # chathistory = [
     #     HumanMessage(content="Hello I Need Help to answer some qquestion from the given pdfs please help"),
     #     AIMessage(content = "Yes I am Ready for the job I will skillfully read give accurate results")
@@ -155,7 +176,7 @@ def getChat():
     length = request.json['length']
     
     
-    # print(session('chathistory'))
+    print(session('chathistory'))
     
     
     
@@ -164,31 +185,34 @@ def getChat():
         
    
     
-    if os.path.exists('chathistory.txt' ):
-        with open('chathistory.txt', 'r') as file:
-            file_content = file.read()
-            extracted_string = extract_string_between(file_content, "start123", "end123")
-            chathistory.append(extracted_string)
+    # if os.path.exists('chathistory.txt' ):
+    #     with open('chathistory.txt', 'r') as file:
+    #         file_content = file.read()
+    #         extracted_string = extract_string_between(file_content, "start123[", "]end123")
+    #         session["chathistory"].append(chat_history)
             
             
        
-    else:
-      chathistory = [
-        HumanMessage(content="Hello I Need Help to answer some qquestion from the given pdfs please help"),
-        AIMessage(content = "Yes I am Ready for the job I will skillfully read give accurate results")
-     ]
+    # else:
+    #   chathistory = [
+    #     HumanMessage(content="Hello I Need Help to answer some qquestion from the given pdfs please help"),
+    #     AIMessage(content = "Yes I am Ready for the job I will skillfully read give accurate results")
+    #  ]
         
     # creating chat history  
   
     response = chat_pdf_history(filename,question,chathistory)
  
     print(response)
-    chthist=f"start123  {chathistory}  end123"
     
-    with open('chathistory.txt', 'w') as file:
-    # Write the string to the file
-        file.write(chthist)
-    # session['chathistory'] = response['chat_history']
+    session["chathistory"].append(response["chat_history"])
+    
+    # chthist=f"start123{chathistory}end123"
+    
+    # with open('chathistory.txt', 'w') as file:
+    # # Write the string to the file
+    #     file.write(chthist)
+    # # session['chathistory'] = response['chat_history']
 
     return jsonify({"AI" : response['answer']})
 
