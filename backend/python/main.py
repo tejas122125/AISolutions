@@ -6,7 +6,7 @@ from flask_cors import CORS, cross_origin
 # from backend.python.chatwithpdf import chat_pdf_history
 # from backend.python.functions import download_pdf
 
-
+from flask_session import Session
 import os
 from dotenv import load_dotenv
 from PyPDF2 import PdfReader
@@ -137,22 +137,20 @@ app = Flask(__name__)
 app.secret_key = 'tejas'
 CORS(app)
 
-def extract_string_between(source_string, start_string, end_string):
-    pattern = re.compile(f'{re.escape(start_string)}(.*?){re.escape(end_string)}')
-    match = pattern.search(source_string)
-    if match:
-        return match.group(1)
-    else:
-        return None
+# def extract_string_between(source_string, start_string, end_string):
+#     pattern = re.compile(f'{re.escape(start_string)}(.*?){re.escape(end_string)}')
+#     match = pattern.search(source_string)
+#     if match:
+#         return match.group(1)
+#     else:
+#         return None
 
-app.secret_key = 'monu'
-
-@app.before_request
-def before_request():
-    if 'chathistory' not in session:
-       session['chathistory'] = [
-        HumanMessage(content="Hello I Need Help to answer some qquestion from the given pdfs please help"),
-        AIMessage(content = "Yes I am Ready for the job I will skillfully read give accurate results")     ] 
+# @app.before_request
+# def before_request():
+#     if 'chathistory' not in session:
+#        session['chathistory'] = [
+#         HumanMessage(content="Hello I Need Help to answer some qquestion from the given pdfs please help"),
+#         AIMessage(content = "Yes I am Ready for the job I will skillfully read give accurate results")     ] 
 
 
 @app.route('/chatpdffiles', methods=['POST'])
@@ -170,13 +168,16 @@ def getChat():
     #     HumanMessage(content="Hello I Need Help to answer some qquestion from the given pdfs please help"),
     #     AIMessage(content = "Yes I am Ready for the job I will skillfully read give accurate results")
     #  ]
+    if "question" not in session:
+        session['question'] = ["Hello I Need Help to answer some qquestion from the given pdfs please help Ai"]   
+        session['answer'] = ["Yes I am Ready for the job I will skillfully read give accurate results"]
         
     filename = []
     question = request.json['question']
     length = request.json['length']
     
     
-    print(session('chathistory'))
+    print(session('question'))
     
     
     
@@ -199,13 +200,19 @@ def getChat():
     #     AIMessage(content = "Yes I am Ready for the job I will skillfully read give accurate results")
     #  ]
         
-    # creating chat history  
+    # # creating chat history  
+    # if 'chathistory' not in session:
+    #     session['chathistory'] = [
+    #     HumanMessage(content="Hello I Need Help to answer some qquestion from the given pdfs please help"),
+    #     AIMessage(content = "Yes I am Ready for the job I will skillfully read give accurate results")     ] 
   
-    response = chat_pdf_history(filename,question,chathistory)
+    response = chat_pdf_history(filename,question,[
+        HumanMessage(content="Hello I Need Help to answer some qquestion from the given pdfs please help"),
+        AIMessage(content = "Yes I am Ready for the job I will skillfully read give accurate results")     ])
  
     print(response)
     
-    session["chathistory"].append(response["chat_history"])
+    # session["chathistory"].append(response["chat_history"])
     
     # chthist=f"start123{chathistory}end123"
     
@@ -214,7 +221,7 @@ def getChat():
     #     file.write(chthist)
     # # session['chathistory'] = response['chat_history']
 
-    return jsonify({"AI" : response['answer']})
+    return jsonify({"AI" : 'monububuibb'})
 
 
 @app.route('/uploadpdffiles', methods=['POST'])
