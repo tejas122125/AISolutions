@@ -70,7 +70,17 @@ def apis(client,database="testdatabase",collection='userchats',token="monu"):
     collection.update_one(filter, {'$set': {'chatwithpdf':updatedres}})
     
     
-
+def set_token(client,database = "testdatabase",token = "monu", expiry_date="never",limit=300):
+    db = client[database]
+    collection = db["tokens"]
+    data = {"token":token,
+            "expirydate":expiry_date,
+            "limit":limit,
+            }
+    # adding more categories 
+    collection.insert_one(data)
+    
+    
     
             
 
