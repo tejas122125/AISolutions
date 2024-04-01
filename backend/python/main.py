@@ -194,33 +194,14 @@ def getChat():
             
             
        
-    # else:
-    #   chathistory = [
-    #     HumanMessage(content="Hello I Need Help to answer some qquestion from the given pdfs please help"),
-    #     AIMessage(content = "Yes I am Ready for the job I will skillfully read give accurate results")
-    #  ]
-        
-    # # creating chat history  
-    # if 'chathistory' not in session:
-    #     session['chathistory'] = [
-    #     HumanMessage(content="Hello I Need Help to answer some qquestion from the given pdfs please help"),
-    #     AIMessage(content = "Yes I am Ready for the job I will skillfully read give accurate results")     ] 
-  
+ 
+ 
     response = chat_pdf_history(filename,question,[
         HumanMessage(content="Hello I Need Help to answer some qquestion from the given pdfs please help"),
         AIMessage(content = "Yes I am Ready for the job I will skillfully read give accurate results")     ])
  
     print(response)
     
-    # session["chathistory"].append(response["chat_history"])
-    
-    # chthist=f"start123{chathistory}end123"
-    
-    # with open('chathistory.txt', 'w') as file:
-    # # Write the string to the file
-    #     file.write(chthist)
-    # # session['chathistory'] = response['chat_history']
-
     return jsonify({"AI" : 'monububuibb'})
 
 
