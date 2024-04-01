@@ -137,37 +137,9 @@ app = Flask(__name__)
 app.secret_key = 'tejas'
 CORS(app)
 
-# def extract_string_between(source_string, start_string, end_string):
-#     pattern = re.compile(f'{re.escape(start_string)}(.*?){re.escape(end_string)}')
-#     match = pattern.search(source_string)
-#     if match:
-#         return match.group(1)
-#     else:
-#         return None
-
-# @app.before_request
-# def before_request():
-#     if 'chathistory' not in session:
-#        session['chathistory'] = [
-#         HumanMessage(content="Hello I Need Help to answer some qquestion from the given pdfs please help"),
-#         AIMessage(content = "Yes I am Ready for the job I will skillfully read give accurate results")     ] 
-
 
 @app.route('/chatpdffiles', methods=['POST'])
 def getChat():
-    # if 'chathistory' not in session:
-    #     session['chathistory'] =  [
-    #     HumanMessage(content="Hello I Need Help to answer some qquestion from the given pdfs please help"),
-    #     AIMessage(content = "Yes I am Ready for the job I will skillfully read give accurate results")
-    #       ] 
-        
-    # print(session['chathistory'])
-    
-    # chathistory = []
-    # chathistory = [
-    #     HumanMessage(content="Hello I Need Help to answer some qquestion from the given pdfs please help"),
-    #     AIMessage(content = "Yes I am Ready for the job I will skillfully read give accurate results")
-    #  ]
     if "question" not in session:
         session['question'] = ["Hello I Need Help to answer some qquestion from the given pdfs please help Ai"]   
         session['answer'] = ["Yes I am Ready for the job I will skillfully read give accurate results"]
@@ -183,18 +155,7 @@ def getChat():
     
     for i in range(length):
         filename.append(f'test{i}.pdf')
-        
-   
-    
-    # if os.path.exists('chathistory.txt' ):
-    #     with open('chathistory.txt', 'r') as file:
-    #         file_content = file.read()
-    #         extracted_string = extract_string_between(file_content, "start123[", "]end123")
-    #         session["chathistory"].append(chat_history)
-            
-            
-       
- 
+
  
     response = chat_pdf_history(filename,question,[
         HumanMessage(content="Hello I Need Help to answer some qquestion from the given pdfs please help"),
