@@ -30,6 +30,8 @@ from langchain.prompts.prompt import PromptTemplate
 from langchain_community.llms import HuggingFaceEndpoint
 from langchain_community.embeddings import HuggingFaceInferenceAPIEmbeddings
 
+from mongo import connect_to_mongodb, create_chathistory, get_chathistory
+
 
 
 load_dotenv()
@@ -55,6 +57,9 @@ llm = HuggingFaceEndpoint(
 print("fkufh")
 
 def chat_pdf_history(pdf_docs_path,question,chathistory):
+
+    
+    
     
     text = ""
     for path in pdf_docs_path:      
@@ -134,32 +139,40 @@ def download_pdf(url, filename):
 
 
 app = Flask(__name__)
-app.secret_key = 'tejas'
+
 CORS(app)
 
 
 @app.route('/chatpdffiles', methods=['POST'])
 def getChat():
-    if "question" not in session:
-        session['question'] = ["Hello I Need Help to answer some qquestion from the given pdfs please help Ai"]   
-        session['answer'] = ["Yes I am Ready for the job I will skillfully read give accurate results"]
+    chathistory = [
+        HumanMessage(content="Hello I Need Help to answer some qquestion from the given pdfs please help"),
+        AIMessage(content = "Yes I am Ready for the job I will skillfully read give accurate results")     ]
+    client = app.config['client']
+    userquestion,airesponse = get_chathistory(client=client)
+    
+    for i in range (len(userquestion)):
+        chathistory.append(HumanMessage(content=f"{userquestion[i]}"))
+        chathistory.append( AIMessage(content = f"{airesponse}") )
+        
+
         
     filename = []
     question = request.json['question']
     length = request.json['length']
     
-    
-    print(session('question'))
-    
+
     
     
     for i in range(length):
         filename.append(f'test{i}.pdf')
 
  
-    response = chat_pdf_history(filename,question,[
-        HumanMessage(content="Hello I Need Help to answer some qquestion from the given pdfs please help"),
-        AIMessage(content = "Yes I am Ready for the job I will skillfully read give accurate results")     ])
+    response = chat_pdf_history(filename,question,chathistory)
+    print(response['answer'])
+    
+    create_chathistory(client,userchat=question,airesponse=response['answer'])
+    
  
     print(response)
     
@@ -175,6 +188,15 @@ def getlink():
         download_pdf(link,filename)
        
     return jsonify({"download" : "successfull"})
+
+@app.before_first_request
+def initialize():
+    client  = connect_to_mongodb()
+    app.config['client'] = client
+    
+    
+
+
 
 if __name__ == '__main__':
     app.run(debug=True,port=5000)

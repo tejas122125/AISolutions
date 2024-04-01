@@ -3,6 +3,7 @@ import axios from 'axios';
 import { Button } from "@/components/ui/button"
 import { getDownloadLink, uploadPdf } from '@/utils/appwrite/funtions';
 import { type Models } from 'appwrite';
+import { useQueryClient } from '@tanstack/react-query';
 
 
 
@@ -14,6 +15,10 @@ const chatwithpdf = () => {
     const [submitted, setSubmitted] = useState<boolean>(false)
     const [airesponse, setAiResponse] = useState<boolean>(false)
     // handling the backen api call toflkaslk api
+
+
+    const queryClient = useQueryClient()
+
 
     const handleSendMessage = async () => {
 
@@ -109,7 +114,7 @@ const chatwithpdf = () => {
             <div className='bg-purple-800 w-full h-full p-2 relative'>
 
                 <div className="flex flex-col  h-full w-full relative overflow-y-scroll">
-                    {msg.map((value, index) => {
+                    {messages.map((value, index) => {
 
                         if (value.fromUser === true) {
                             return <div key={index} className=' mt-2 md:mt-7 flex w-full p-3 rounded-md justify-start items-center bg-white dark:text-white text-black text-base md:text-xl  '>User :  {value.text}</div>

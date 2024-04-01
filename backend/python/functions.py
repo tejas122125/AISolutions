@@ -1,7 +1,7 @@
 
 import requests
 
-
+import secrets
 def download_pdf(url, filename):
     # Send a GET request to the URL
     response = requests.get(url)
@@ -14,3 +14,9 @@ def download_pdf(url, filename):
         print(f"PDF downloaded successfully and saved as '{filename}'")
     else:
         print(f"Failed to download PDF. Status code: {response.status_code}")
+        
+        
+def generate_new_token():
+    api_token = secrets.token_hex(16) 
+    return api_token
+            

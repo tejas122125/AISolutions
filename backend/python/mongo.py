@@ -51,12 +51,35 @@ def get_chathistory(client,database="testdatabase",collection='userchats',email=
     else:
         return "fgfgf",""
         print('Document not found')
+        
+        
+def apis(client,database="testdatabase",collection='userchats',token="monu"):
+    db = client[database]
+
+# Access a collection
+    collection = db[collection]
+    filter = {"token":"monu"}
+    document = collection.find_one(filter)
+    updatedres = document.get('chatwithpdf', []) 
+ 
+    for i in range (len(updatedres)):
+            if updatedres[i]["date"] == 2:
+                updatedres[i]["req"]+=1
+    print(updatedres)
+    
+    collection.update_one(filter, {'$set': {'chatwithpdf':updatedres}})
+    
+    
+
+    
+            
 
 def main ():
     client  = connect_to_mongodb()
+    apis(client=client)
     # create_chathistory(client,userchat="monujinda dffrgrgbad",airesponse="haiahaiah")
-    userquestion,airesponse = get_chathistory(client=client)
-    print(userquestion,airesponse)
+    # userquestion,airesponse = get_chathistory(client=client)
+    # print(userquestion,airesponse)
 
 # if __name__ == '__main__':
 #     main()    
