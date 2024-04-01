@@ -144,10 +144,11 @@ def getChat():
         
     # print(session['chathistory'])
     
-    chathistory = [
-        HumanMessage(content="Hello I Need Help to answer some qquestion from the given pdfs please help"),
-        AIMessage(content = "Yes I am Ready for the job I will skillfully read give accurate results")
-     ]
+    chathistory = []
+    # chathistory = [
+    #     HumanMessage(content="Hello I Need Help to answer some qquestion from the given pdfs please help"),
+    #     AIMessage(content = "Yes I am Ready for the job I will skillfully read give accurate results")
+    #  ]
         
     filename = []
     question = request.json['question']
@@ -161,16 +162,21 @@ def getChat():
     for i in range(length):
         filename.append(f'test{i}.pdf')
         
-    file_path = 'chathistory.txt'  
+   
     
-    if os.path.exists(file_path):
+    if os.path.exists('chathistory.txt' ):
         with open('chathistory.txt', 'r') as file:
             file_content = file.read()
+            extracted_string = extract_string_between(file_content, "start123", "end123")
+            chathistory.append(extracted_string)
             
             
-        print(f"The file '{file_path}' exists.")
+       
     else:
-        print(f"The file '{file_path}' does not exist.")  
+      chathistory = [
+        HumanMessage(content="Hello I Need Help to answer some qquestion from the given pdfs please help"),
+        AIMessage(content = "Yes I am Ready for the job I will skillfully read give accurate results")
+     ]
         
     # creating chat history  
   
