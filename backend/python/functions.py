@@ -1,7 +1,8 @@
 
 import requests
-
 import secrets
+
+from datetime import datetime,timedelta
 def download_pdf(url, filename):
     # Send a GET request to the URL
     response = requests.get(url)
@@ -19,4 +20,37 @@ def download_pdf(url, filename):
 def generate_new_token():
     api_token = secrets.token_hex(16) 
     return api_token
-            
+           
+           
+def get_current_date():
+    today_date = datetime.now()
+
+# Format the date as YYYY-MM-DD
+    formatted_date = today_date.strftime('%d-%m-%Y')    
+    return formatted_date        
+    
+    
+    
+def get_expiry_date(noofdays):
+    current_datetime = datetime.now()
+    # Create a timedelta object representing the amount of time to add
+    delta = timedelta(days=noofdays)
+
+    # Add the timedelta to the current datetime
+    new_datetime = current_datetime + delta
+    return new_datetime
+
+def check_expiry(date):
+    # Split the date and time components
+    date_components = date.split()[0]
+    
+    # Split the date components to extract year, month, and day
+    year, month, day = map(int, date_components.split('-'))
+    print (year,month,day)
+    date = datetime(year=year,month=month,day=day)  
+    current_datetime = datetime.now()
+    if current_datetime > date:
+        return True
+    else: 
+        return False
+      
