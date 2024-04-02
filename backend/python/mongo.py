@@ -1,5 +1,6 @@
 from pymongo import MongoClient
 
+from datetime import datetime,timedelta
 
 
 def connect_to_mongodb (connectionstring = "mongodb+srv://tejasweekumarsingh:vex2l2htbIlbnGjD@tejas.tokgflw.mongodb.net/"):
@@ -52,22 +53,7 @@ def get_chathistory(client,database="testdatabase",collection='userchats',email=
         return "fgfgf",""
         print('Document not found')
         
-        
-def apis(client,database="testdatabase",collection='userchats',token="monu"):
-    db = client[database]
 
-# Access a collection
-    collection = db[collection]
-    filter = {"token":"monu"}
-    document = collection.find_one(filter)
-    updatedres = document.get('chatwithpdf', []) 
- 
-    for i in range (len(updatedres)):
-            if updatedres[i]["date"] == 2:
-                updatedres[i]["req"]+=1
-    print(updatedres)
-    
-    collection.update_one(filter, {'$set': {'chatwithpdf':updatedres}})
     
     
 def set_token(client,database = "testdatabase",token = "monu", expiry_date="never",limit=300):
@@ -76,9 +62,38 @@ def set_token(client,database = "testdatabase",token = "monu", expiry_date="neve
     data = {"token":token,
             "expirydate":expiry_date,
             "limit":limit,
+            "chatwithpdf":[],
+            "chatwithwebsite":[]
             }
     # adding more categories 
     collection.insert_one(data)
+    
+def update_request_count (client,database="testdatabase",token = "monu"):
+    #parsing current date and updatinf=g count
+    date = datetime.now
+    date = date.split()[0]
+    year, month, day = map(int, date.split('-')) 
+    date = f"{year} {month} {day}"
+    print (date)
+    
+    db = client[database]
+    collection = db["tokens"]
+    filter = {"token":token}
+    document = collection.find_one(filter)
+    res = document.get('chatwithpdf', []) 
+    if len(res) == 0:
+        new_data = {
+         "date":date,
+         "request":1
+        }
+        collection.insert_one(new_data)
+        print("newdata")
+    else:    
+        for i in range (len(res)):
+                if res[i]["date"] == date:
+                    res[i]["req"]+=1
+        collection.insert_one(res)            
+        print(res + "updated")
     
     
     
