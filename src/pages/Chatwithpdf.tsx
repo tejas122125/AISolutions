@@ -20,10 +20,13 @@ const chatwithpdf = () => {
 
     const queryClient = useQueryClient()
 
-const display = ()=>{
+const displayChat = ()=>{
+
+const user = []
+const ai = []
 
 
-    
+
 }
     const handleSendMessage = async () => {
 
