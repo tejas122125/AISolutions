@@ -2,7 +2,8 @@ import { MongoClient } from 'mongodb';
 
 
 export const uploadDocument =  async (token:string,msgid:string,msgname:string)=> {
-    const uri = 'mongodb://localhost:27017'; // Connection URI
+    const uri = import.meta.env.VITE_APP_MONGOSTRING;
+    
     const client = new MongoClient(uri);
 
     try {
