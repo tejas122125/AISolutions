@@ -1,20 +1,23 @@
 import { MongoClient } from 'mongodb';
 
 
-const uploadDocument =  async ()=> {
+const uploadDocument =  async (token,msgid,msgname)=> {
     const uri = 'mongodb://localhost:27017'; // Connection URI
     const client = new MongoClient(uri);
 
     try {
         await client.connect(); // Connect to MongoDB
 
-        const database = client.db('your_database_name'); // Replace 'your_database_name' with your actual database name
-        const collection = database.collection('your_collection_name'); // Replace 'your_collection_name' with your actual collection name
+        const database = client.db('testdatabse'); 
+        const collection = database.collection('chatwithpdf'); 
 
         // Document to be uploaded
         const document = {
-            key1: 'value1',
-            key2: 'value2',
+            token: token,
+            messageid:msgid,
+            messagename:msgname,
+            human:[],
+            ai:[]
             // Add more fields as needed
         };
 
