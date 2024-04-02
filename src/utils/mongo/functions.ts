@@ -31,7 +31,9 @@ export const uploadDocument =  async (token:string,msgid:string,msgname:string)=
 }
 
 
-async function getArrayFromDocument() {
+const getChatWithPdfMessages = () => {
+    
+    const uri = import.meta.env.VITE_APP_MONGOSTRING;
     const client = new MongoClient(uri);
 
     try {
