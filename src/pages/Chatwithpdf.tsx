@@ -1,4 +1,4 @@
-import React, { FormEventHandler, useState } from 'react'
+import React, { FormEventHandler, useEffect, useState } from 'react'
 import axios from 'axios';
 import { Button } from "@/components/ui/button"
 import { getDownloadLink, uploadPdf } from '@/utils/appwrite/funtions';
@@ -8,26 +8,34 @@ import { useQueryClient } from '@tanstack/react-query';
 
 
 const chatwithpdf = () => {
-    const [msgid,setMsgId] = useState<string>()
+    const [msgid, setMsgId] = useState<string>()
+    const [previousSession, setPreviousSession] = useState<boolean>(false)
+    const [messageids,setMessageIds] = useState<string[]>()
+    const [messageNames,setMessageNames] = useState<string[]>()
+
 
     const [files, setFile] = useState<any>([])
     const [messages, setMessages] = useState<{ text: string; fromUser: boolean }[]>([{ text: "dfvhdvfvfhgv", fromUser: false }]);
     const [inputText, setInputText] = useState('');
     const [submitted, setSubmitted] = useState<boolean>(false)
     const [airesponse, setAiResponse] = useState<boolean>(false)
-    // handling the backen api call toflkaslk api
+  
 
-
-    const queryClient = useQueryClient()
-
-const displayChat = ()=>{
-
-const user = []
-const ai = []
+useEffect(()=>{
 
 
 
-}
+
+},[])
+
+    const displayChat = () => {
+
+        const user = []
+        const ai = []
+
+
+
+    }
     const handleSendMessage = async () => {
 
         console.log(inputText)
