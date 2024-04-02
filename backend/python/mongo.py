@@ -101,7 +101,6 @@ def update_request_count (client,database="testdatabase",token = "monu"):
 
 def main ():
     client  = connect_to_mongodb()
-    apis(client=client)
     # create_chathistory(client,userchat="monujinda dffrgrgbad",airesponse="haiahaiah")
     # userquestion,airesponse = get_chathistory(client=client)
     # print(userquestion,airesponse)
