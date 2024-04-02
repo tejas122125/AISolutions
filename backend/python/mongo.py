@@ -1,9 +1,13 @@
+import os
+from dotenv import load_dotenv
 from pymongo import MongoClient
 
 from datetime import datetime,timedelta
 
 
-def connect_to_mongodb (connectionstring = "mongodb+srv://tejasweekumarsingh:vex2l2htbIlbnGjD@tejas.tokgflw.mongodb.net/"):
+def connect_to_mongodb ():
+    load_dotenv()
+    connectionstring = os.environ.get("MONGOSTRING")
     client = MongoClient(connectionstring)
     return client
 

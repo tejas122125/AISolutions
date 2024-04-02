@@ -1,7 +1,7 @@
 import { MongoClient } from 'mongodb';
 
 
-const uploadDocument =  async (token,msgid,msgname)=> {
+export const uploadDocument =  async (token:string,msgid:string,msgname:string)=> {
     const uri = 'mongodb://localhost:27017'; // Connection URI
     const client = new MongoClient(uri);
 
@@ -18,10 +18,8 @@ const uploadDocument =  async (token,msgid,msgname)=> {
             messagename:msgname,
             human:[],
             ai:[]
-            // Add more fields as needed
         };
 
-        // Insert the document into the collection
         const result = await collection.insertOne(document);
         console.log(`Document inserted with ID: ${result.insertedId}`);
     } catch (error) {
