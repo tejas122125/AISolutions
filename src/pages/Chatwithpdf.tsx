@@ -8,7 +8,8 @@ import { useQueryClient } from '@tanstack/react-query';
 
 
 const chatwithpdf = () => {
-    const msg: { text: any; fromUser: boolean; }[] = []
+    const [msgid,setMsgId] = useState<string>()
+
     const [files, setFile] = useState<any>([])
     const [messages, setMessages] = useState<{ text: string; fromUser: boolean }[]>([{ text: "dfvhdvfvfhgv", fromUser: false }]);
     const [inputText, setInputText] = useState('');
@@ -19,13 +20,16 @@ const chatwithpdf = () => {
 
     const queryClient = useQueryClient()
 
+const display = ()=>{
 
+
+    
+}
     const handleSendMessage = async () => {
 
         console.log(inputText)
         if (inputText.trim() === '') return;
         setMessages((prevMessages => [...prevMessages, { "text": inputText, "fromUser": true }]));
-        msg.push({ "text": inputText, "fromUser": true })
         const post = {
             "length": 2,
             "question": inputText
@@ -37,9 +41,8 @@ const chatwithpdf = () => {
         if (response.data.AI) {
             const res = response.data.AI
             setAiResponse(true)
-            msg.push({ "text": res, "fromUser": false })
+            setMessages((prevMessages => [...prevMessages, { "text": inputText, "fromUser": false }]));
             console.log(`response from ai is ${res}`)
-            console.log(msg)
 
             // setMessages([...messages, { text: response.data, fromUser: false }]);
             setMessages((prv) => {
