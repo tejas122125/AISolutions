@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button"
 import { getDownloadLink, uploadPdf } from '@/utils/appwrite/funtions';
 import { type Models } from 'appwrite';
 import { useQueryClient } from '@tanstack/react-query';
+import { getAllChatWithPdf } from '@/utils/mongo/functions';
 
 
 
@@ -20,9 +21,20 @@ const chatwithpdf = () => {
     const [submitted, setSubmitted] = useState<boolean>(false)
     const [airesponse, setAiResponse] = useState<boolean>(false)
   
+const getting = async(token:string)=>{
+    try {
+        const temp = await getAllChatWithPdf(token)
+        setMessageIds(temp![0])
+        setMessageNames(temp![1])
+    } catch (error) {
+        console.log(error)
+    }
+}
+
 
 useEffect(()=>{
-
+    const token = "monu"
+   const temp =  getting(token)
 
 
 
