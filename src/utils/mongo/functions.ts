@@ -1,11 +1,10 @@
 import { MongoClient } from 'mongodb';
 
 
-export const uploadDocument =  async (token:string,msgid:string,msgname:string)=> {
-    const uri = import.meta.env.VITE_APP_MONGOSTRING;
+export const uploadChatWithPdf =  async (token:string,msgid:string,msgname:string)=> {
+    // const uri = import.meta.env.VITE_APP_MONGOSTRING;
     
-    const client = new MongoClient(uri);
-
+    const client = new MongoClient("mongodb+srv://tejasweekumarsingh:vex2l2htbIlbnGjD@tejas.tokgflw.mongodb.net/");
     try {
         await client.connect(); // Connect to MongoDB
 
@@ -31,7 +30,7 @@ export const uploadDocument =  async (token:string,msgid:string,msgname:string)=
 }
 
 
-const getChatWithPdfMessages = async (token:string,messageid:string) => {
+ export const getChatWithPdfMessages = async (token:string,messageid:string) => {
 
     // const uri = import.meta.env.VITE_APP_MONGOSTRING;
     // const uri  =  process.env.VITE_APP_MONGOSTRING;
@@ -57,4 +56,38 @@ const getChatWithPdfMessages = async (token:string,messageid:string) => {
     }
 }
 
-getChatWithPdfMessages("monu","monu")
+export const getAllChatWithPdf = async (token:string)=>{
+    const client = new MongoClient("mongodb+srv://tejasweekumarsingh:vex2l2htbIlbnGjD@tejas.tokgflw.mongodb.net/");
+
+
+    try {
+        await client.connect();
+
+        const database = client.db('testdatabase'); 
+        const collection = database.collection('chatwithpdf'); 
+
+        const filter = {token:token}
+        const cursor = collection.find(filter);
+        // Convert the cursor to an array of documents
+        const documents = await cursor.toArray();
+        if (documents != null){
+            const messageids = [];
+            const messagenames = [];
+
+            for (const document of documents){
+                messageids.push(document.messageid)
+                messagenames.push(document.messagename)
+            }
+            return [messageids,messagenames]
+        }
+        // const document =  await collection.findOne(filter)
+        console.log(documents)
+       
+        // console.log('Array from document:', human);
+    } catch (error) {
+        console.error('Error occurred:', error);
+    } finally {
+        await client.close(); // Close the MongoDB connection
+    }
+
+}
