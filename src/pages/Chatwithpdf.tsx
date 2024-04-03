@@ -5,6 +5,7 @@ import { getDownloadLink, uploadPdf } from '@/utils/appwrite/funtions';
 import { type Models } from 'appwrite';
 import { useQueryClient } from '@tanstack/react-query';
 import { getAllChatWithPdf } from '@/utils/mongo/functions';
+import { generateRandomString } from '@/utils/general';
 
 
 
@@ -36,6 +37,7 @@ const newChatHandle = async(files:File[],messagename :string)=>{
     // upload and get the array of file ids
     // handle and give file ids to downloading the files
     setSubmitted(true)
+    const messageid = generateRandomString(6)
 
     if (submitted){
         setMessageIds((prev)=>{return [...prev,messageid] })
