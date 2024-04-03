@@ -32,8 +32,10 @@ const getting = async(token:string)=>{
     }
 }
 
-const newChatHandle = async()=>{
-    
+const newChatHandle = async(fileids:string[],messagename :string)=>{
+    // handle downloading the files
+    // generate message 
+
 }
 
 useEffect(()=>{
