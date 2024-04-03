@@ -26,6 +26,7 @@ const getting = async(token:string)=>{
         const temp = await getAllChatWithPdf(token)
         setMessageIds(temp![0])
         setMessageNames(temp![1])
+        setPreviousSession(true)
     } catch (error) {
         console.log(error)
     }
@@ -33,11 +34,12 @@ const getting = async(token:string)=>{
 
 
 useEffect(()=>{
-   const temp =  getting(token)
+    const token = "monu"
+    getting(token)
 
 
 
-},[])
+},[setPreviousSession])
 
     const displayChat = () => {
 
