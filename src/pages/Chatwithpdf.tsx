@@ -33,7 +33,6 @@ const getting = async(token:string)=>{
 
 
 useEffect(()=>{
-    const token = "monu"
    const temp =  getting(token)
 
 
