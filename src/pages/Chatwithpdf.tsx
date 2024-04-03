@@ -32,9 +32,10 @@ const getting = async(token:string)=>{
     }
 }
 
-const newChatHandle = async(fileids:string[],messagename :string)=>{
-    // handle downloading the files
-    // generate message 
+const newChatHandle = async(files:File[],messagename :string)=>{
+    // upload and get the array of file ids
+    // handle and give file ids to downloading the files
+    // generate messageid 
 
 }
 
