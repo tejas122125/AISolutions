@@ -35,6 +35,12 @@ const getting = async(token:string)=>{
 const newChatHandle = async(files:File[],messagename :string)=>{
     // upload and get the array of file ids
     // handle and give file ids to downloading the files
+    setSubmitted(true)
+
+    if (submitted){
+        setMessageIds("")
+    }
+
     // generate messageid 
 
 }
@@ -45,7 +51,7 @@ useEffect(()=>{
 
 
 
-},[setPreviousSession])
+},[setPreviousSession,setMessageIds,setMessageNames])
 
     const displayChat = () => {
 
