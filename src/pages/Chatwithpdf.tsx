@@ -10,10 +10,11 @@ import { generateRandomString } from '@/utils/general';
 
 
 const chatwithpdf = () => {
-    const [msgid, setMsgId] = useState<string>()
+    const [msgid, setMsgId] = useState<string>("")
     const [previousSession, setPreviousSession] = useState<boolean>(false)
-    const [messageids,setMessageIds] = useState<string[]>()
-    const [messageNames,setMessageNames] = useState<string[]>()
+    const [messageids,setMessageIds] = useState<string[]>([])
+    const [messageNames,setMessageNames] = useState<string[]>([])
+    const [currentSessionId , setCurrentSessionId] = useState<string>("")
 
 
     const [files, setFile] = useState<any>([])
@@ -25,9 +26,11 @@ const chatwithpdf = () => {
 const getting = async(token:string)=>{
     try {
         const temp = await getAllChatWithPdf(token)
+        if (temp != undefined){
         setMessageIds(temp![0])
         setMessageNames(temp![1])
         setPreviousSession(true)
+        }
     } catch (error) {
         console.log(error)
     }
@@ -37,10 +40,13 @@ const newChatHandle = async(files:File[],messagename :string)=>{
     // upload and get the array of file ids
     // handle and give file ids to downloading the files
     setSubmitted(true)
-    const messageid = generateRandomString(6)
 
     if (submitted){
+    const messageid = generateRandomString(6)
+        setCurrentSessionId(messageid)
         setMessageIds((prev)=>{return [...prev,messageid] })
+        setMessageNames((prev)=>{return [...prev,messagename] })
+
     }
 
     // generate messageid 
@@ -50,6 +56,9 @@ const newChatHandle = async(files:File[],messagename :string)=>{
 useEffect(()=>{
     const token = "monu"
     getting(token)
+    if (previousSession){
+        if
+    }
 
 
 
