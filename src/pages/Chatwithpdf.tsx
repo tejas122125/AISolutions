@@ -53,11 +53,15 @@ const newChatHandle = async(files:File[],messagename :string)=>{
 
 }
 
+
+const handleCurrentSessionMessages = async()=>{
+    
+}
 useEffect(()=>{
     const token = "monu"
     getting(token)
     if (previousSession){
-        if
+        setCurrentSessionId(messageids[-1])
     }
 
 
