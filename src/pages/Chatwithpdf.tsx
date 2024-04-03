@@ -38,7 +38,7 @@ const newChatHandle = async(files:File[],messagename :string)=>{
     setSubmitted(true)
 
     if (submitted){
-        setMessageIds("")
+        setMessageIds((prev)=>{return [...prev,messageid] })
     }
 
     // generate messageid 
