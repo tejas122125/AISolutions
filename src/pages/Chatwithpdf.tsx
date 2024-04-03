@@ -4,12 +4,15 @@ import { Button } from "@/components/ui/button"
 import { getDownloadLink, uploadPdf } from '@/utils/appwrite/funtions';
 import { type Models } from 'appwrite';
 import { useQueryClient } from '@tanstack/react-query';
-import { getAllChatWithPdf } from '@/utils/mongo/functions';
+import { getAllChatWithPdf, getChatWithPdfMessages } from '@/utils/mongo/functions';
 import { generateRandomString } from '@/utils/general';
 
 
 
 const chatwithpdf = () => {
+    const human =[]
+    const ai = []
+    const [currentMessages,setCurrentMessages] = useState<boolean>(false)
     const [msgid, setMsgId] = useState<string>("")
     const [previousSession, setPreviousSession] = useState<boolean>(false)
     const [messageids,setMessageIds] = useState<string[]>([])
@@ -55,7 +58,14 @@ const newChatHandle = async(files:File[],messagename :string)=>{
 
 
 const handleCurrentSessionMessages = async()=>{
-    
+    try {
+        const token = "monu"
+        const msg = await getChatWithPdfMessages(token,currentSessionId)
+        
+    } catch (error) {
+        console.log(error)
+    }
+
 }
 useEffect(()=>{
     const token = "monu"
@@ -162,7 +172,6 @@ useEffect(()=>{
                 <div className='0 w-full flex flex-col items-center gap-4'><h3 className='text-2xl font-semibold mt-11' id='previous-session'>previous sesions</h3>
                     <div id='previous-session-list' className=' w-full bg-green-500 rounded-xl p-2'>tejaswee kumar singh</div>
                 </div>
-
 
             </div>
             <div className='bg-purple-800 w-full h-full p-2 relative'>
