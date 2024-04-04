@@ -181,9 +181,10 @@ def getChat():
 
 @app.route('/uploadpdffiles', methods=['POST'])
 def getlink():
-    links = request.json
+    links = request.json["downloadlink"]
+    pdfids = request.json["pdfid"]
     for i in range(len(links)):
-        filename = f"test{i}.pdf"
+        filename = f"{pdfids}{i}.pdf"
         link = links[i]
         download_pdf(link,filename)
        
