@@ -109,6 +109,7 @@ const chatwithpdf = () => {
         getting(token)
         if (previousSession) {
             setCurrentSessionId(messageids[-1])
+            // get all file ids from thje tokenn and messageids
             handleCurrentSessionMessages([])
         }
 

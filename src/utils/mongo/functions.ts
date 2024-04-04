@@ -92,3 +92,25 @@ export const getAllChatWithPdf = async (token:string)=>{
     }
 
 }
+
+
+
+const getFileIds = async (token:string,messageid:string) =>{
+    const client = new MongoClient("mongodb+srv://tejasweekumarsingh:vex2l2htbIlbnGjD@tejas.tokgflw.mongodb.net/");
+    try {
+        await client.connect();
+
+        const database = client.db('testdatabase'); 
+        const collection = database.collection('chatwithpdf'); 
+        const filter = {token:token,messageid:messageid }
+        const document =  await collection.findOne(filter)
+        console.log(document)
+        return document!.fileids
+        
+    } catch (error) {
+        console.log(error)
+    }
+    finally {
+        await client.close(); // Close the MongoDB connection
+    }
+}
