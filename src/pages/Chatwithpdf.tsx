@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button"
 import { getDownloadLink, uploadPdf } from '@/utils/appwrite/funtions';
 import { type Models } from 'appwrite';
 import { useQueryClient } from '@tanstack/react-query';
-import { getAllChatWithPdf, getChatWithPdfMessages } from '@/utils/mongo/functions';
+import { getAllChatWithPdf, getChatWithPdfMessages, uploadChatWithPdf } from '@/utils/mongo/functions';
 import { generateRandomString } from '@/utils/general';
 
 
@@ -41,20 +41,20 @@ const chatwithpdf = () => {
 
     const newChatHandle = async (files: File[], messagename: string) => {
         // upload and get the array of file ids
+        const token = "monu"
         const fileids = await uploadPdf(files)
         // handle and give file ids to downloading the files
         if (fileids) {
             setSubmitted(true)
 
+            const messageid = generateRandomString(6)
+            setCurrentSessionId(messageid)
+           const uploadres = await uploadChatWithPdf(token,messageid,messagename,fileids)
 
-            if (submitted) {
-                const messageid = generateRandomString(6)
-                setCurrentSessionId(messageid)
-                setMessageIds((prev) => { return [...prev, messageid] })
-                setMessageNames((prev) => { return [...prev, messagename] })
-                handleCurrentSessionMessages(fileids)
-
-            }
+           setMessageIds((prev) => { return [...prev, messageid] })
+           setMessageNames((prev) => { return [...prev, messagename] })
+           handleCurrentSessionMessages(fileids)
+           
         }
 
         // generate messageid 
