@@ -7,7 +7,7 @@ import { client, storage } from "./confis"
 import { type Models } from 'appwrite';
 
 import { ID } from "appwrite"
-export const uploadPdf = async( files : File[]) :Promise<Models.File |undefined>=>{
+export const uploadPdf = async( files : File[]):Promise<string[]|undefined> =>{
 
 for (let i=0;i<files.length;i++){
     let fileids = [];
@@ -21,6 +21,7 @@ for (let i=0;i<files.length;i++){
     } catch (error:any) {
       console.log(error)
     }
+    return fileids
 }
 
     
