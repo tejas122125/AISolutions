@@ -47,17 +47,20 @@ const chatwithpdf = () => {
         if (fileids) {
             setSubmitted(true)
 
-            const messageid = generateRandomString(6)
-            setCurrentSessionId(messageid)
-           const uploadres = await uploadChatWithPdf(token,messageid,messagename,fileids)
+            const msgid = generateRandomString(6)
+            setMessageNames((prev) => { return [...prev, messagename] })
+            setMessageIds((prev) => { return [...prev, msgid] })
+            setCurrentSessionId(msgid)
+            const uploadres = await uploadChatWithPdf(token, msgid, messagename, fileids)
+            if (uploadres) {
+                handleCurrentSessionMessages(fileids)
+            }
 
-           setMessageIds((prev) => { return [...prev, messageid] })
-           setMessageNames((prev) => { return [...prev, messagename] })
-           handleCurrentSessionMessages(fileids)
-           
+
+
         }
 
-        // generate messageid 
+
 
     }
 
@@ -79,7 +82,7 @@ const chatwithpdf = () => {
             console.log(response)
             if (response.data) {
                 //uploaded and downloaded file in backend
-setDOwnloaded(true)
+                setDOwnloaded(true)
             }
 
         } catch (error) {

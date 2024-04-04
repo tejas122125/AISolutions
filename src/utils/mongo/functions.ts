@@ -20,8 +20,8 @@ export const uploadChatWithPdf =  async (token:string,msgid:string,msgname:strin
             human:[],
             ai:[]
         };
-
         const result = await collection.insertOne(document);
+        return result.insertedId
         console.log(`Document inserted with ID: ${result.insertedId}`);
     } catch (error) {
         console.error('Error occurred:', error);
