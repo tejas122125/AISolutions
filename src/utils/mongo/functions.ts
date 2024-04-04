@@ -1,7 +1,7 @@
 import { MongoClient } from 'mongodb';
 
 
-export const uploadChatWithPdf =  async (token:string,msgid:string,msgname:string)=> {
+export const uploadChatWithPdf =  async (token:string,msgid:string,msgname:string,fileids:string[])=> {
     // const uri = import.meta.env.VITE_APP_MONGOSTRING;
     
     const client = new MongoClient("mongodb+srv://tejasweekumarsingh:vex2l2htbIlbnGjD@tejas.tokgflw.mongodb.net/");
@@ -16,6 +16,7 @@ export const uploadChatWithPdf =  async (token:string,msgid:string,msgname:strin
             token: token,
             messageid:msgid,
             messagename:msgname,
+            fileids:fileids,
             human:[],
             ai:[]
         };
