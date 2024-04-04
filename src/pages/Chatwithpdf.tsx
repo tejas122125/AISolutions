@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button"
 import { getDownloadLink, uploadPdf } from '@/utils/appwrite/funtions';
 import { type Models } from 'appwrite';
 import { useQueryClient } from '@tanstack/react-query';
-import { getAllChatWithPdf, getChatWithPdfMessages, uploadChatWithPdf } from '@/utils/mongo/functions';
+import { getAllChatWithPdf, getChatWithPdfMessages, getFileIds, uploadChatWithPdf } from '@/utils/mongo/functions';
 import { generateRandomString } from '@/utils/general';
 
 
@@ -104,13 +104,19 @@ const chatwithpdf = () => {
         }
 
     }
+
+    const getids = async (token:string,currentSessionId:string)=>{
+        const fileids =  await getFileIds(token,currentSessionId)
+        handleCurrentSessionMessages(fileids!)
+
+    }
     useEffect(() => {
         const token = "monu"
         getting(token)
         if (previousSession) {
             setCurrentSessionId(messageids[-1])
             // get all file ids from thje tokenn and messageids
-            handleCurrentSessionMessages([])
+            getids(token,currentSessionId)
         }
 
 

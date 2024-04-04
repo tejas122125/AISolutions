@@ -95,11 +95,10 @@ export const getAllChatWithPdf = async (token:string)=>{
 
 
 
-const getFileIds = async (token:string,messageid:string) =>{
+export const getFileIds = async (token:string,messageid:string):Promise<string[]|undefined> =>{
     const client = new MongoClient("mongodb+srv://tejasweekumarsingh:vex2l2htbIlbnGjD@tejas.tokgflw.mongodb.net/");
     try {
         await client.connect();
-
         const database = client.db('testdatabase'); 
         const collection = database.collection('chatwithpdf'); 
         const filter = {token:token,messageid:messageid }

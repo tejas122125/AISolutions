@@ -22,14 +22,14 @@
     "clsx": "^2.1.0",
     "embla-carousel-react": "^8.0.0",
     "lucide-react": "^0.363.0",
-    "mongodb": "^6.5.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.22.3",
     "styled-components": "^6.1.8",
     "tailwind-merge": "^2.2.2",
     "tailwindcss-animate": "^1.0.7",
-    "typed.js": "^2.1.0"
+    "typed.js": "^2.1.0",
+    "util.promisify": "^1.1.2"
   },
   "devDependencies": {
     "@types/node": "^20.11.30",
