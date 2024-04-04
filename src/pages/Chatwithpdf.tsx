@@ -10,108 +10,108 @@ import { generateRandomString } from '@/utils/general';
 
 
 const chatwithpdf = () => {
-    let human =[]
+    let human = []
     let ai = []
-    const [currentMessages,setCurrentMessages] = useState<boolean>(false)
+    const [currentMessages, setCurrentMessages] = useState<boolean>(false)
     const [msgid, setMsgId] = useState<string>("")
     const [previousSession, setPreviousSession] = useState<boolean>(false)
-    const [messageids,setMessageIds] = useState<string[]>([])
-    const [messageNames,setMessageNames] = useState<string[]>([])
-    const [currentSessionId , setCurrentSessionId] = useState<string>("")
-
+    const [messageids, setMessageIds] = useState<string[]>([])
+    const [messageNames, setMessageNames] = useState<string[]>([])
+    const [currentSessionId, setCurrentSessionId] = useState<string>("")
+    const [downloaded, setDOwnloaded] = useState<boolean>(false)
 
     const [files, setFile] = useState<any>([])
     const [messages, setMessages] = useState<{ text: string; fromUser: boolean }[]>([{ text: "dfvhdvfvfhgv", fromUser: false }]);
     const [inputText, setInputText] = useState('');
     const [submitted, setSubmitted] = useState<boolean>(false)
     const [airesponse, setAiResponse] = useState<boolean>(false)
-  
-const getting = async(token:string)=>{
-    try {
-        const temp = await getAllChatWithPdf(token)
-        if (temp != undefined){
-        setMessageIds(temp![0])
-        setMessageNames(temp![1])
-        setPreviousSession(true)
+
+    const getting = async (token: string) => {
+        try {
+            const temp = await getAllChatWithPdf(token)
+            if (temp != undefined) {
+                setMessageIds(temp![0])
+                setMessageNames(temp![1])
+                setPreviousSession(true)
+            }
+        } catch (error) {
+            console.log(error)
         }
-    } catch (error) {
-        console.log(error)
-    }
-}
-
-const newChatHandle = async(files:File[],messagename :string)=>{
-    // upload and get the array of file ids
-const fileids = await uploadPdf(files)
-    // handle and give file ids to downloading the files
-    if (fileids){
-    setSubmitted(true)
-    
-
-    if (submitted){
-    const messageid = generateRandomString(6)
-        setCurrentSessionId(messageid)
-        setMessageIds((prev)=>{return [...prev,messageid] })
-        setMessageNames((prev)=>{return [...prev,messagename] })
-        handleCurrentSessionMessages(fileids)
-
-    }
-}
-
-    // generate messageid 
-
-}
-
-
-const handleCurrentSessionMessages = async(fileids:string[])=>{
-// call the backend to download the files and be ready
-let reslink =[]
-for (let i = 0; i < fileids.length; i++) {
-        const link = getDownloadLink(fileids[i])
-        reslink.push(link.href)
-    }
-    const data = {
-        "pdfid":currentSessionId,
-        "downloadlink":reslink
     }
 
-    try {
-        const response = await axios.post("http://127.0.0.1:5000/uploadpdffiles", data)
-        console.log(response)
-        if (response.data) {
-//uploaded and downloaded file in backend
+    const newChatHandle = async (files: File[], messagename: string) => {
+        // upload and get the array of file ids
+        const fileids = await uploadPdf(files)
+        // handle and give file ids to downloading the files
+        if (fileids) {
+            setSubmitted(true)
 
+
+            if (submitted) {
+                const messageid = generateRandomString(6)
+                setCurrentSessionId(messageid)
+                setMessageIds((prev) => { return [...prev, messageid] })
+                setMessageNames((prev) => { return [...prev, messagename] })
+                handleCurrentSessionMessages(fileids)
+
+            }
         }
 
-    } catch (error) {
-        console.log(error)
+        // generate messageid 
+
     }
 
 
-    try {
+    const handleCurrentSessionMessages = async (fileids: string[]) => {
+        // call the backend to download the files and be ready
+        let reslink = []
+        for (let i = 0; i < fileids.length; i++) {
+            const link = getDownloadLink(fileids[i])
+            reslink.push(link.href)
+        }
+        const data = {
+            "pdfid": currentSessionId,
+            "downloadlink": reslink
+        }
+
+        try {
+            const response = await axios.post("http://127.0.0.1:5000/uploadpdffiles", data)
+            console.log(response)
+            if (response.data) {
+                //uploaded and downloaded file in backend
+setDOwnloaded(true)
+            }
+
+        } catch (error) {
+            console.log(error)
+        }
+
+
+        try {
+            const token = "monu"
+            const msg = await getChatWithPdfMessages(token, currentSessionId)
+            if (msg != undefined) {
+                human = msg[0]
+                ai = msg[1]
+                //change in ui how to set ai and human messages
+                setCurrentMessages(true)
+            }
+        } catch (error) {
+            console.log(error)
+        }
+
+    }
+    useEffect(() => {
         const token = "monu"
-        const msg = await getChatWithPdfMessages(token,currentSessionId)
-        if (msg != undefined){
-        human = msg[0]
-        ai =msg[1]
-        //change in ui how to set ai and human messages
-        setCurrentMessages(true)
+        getting(token)
+        if (previousSession) {
+            setCurrentSessionId(messageids[-1])
+            handleCurrentSessionMessages([])
         }
-    } catch (error) {
-        console.log(error)
-    }
-
-}
-useEffect(()=>{
-    const token = "monu"
-    getting(token)
-    if (previousSession){
-        setCurrentSessionId(messageids[-1])
-        handleCurrentSessionMessages([])
-    }
 
 
 
-},[setPreviousSession,setMessageIds,setMessageNames])
+    }, [setPreviousSession, setMessageIds, setMessageNames])
 
     const displayChat = () => {
 
