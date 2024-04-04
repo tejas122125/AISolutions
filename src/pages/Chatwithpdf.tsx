@@ -45,23 +45,43 @@ const fileids = await uploadPdf(files)
     // handle and give file ids to downloading the files
     if (fileids){
     setSubmitted(true)
-
-    }
+    
 
     if (submitted){
     const messageid = generateRandomString(6)
         setCurrentSessionId(messageid)
         setMessageIds((prev)=>{return [...prev,messageid] })
         setMessageNames((prev)=>{return [...prev,messagename] })
+        handleCurrentSessionMessages(fileids)
 
     }
+}
 
     // generate messageid 
 
 }
 
 
-const handleCurrentSessionMessages = async()=>{
+const handleCurrentSessionMessages = async(fileids:string[])=>{
+// call the backend to download the files and be ready
+for (let i = 0; i < fileids.length; i++) {
+        const link = getDownloadLink(fileids[i])
+        reslink.push(link.href)
+    }
+
+    try {
+        const response = await axios.post("http://127.0.0.1:5000/uploadpdffiles", reslink)
+        console.log(response)
+        if (response.data) {
+            setSubmitted(true)
+
+        }
+
+    } catch (error) {
+        console.log(error)
+    }
+
+
     try {
         const token = "monu"
         const msg = await getChatWithPdfMessages(token,currentSessionId)
@@ -81,7 +101,7 @@ useEffect(()=>{
     getting(token)
     if (previousSession){
         setCurrentSessionId(messageids[-1])
-        handleCurrentSessionMessages()
+        handleCurrentSessionMessages([])
     }
 
 
@@ -138,34 +158,34 @@ useEffect(()=>{
         formdata.append("file", files)
         console.log(files)
         // uploading to appwrite
-        for (let i = 0; i < files.length; i++) {
-            try {
-                const res: Models.File | undefined = await uploadPdf(files[i])
-                resid.push(res!.$id)
-                console.log(resid)
+        // for (let i = 0; i < files.length; i++) {
+        //     try {
+        //         const res: Models.File | undefined = await uploadPdf(files[i])
+        //         resid.push(res!.$id)
+        //         console.log(resid)
 
-            } catch (error) {
-                console.log(error)
-            }
+        //     } catch (error) {
+        //         console.log(error)
+        //     }
 
-        }
-        // sending the ndownloaD links to flask api
-        for (let i = 0; i < resid.length; i++) {
-            const link = getDownloadLink(resid[i])
-            reslink.push(link.href)
-        }
+        // }
+        // // sending the ndownloaD links to flask api
+        // for (let i = 0; i < resid.length; i++) {
+        //     const link = getDownloadLink(resid[i])
+        //     reslink.push(link.href)
+        // }
 
-        try {
-            const response = await axios.post("http://127.0.0.1:5000/uploadpdffiles", reslink)
-            console.log(response)
-            if (response.data) {
-                setSubmitted(true)
+        // try {
+        //     const response = await axios.post("http://127.0.0.1:5000/uploadpdffiles", reslink)
+        //     console.log(response)
+        //     if (response.data) {
+        //         setSubmitted(true)
 
-            }
+        //     }
 
-        } catch (error) {
-            console.log(error)
-        }
+        // } catch (error) {
+        //     console.log(error)
+        // }
 
 
     }
