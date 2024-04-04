@@ -64,16 +64,21 @@ const fileids = await uploadPdf(files)
 
 const handleCurrentSessionMessages = async(fileids:string[])=>{
 // call the backend to download the files and be ready
+let reslink =[]
 for (let i = 0; i < fileids.length; i++) {
         const link = getDownloadLink(fileids[i])
         reslink.push(link.href)
     }
+    const data = {
+        "pdfid":currentSessionId,
+        "downloadlink":reslink
+    }
 
     try {
-        const response = await axios.post("http://127.0.0.1:5000/uploadpdffiles", reslink)
+        const response = await axios.post("http://127.0.0.1:5000/uploadpdffiles", data)
         console.log(response)
         if (response.data) {
-            setSubmitted(true)
+//uploaded and downloaded file in backend
 
         }
 
