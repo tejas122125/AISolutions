@@ -41,9 +41,12 @@ const getting = async(token:string)=>{
 
 const newChatHandle = async(files:File[],messagename :string)=>{
     // upload and get the array of file ids
-const res = uploadPdf(files)
+const fileids = await uploadPdf(files)
     // handle and give file ids to downloading the files
+    if (fileids){
     setSubmitted(true)
+
+    }
 
     if (submitted){
     const messageid = generateRandomString(6)
