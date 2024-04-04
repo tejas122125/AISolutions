@@ -10,8 +10,8 @@ import { generateRandomString } from '@/utils/general';
 
 
 const chatwithpdf = () => {
-    const human =[]
-    const ai = []
+    let human =[]
+    let ai = []
     const [currentMessages,setCurrentMessages] = useState<boolean>(false)
     const [msgid, setMsgId] = useState<string>("")
     const [previousSession, setPreviousSession] = useState<boolean>(false)
@@ -61,7 +61,12 @@ const handleCurrentSessionMessages = async()=>{
     try {
         const token = "monu"
         const msg = await getChatWithPdfMessages(token,currentSessionId)
-        
+        if (msg != undefined){
+        human = msg[0]
+        ai =msg[1]
+        //change in ui how to set ai and human messages
+        setCurrentMessages(true)
+        }
     } catch (error) {
         console.log(error)
     }
@@ -72,6 +77,7 @@ useEffect(()=>{
     getting(token)
     if (previousSession){
         setCurrentSessionId(messageids[-1])
+        handleCurrentSessionMessages()
     }
 
 

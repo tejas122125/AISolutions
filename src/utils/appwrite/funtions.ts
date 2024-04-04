@@ -7,19 +7,23 @@ import { client, storage } from "./confis"
 import { type Models } from 'appwrite';
 
 import { ID } from "appwrite"
-export const uploadPdf = async( file : File) :Promise<Models.File |undefined>=>{
-    const clt:any = client
-    const stg:any = storage
+export const uploadPdf = async( files : File[]) :Promise<Models.File |undefined>=>{
+
+for (let i=0;i<files.length;i++){
+    let fileids = [];
     try {
         const response = await storage.createFile(
-            '658da6ec42519f39311a',
+            '658da6ec42519f39311a',//bucket id
             ID.unique(),
-            file
+            files[i]
         )
-        return  response
+        fileids.push(response.$id)
     } catch (error:any) {
       console.log(error)
     }
+}
+
+    
     
 }
 
