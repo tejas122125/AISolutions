@@ -1,7 +1,7 @@
 import React, { FormEventHandler, useEffect, useState } from 'react'
 import axios from 'axios';
 import { Button } from "@/components/ui/button"
-import { getDownloadLink, uploadPdf } from '@/utils/appwrite/funtions';
+import { getDownloadLink, uploadPdf } from '@/utils/appwrite/functions';
 import { type Models } from 'appwrite';
 import { useQueryClient } from '@tanstack/react-query';
 import { getAllChatWithPdf, getChatWithPdfMessages, getFileIds, uploadChatWithPdf } from '@/utils/mongo/functions';

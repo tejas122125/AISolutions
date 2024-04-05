@@ -6,18 +6,24 @@ import { defineConfig } from "vite"
 
 export default defineConfig({
   plugins: [react()],
-  resolve: {
+  resolve: {  
     alias: {
-      "@": path.resolve(__dirname, "./src"),
-    },
-  },
-   server:{
-    https:{
-      key:'./privatekey.key',
-      cert:'./certificate.crt',
+      
+        '@': path.resolve(__dirname, './src'),
     }
+},
+  // resolve: {
+  //   alias: {
+  //     "@": path.resolve(__dirname, "./src"),
+  //   },
+  // },
+  //  server:{
+  //   https:{
+  //     key:'./privatekey.key',
+  //     cert:'./certificate.crt',
+  //   }
 
-  },
+  // },
 })
 
 
