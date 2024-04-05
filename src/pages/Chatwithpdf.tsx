@@ -1,4 +1,5 @@
 import React, { FormEventHandler, useEffect, useState } from 'react'
+import { SquarePlus } from 'lucide-react';
 import axios from 'axios';
 import { Button } from "@/components/ui/button"
 import { getDownloadLink, uploadPdf } from '@/utils/appwrite/functions';
@@ -30,6 +31,7 @@ const chatwithpdf = () => {
     let human = []
     let ai = []
     const [newchat, setNewChat] = useState<boolean>(false)
+    const [pdffiles,sePdftFiles] = useState<File[]> ([])
     const [currentMessages, setCurrentMessages] = useState<boolean>(false)
     const [msgid, setMsgId] = useState<string>("")
     const [previousSession, setPreviousSession] = useState<boolean>(false)
@@ -181,42 +183,46 @@ const chatwithpdf = () => {
 
     };
 
-    const onsubmit = async (e: any) => {
-        let resid = []
-        let reslink = []
+    const handlefiles = async(e:any) =>{
         e.preventDefault()
-        const formdata = new FormData()
-        formdata.append("file", files)
+        
+
+    }
+
+    const onsubmit = async (files) => {
+
         console.log(files)
+
         // uploading to appwrite
-        // for (let i = 0; i < files.length; i++) {
-        //     try {
-        //         const res: Models.File | undefined = await uploadPdf(files[i])
-        //         resid.push(res!.$id)
-        //         console.log(resid)
 
-        //     } catch (error) {
-        //         console.log(error)
-        //     }
+        for (let i = 0; i < files.length; i++) {
+            try {
+                const res = await uploadPdf(files[i])
+                resid.push(res!.$id)
+                console.log(resid)
 
-        // }
-        // // sending the ndownloaD links to flask api
-        // for (let i = 0; i < resid.length; i++) {
-        //     const link = getDownloadLink(resid[i])
-        //     reslink.push(link.href)
-        // }
+            } catch (error) {
+                console.log(error)
+            }
 
-        // try {
-        //     const response = await axios.post("http://127.0.0.1:5000/uploadpdffiles", reslink)
-        //     console.log(response)
-        //     if (response.data) {
-        //         setSubmitted(true)
+        }
+        // sending the ndownloaD links to flask api
+        for (let i = 0; i < resid.length; i++) {
+            const link = getDownloadLink(resid[i])
+            reslink.push(link.href)
+        }
 
-        //     }
+        try {
+            const response = await axios.post("http://127.0.0.1:5000/uploadpdffiles", reslink)
+            console.log(response)
+            if (response.data) {
+                setSubmitted(true)
 
-        // } catch (error) {
-        //     console.log(error)
-        // }
+            }
+
+        } catch (error) {
+            console.log(error)
+        }
 
 
     }
@@ -226,14 +232,14 @@ const chatwithpdf = () => {
         <>
 
             <div className='w-full h-screen flex flex-row gap-2 md:px-40 px-3 bg-monu dark:text-white text-black '>
-                {newchat && <div className='w-screen h-screen backdrop-blur-md bg-white/10 absolute z-10 top-0 left-0 flex flex-col items-center justify-center'>
+                {newchat && <div className='w-screen h-screen backdrop-blur-md bg-white/10 backdrop-brightness-50 absolute z-10 top-0 left-0 flex flex-col items-center justify-center'>
                     <Card className="w-[350px]">
                         <CardHeader>
                             <CardTitle>Create New Chat</CardTitle>
                             <CardDescription>Select one or more pdf</CardDescription>
                         </CardHeader>
                         <CardContent>
-                            <form>
+                            <form onSubmit={handlefiles} id='newchat'>
                                 <div className="grid w-full items-center gap-4">
                                     <div className="flex flex-col space-y-1.5">
                                         <Label htmlFor="name">Name</Label>
@@ -241,7 +247,9 @@ const chatwithpdf = () => {
                                     </div>
                                     <div className="flex flex-col space-y-1.5">
                                         <Label htmlFor="framework">Pdf</Label>
-                                        <Input id="pdf" placeholder='choose one or more pdf' multiple type='file'  />
+                                        <Input id="pdf" placeholder='choose one or more pdf' multiple type='file' onChange={(e)=>{
+                                            const files = e.target.files
+                                        }} />
                                     </div>
                                 </div>
                             </form>
@@ -250,19 +258,16 @@ const chatwithpdf = () => {
                             <Button variant="outline" onClick={()=>{
                                 setNewChat(false)
                             }}>Cancel</Button>
-                            <Button>Submit</Button>
+                            <Button onClick={handlefiles} type='submit' >Submit</Button>
                         </CardFooter>
                     </Card>
-
                 </div>
-
-
                 }
 
-                <div className='bg-blue-800 hidden p-4 md:w-1/3 md:flex md:flex-col gap-8 items-center '>
-<div className='bg-white mt-12 flex flex-row gap-3 p-2 w-full rounded-md backdrop-blur-md bg-white/30 text-xl justify-between items-center'>
+                <div className='bg-blue-800 hidden p-4 md:w-1/3 md:flex md:flex-col gap-8 items-center  '>
+<div className='bg-white mt-12 flex flex-row gap-3 p-2 w-full rounded-md backdrop-blur-md bg-white/30 text-xl justify-between items-center hover:bg-blue-300 hover:cursor-pointer' onClick={()=>{setNewChat(true)}} >
     <p>New Chat</p>
-    <div>djnbfj</div>
+    <div><SquarePlus /></div>
 </div>
                     <div className='0 w-full flex flex-col items-center gap-4'><h3 className='text-2xl font-semibold mt-11' id='previous-session'>previous sesions</h3>
                         <div id='previous-session-list' className=' w-full bg-green-500 rounded-xl p-2'>tejaswee kumar singh</div>
