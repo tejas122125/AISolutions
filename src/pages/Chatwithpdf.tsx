@@ -260,11 +260,10 @@ const chatwithpdf = () => {
                 }
 
                 <div className='bg-blue-800 hidden p-4 md:w-1/3 md:flex md:flex-col gap-8 items-center '>
-                    <form onSubmit={onsubmit}>
-                        <label className="block mb-2 mt-12 font-medium text-gray-900 dark:text-white text-2xl text-center" htmlFor="multiple_files">New Chat</label>
-                        <input className="block w-full text-sm  text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" onChange={(e) => { setFile(e.target.files) }} id="multiple_files" type="file" multiple />
-                        <button type="submit" className="mt-4 mx-auto dark:text-white bg-green-700 hover:bg-green-800  font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Submit</button>
-                    </form>
+<div className='bg-white mt-12 flex flex-row gap-3 p-2 w-full rounded-md backdrop-blur-md bg-white/30 text-xl justify-between items-center'>
+    <p>New Chat</p>
+    <div>djnbfj</div>
+</div>
                     <div className='0 w-full flex flex-col items-center gap-4'><h3 className='text-2xl font-semibold mt-11' id='previous-session'>previous sesions</h3>
                         <div id='previous-session-list' className=' w-full bg-green-500 rounded-xl p-2'>tejaswee kumar singh</div>
                     </div>
