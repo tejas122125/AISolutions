@@ -36,15 +36,15 @@ export const uploadPdf = async (files: File[]): Promise<string[] | undefined> =>
 
 }
 
-// // get download link of pdf file using id
-// export const getDownloadLink = (id: string) => {
-//     const result = storage.getFileDownload(BUCKET_ID, id);
-//     return result
-// }
+// get download link of pdf file using id
+export const getDownloadLink = (id: string) => {
+    const result = storage.getFileDownload("658da6ec42519f39311a", id);
+    return result
+}
 
 
 
-export const uploadChatWithPdf = async (token:string, msgid:string, msgname:string, fileids:string) => {
+export const uploadChatWithPdf = async (token:string, msgid:string, msgname:string, fileids:string[]) => {
     // const uri = import.meta.env.VITE_APP_MONGOSTRING;
 
     try {
@@ -142,4 +142,32 @@ let messagename=[]
         console.error('Error occurred:', error);
     } 
 return [messageid,messagename]
+}
+
+
+export const getFileIds = async (token:string,messageid:string):Promise<string[]> =>{
+    let fileid =[]
+    try {
+        const document = await databases.listDocuments(
+            'aisolution',
+            'chatwithpdf',
+            [
+              
+          
+            ]
+        );
+
+        for (let i =0; i<document.documents.length;i++){
+            if(document.documents[i].token === token && document.documents[i].messageid === messageid){
+                fileid = document.documents[i].fileid;
+
+            }
+
+        }
+       
+    } catch (error) {
+        console.log(error)
+    }
+    return fileid;
+// console.log(fileid)
 }

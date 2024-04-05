@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button"
 import { getDownloadLink, uploadPdf } from '@/utils/appwrite/functions';
 import { type Models } from 'appwrite';
 import { useQueryClient } from '@tanstack/react-query';
-import { getAllChatWithPdf, getChatWithPdfMessages, getFileIds, uploadChatWithPdf } from '@/utils/mongo/functions';
+import { getAllChatWithPdf, getChatWithPdfMessages, getFileIds, uploadChatWithPdf } from '@/utils/appwrite/functions';
 import { generateRandomString } from '@/utils/general';
 
 
