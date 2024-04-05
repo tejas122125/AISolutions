@@ -8,7 +8,6 @@ import { getAllChatWithPdf, getChatWithPdfMessages, getFileIds, uploadChatWithPd
 import { generateRandomString } from '@/utils/general';
 import { Divide } from 'lucide-react';
 
-import { Button } from "@/components/ui/button"
 import {
     Card,
     CardContent,
@@ -30,7 +29,7 @@ import {
 const chatwithpdf = () => {
     let human = []
     let ai = []
-    const [newchat, setNewChat] = useState<boolean>(true)
+    const [newchat, setNewChat] = useState<boolean>(false)
     const [currentMessages, setCurrentMessages] = useState<boolean>(false)
     const [msgid, setMsgId] = useState<string>("")
     const [previousSession, setPreviousSession] = useState<boolean>(false)
@@ -228,6 +227,32 @@ const chatwithpdf = () => {
 
             <div className='w-full h-screen flex flex-row gap-2 md:px-40 px-3 bg-monu dark:text-white text-black '>
                 {newchat && <div className='w-screen h-screen backdrop-blur-md bg-white/10 absolute z-10 top-0 left-0 flex flex-col items-center justify-center'>
+                    <Card className="w-[350px]">
+                        <CardHeader>
+                            <CardTitle>Create New Chat</CardTitle>
+                            <CardDescription>Select one or more pdf</CardDescription>
+                        </CardHeader>
+                        <CardContent>
+                            <form>
+                                <div className="grid w-full items-center gap-4">
+                                    <div className="flex flex-col space-y-1.5">
+                                        <Label htmlFor="name">Name</Label>
+                                        <Input id="name" placeholder="Enter name of chat" />
+                                    </div>
+                                    <div className="flex flex-col space-y-1.5">
+                                        <Label htmlFor="framework">Pdf</Label>
+                                        <Input id="pdf" placeholder='choose one or more pdf' multiple type='file'  />
+                                    </div>
+                                </div>
+                            </form>
+                        </CardContent>
+                        <CardFooter className="flex justify-between">
+                            <Button variant="outline" onClick={()=>{
+                                setNewChat(false)
+                            }}>Cancel</Button>
+                            <Button>Submit</Button>
+                        </CardFooter>
+                    </Card>
 
                 </div>
 
@@ -236,7 +261,7 @@ const chatwithpdf = () => {
 
                 <div className='bg-blue-800 hidden p-4 md:w-1/3 md:flex md:flex-col gap-8 items-center '>
                     <form onSubmit={onsubmit}>
-                        <label className="block mb-2 mt-12 font-medium text-gray-900 dark:text-white text-2xl text-center" htmlFor="multiple_files">Upload multiple PDF files</label>
+                        <label className="block mb-2 mt-12 font-medium text-gray-900 dark:text-white text-2xl text-center" htmlFor="multiple_files">New Chat</label>
                         <input className="block w-full text-sm  text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" onChange={(e) => { setFile(e.target.files) }} id="multiple_files" type="file" multiple />
                         <button type="submit" className="mt-4 mx-auto dark:text-white bg-green-700 hover:bg-green-800  font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Submit</button>
                     </form>
