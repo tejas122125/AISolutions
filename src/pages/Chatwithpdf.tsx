@@ -6,12 +6,14 @@ import { type Models } from 'appwrite';
 import { useQueryClient } from '@tanstack/react-query';
 import { getAllChatWithPdf, getChatWithPdfMessages, getFileIds, uploadChatWithPdf } from '@/utils/appwrite/functions';
 import { generateRandomString } from '@/utils/general';
+import { Divide } from 'lucide-react';
 
 
 
 const chatwithpdf = () => {
     let human = []
     let ai = []
+    const [newchat,setNewChat] = useState<boolean>(true)
     const [currentMessages, setCurrentMessages] = useState<boolean>(false)
     const [msgid, setMsgId] = useState<string>("")
     const [previousSession, setPreviousSession] = useState<boolean>(false)
@@ -205,7 +207,16 @@ const chatwithpdf = () => {
 
 
     return (
-        <div className='w-full h-screen flex flex-row gap-2 md:px-40 px-3 bg-monu dark:text-white text-black '>
+        <>
+
+       <div className='w-full h-screen flex flex-row gap-2 md:px-40 px-3 bg-monu dark:text-white text-black '>
+       {newchat && <div className='w-screen h-screen backdrop-blur-md bg-white/10 absolute z-10 top-0 left-0 flex flex-col items-center justify-center'>
+       
+       </div>
+        
+        
+    }
+
             <div className='bg-blue-800 hidden p-4 md:w-1/3 md:flex md:flex-col gap-8 items-center '>
                 <form onSubmit={onsubmit}>
                     <label className="block mb-2 mt-12 font-medium text-gray-900 dark:text-white text-2xl text-center" htmlFor="multiple_files">Upload multiple PDF files</label>
@@ -254,6 +265,8 @@ const chatwithpdf = () => {
 
 
         </div>
+                
+                </>
     )
 }
 

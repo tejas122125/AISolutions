@@ -17,13 +17,13 @@ export default defineConfig({
   //     "@": path.resolve(__dirname, "./src"),
   //   },
   // },
-  //  server:{
-  //   https:{
-  //     key:'./privatekey.key',
-  //     cert:'./certificate.crt',
-  //   }
+   server:{
+    https:{
+      key:'./privatekey.key',
+      cert:'./certificate.crt',
+    }
 
-  // },
+  },
 })
 
 
