@@ -28,6 +28,28 @@ import {
 } from "@/components/ui/form"
 
 const chatwithpdf = () => {
+    const test = [
+        "apple",
+        "banana",
+        "orange",
+        "kiwi",
+        "grape",
+        "pear",
+        "pineapple",
+        "strawberry",
+        "blueberry",
+        "watermelon",
+        "mango",
+        "peach",
+        "cherry",
+        "lemon",
+        "lime",
+        "coconut",
+        "raspberry",
+        "blackberry",
+        "plum",
+        "apricot"
+      ]
     let human = []
     let ai = []
     const [newchat, setNewChat] = useState<boolean>(false)
@@ -47,6 +69,7 @@ const chatwithpdf = () => {
     const [airesponse, setAiResponse] = useState<boolean>(false)
 
     const getting = async (token: string) => {
+        console.log("second")
         try {
             const temp = await getAllChatWithPdf(token)
 
@@ -60,9 +83,12 @@ const chatwithpdf = () => {
     }
 
     const newChatHandle = async (files: File[], messagename: string) => {
+        console.log("fourth")
         // upload and get the array of file ids
         const token = "monu"
+        console.log(files)
         const fileids = await uploadPdf(files)
+        console.log(fileids)
         // handle and give file ids to downloading the files
         if (fileids) {
             setSubmitted(true)
@@ -130,8 +156,10 @@ const chatwithpdf = () => {
     }
     useEffect(() => {
         const token = "monu"
+        console.log("first")
         getting(token)
         if (previousSession) {
+            console.log("thitrd")
             setCurrentSessionId(messageids[-1])
             // get all file ids from thje tokenn and messageids
             getids(token, currentSessionId)
@@ -188,23 +216,26 @@ const chatwithpdf = () => {
 
 
     }
-
-    const onSubmit = async (files: File[]) => {
-
-        console.log(files)
+    let msgname = ""
+    let pdffile: any = []
+    const onSubmit = async (values: any) => {
+        newChatHandle(pdffile, values.chatname)
+        // console.log("first")
+        // console.log(values)
+        // console.log(pdffile)
 
         // uploading to appwrite
 
-        for (let i = 0; i < files.length; i++) {
-            try {
-                const res = await uploadPdf(files)
-                console.log(res)
+        // for (let i = 0; i < files.length; i++) {
+        //     try {
+        //         const res = await uploadPdf(files)
+        //         console.log(res)
 
-            } catch (error) {
-                console.log(error)
-            }
+        //     } catch (error) {
+        //         console.log(error)
+        //     }
 
-        }
+        // }
         // sending the ndownloaD links to flask api
         // for (let i = 0; i < resid.length; i++) {
         //     const link = getDownloadLink(resid[i])
@@ -225,7 +256,7 @@ const chatwithpdf = () => {
 
 
     }
-const form = useForm()
+    const form = useForm()
     return (
         <>
 
@@ -233,49 +264,70 @@ const form = useForm()
                 {newchat && <div className='w-screen h-screen backdrop-blur-md bg-white/10 backdrop-brightness-50 absolute z-10 top-0 left-0 flex flex-col items-center justify-center'>
                     <Card className="w-[350px]">
                         <CardHeader>
-                            <CardTitle>Create New Chat</CardTitle>
-                            <CardDescription>Select one or more pdf</CardDescription>
+                            <CardTitle className='text-xl text-center text'> Create New Chat</CardTitle>
+
                         </CardHeader>
                         <CardContent>
                             <Form {...form}>
                                 <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
                                     <FormField
                                         control={form.control}
-                                        name="username"
+                                        name="chatname"
                                         render={({ field }) => (
                                             <FormItem>
-                                                <FormLabel>Username</FormLabel>
+                                                <FormLabel>Chatname</FormLabel>
                                                 <FormControl>
-                                                    <Input placeholder="shadcn" {...field} />
+                                                    <Input placeholder="Enter the name of chat" {...field} required />
+                                                </FormControl>
+
+                                                <FormMessage />
+                                            </FormItem>
+                                        )}
+                                    />
+                                    <FormField
+                                        control={form.control}
+                                        name="pdffiles"
+                                        render={({ field }) => (
+                                            <FormItem>
+                                                <FormLabel>Pdf-Files</FormLabel>
+                                                <FormControl>
+                                                    <Input placeholder="Select one or more pdfs" {...field} type='file' required multiple onChange={(e: any) => {
+                                                        pdffile = e.target.files
+                                                    }} />
                                                 </FormControl>
                                                 <FormDescription>
-                                                    This is your public display name.
+                                                    Select one or more pdf documents
                                                 </FormDescription>
                                                 <FormMessage />
                                             </FormItem>
                                         )}
                                     />
-                                    <Button type="submit">Submit</Button>
+                                    <CardFooter className="flex justify-between">
+                                        <Button variant="outline" onClick={() => {
+                                            setNewChat(false)
+                                        }}>Cancel</Button>
+                                        <Button type='submit'  >Submit</Button>
+
+                                    </CardFooter>
                                 </form>
                             </Form>
                         </CardContent>
-                        <CardFooter className="flex justify-between">
-                            <Button variant="outline" onClick={() => {
-                                setNewChat(false)
-                            }}>Cancel</Button>
-                            <Button onClick={handlefiles} type='submit' >Submit</Button>
-                        </CardFooter>
+
                     </Card>
                 </div>
                 }
 
-                <div className='bg-blue-800 hidden p-4 md:w-1/3 md:flex md:flex-col gap-8 items-center  '>
+                <div className='bg-blue-800 hidden px-1 md:w-1/3 md:flex md:flex-col gap-8 items-center  '>
                     <div className='bg-white mt-12 flex flex-row gap-3 p-2 w-full rounded-md backdrop-blur-md bg-white/30 text-xl justify-between items-center hover:bg-blue-300 hover:cursor-pointer' onClick={() => { setNewChat(true) }} >
                         <p>New Chat</p>
                         <div><SquarePlus /></div>
                     </div>
-                    <div className='0 w-full flex flex-col items-center gap-4'><h3 className='text-2xl font-semibold mt-11' id='previous-session'>previous sesions</h3>
-                        <div id='previous-session-list' className=' w-full bg-green-500 rounded-xl p-2'>tejaswee kumar singh</div>
+                    <h3 className='text-2xl bg-slate-500 w-full text-center p-2 rounded-md mt-11' id='previous-session'>Previous Sesions</h3>
+ 
+                    <div className='0 w-full flex flex-col items-center md:gap-4 gap-2 h-full bg-gray-800 overflow-y-scroll  overflow-x-hidden'>
+                        {test.map((value,index)=>{
+                            return <div id='previous-session-list' className=' w-full md:mt-4 mt-4 transition-transform duration-300 transform  hover:scale-110  backdrop-blur-md bg-slate-200/60 rounded-xl p-2 hover:font-semibold text-center hover:bg-green-500/50'>{value}</div>
+                        })}
                     </div>
 
                 </div>

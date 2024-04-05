@@ -16,12 +16,12 @@ import { Query } from 'appwrite';
 
 import { ID } from "appwrite"
 export const uploadPdf = async (files: File[]): Promise<string[] | undefined> => {
-
+    let fileids = [];
     for (let i = 0; i < files.length; i++) {
-        let fileids = [];
+        
         try {
             const response = await storage.createFile(
-                '658da6ec42519f39311a',//bucket id
+                '660e8aa1521417614a44',//bucket id
                 ID.unique(),
                 files[i]
             )
@@ -29,10 +29,10 @@ export const uploadPdf = async (files: File[]): Promise<string[] | undefined> =>
         } catch (error: any) {
             console.log(error)
         }
-        return fileids
+       
     }
 
-
+    return fileids
 
 }
 
