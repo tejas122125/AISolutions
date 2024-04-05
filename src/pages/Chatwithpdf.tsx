@@ -29,11 +29,11 @@ const chatwithpdf = () => {
     const getting = async (token: string) => {
         try {
             const temp = await getAllChatWithPdf(token)
-            if (temp != undefined) {
-                setMessageIds(temp![0])
-                setMessageNames(temp![1])
+            
+                setMessageIds(temp[0])
+                setMessageNames(temp[1])
                 setPreviousSession(true)
-            }
+            
         } catch (error) {
             console.log(error)
         }
@@ -93,12 +93,10 @@ const chatwithpdf = () => {
         try {
             const token = "monu"
             const msg = await getChatWithPdfMessages(token, currentSessionId)
-            if (msg != undefined) {
                 human = msg[0]
                 ai = msg[1]
                 //change in ui how to set ai and human messages
                 setCurrentMessages(true)
-            }
         } catch (error) {
             console.log(error)
         }
@@ -107,7 +105,7 @@ const chatwithpdf = () => {
 
     const getids = async (token:string,currentSessionId:string)=>{
         const fileids =  await getFileIds(token,currentSessionId)
-        handleCurrentSessionMessages(fileids!)
+        handleCurrentSessionMessages(fileids)
 
     }
     useEffect(() => {
