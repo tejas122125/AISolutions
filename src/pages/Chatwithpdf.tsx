@@ -189,7 +189,7 @@ const chatwithpdf = () => {
 
     }
 
-    const onsubmit = async (files) => {
+    const onsubmit = async (files:File[]) => {
 
         console.log(files)
 
@@ -197,9 +197,8 @@ const chatwithpdf = () => {
 
         for (let i = 0; i < files.length; i++) {
             try {
-                const res = await uploadPdf(files[i])
-                resid.push(res!.$id)
-                console.log(resid)
+                const res = await uploadPdf(files)
+                console.log(res)
 
             } catch (error) {
                 console.log(error)
@@ -207,22 +206,22 @@ const chatwithpdf = () => {
 
         }
         // sending the ndownloaD links to flask api
-        for (let i = 0; i < resid.length; i++) {
-            const link = getDownloadLink(resid[i])
-            reslink.push(link.href)
-        }
+        // for (let i = 0; i < resid.length; i++) {
+        //     const link = getDownloadLink(resid[i])
+        //     reslink.push(link.href)
+        // }
 
-        try {
-            const response = await axios.post("http://127.0.0.1:5000/uploadpdffiles", reslink)
-            console.log(response)
-            if (response.data) {
-                setSubmitted(true)
+        // try {
+        //     const response = await axios.post("http://127.0.0.1:5000/uploadpdffiles", reslink)
+        //     console.log(response)
+        //     if (response.data) {
+        //         setSubmitted(true)
 
-            }
+        //     }
 
-        } catch (error) {
-            console.log(error)
-        }
+        // } catch (error) {
+        //     console.log(error)
+        // }
 
 
     }
@@ -249,6 +248,7 @@ const chatwithpdf = () => {
                                         <Label htmlFor="framework">Pdf</Label>
                                         <Input id="pdf" placeholder='choose one or more pdf' multiple type='file' onChange={(e)=>{
                                             const files = e.target.files
+                                            onsubmit(files)
                                         }} />
                                     </div>
                                 </div>
