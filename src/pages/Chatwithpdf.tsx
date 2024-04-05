@@ -8,30 +8,30 @@ import { useQueryClient } from '@tanstack/react-query';
 import { getAllChatWithPdf, getChatWithPdfMessages, getFileIds, uploadChatWithPdf } from '@/utils/appwrite/functions';
 import { generateRandomString } from '@/utils/general';
 import { Divide } from 'lucide-react';
-
+import { useForm } from "react-hook-form"
 import {
-    Card,
-    CardContent,
-    CardDescription,
-    CardFooter,
-    CardHeader,
-    CardTitle,
+    Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle,
 } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
+    Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
 } from "@/components/ui/select"
+import {
+    Form,
+    FormControl,
+    FormDescription,
+    FormField,
+    FormItem,
+    FormLabel,
+    FormMessage,
+} from "@/components/ui/form"
 
 const chatwithpdf = () => {
     let human = []
     let ai = []
     const [newchat, setNewChat] = useState<boolean>(false)
-    const [pdffiles,sePdftFiles] = useState<File[]> ([])
+    const [pdffiles, sePdftFiles] = useState<File[]>([])
     const [currentMessages, setCurrentMessages] = useState<boolean>(false)
     const [msgid, setMsgId] = useState<string>("")
     const [previousSession, setPreviousSession] = useState<boolean>(false)
@@ -183,13 +183,13 @@ const chatwithpdf = () => {
 
     };
 
-    const handlefiles = async(e:any) =>{
+    const handlefiles = async (e: any) => {
         e.preventDefault()
-        
+
 
     }
 
-    const onsubmit = async (files:File[]) => {
+    const onSubmit = async (files: File[]) => {
 
         console.log(files)
 
@@ -225,8 +225,7 @@ const chatwithpdf = () => {
 
 
     }
-
-
+const form = useForm()
     return (
         <>
 
@@ -238,24 +237,30 @@ const chatwithpdf = () => {
                             <CardDescription>Select one or more pdf</CardDescription>
                         </CardHeader>
                         <CardContent>
-                            <form onSubmit={handlefiles} id='newchat'>
-                                <div className="grid w-full items-center gap-4">
-                                    <div className="flex flex-col space-y-1.5">
-                                        <Label htmlFor="name">Name</Label>
-                                        <Input id="name" placeholder="Enter name of chat" />
-                                    </div>
-                                    <div className="flex flex-col space-y-1.5">
-                                        <Label htmlFor="framework">Pdf</Label>
-                                        <Input id="pdf" placeholder='choose one or more pdf' multiple type='file' onChange={(e)=>{
-                                            const files = e.target.files
-                                            onsubmit(files)
-                                        }} />
-                                    </div>
-                                </div>
-                            </form>
+                            <Form {...form}>
+                                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+                                    <FormField
+                                        control={form.control}
+                                        name="username"
+                                        render={({ field }) => (
+                                            <FormItem>
+                                                <FormLabel>Username</FormLabel>
+                                                <FormControl>
+                                                    <Input placeholder="shadcn" {...field} />
+                                                </FormControl>
+                                                <FormDescription>
+                                                    This is your public display name.
+                                                </FormDescription>
+                                                <FormMessage />
+                                            </FormItem>
+                                        )}
+                                    />
+                                    <Button type="submit">Submit</Button>
+                                </form>
+                            </Form>
                         </CardContent>
                         <CardFooter className="flex justify-between">
-                            <Button variant="outline" onClick={()=>{
+                            <Button variant="outline" onClick={() => {
                                 setNewChat(false)
                             }}>Cancel</Button>
                             <Button onClick={handlefiles} type='submit' >Submit</Button>
@@ -265,10 +270,10 @@ const chatwithpdf = () => {
                 }
 
                 <div className='bg-blue-800 hidden p-4 md:w-1/3 md:flex md:flex-col gap-8 items-center  '>
-<div className='bg-white mt-12 flex flex-row gap-3 p-2 w-full rounded-md backdrop-blur-md bg-white/30 text-xl justify-between items-center hover:bg-blue-300 hover:cursor-pointer' onClick={()=>{setNewChat(true)}} >
-    <p>New Chat</p>
-    <div><SquarePlus /></div>
-</div>
+                    <div className='bg-white mt-12 flex flex-row gap-3 p-2 w-full rounded-md backdrop-blur-md bg-white/30 text-xl justify-between items-center hover:bg-blue-300 hover:cursor-pointer' onClick={() => { setNewChat(true) }} >
+                        <p>New Chat</p>
+                        <div><SquarePlus /></div>
+                    </div>
                     <div className='0 w-full flex flex-col items-center gap-4'><h3 className='text-2xl font-semibold mt-11' id='previous-session'>previous sesions</h3>
                         <div id='previous-session-list' className=' w-full bg-green-500 rounded-xl p-2'>tejaswee kumar singh</div>
                     </div>
