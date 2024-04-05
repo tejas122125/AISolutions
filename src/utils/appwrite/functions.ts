@@ -15,26 +15,26 @@ import { Query } from 'appwrite';
 // import {type Model} from 'appwrite'
 
 import { ID } from "appwrite"
-// export const uploadPdf = async (files: File[]): Promise<string[] | undefined> => {
+export const uploadPdf = async (files: File[]): Promise<string[] | undefined> => {
 
-//     for (let i = 0; i < files.length; i++) {
-//         let fileids = [];
-//         try {
-//             const response = await storage.createFile(
-//                 '658da6ec42519f39311a',//bucket id
-//                 ID.unique(),
-//                 files[i]
-//             )
-//             fileids.push(response.$id)
-//         } catch (error: any) {
-//             console.log(error)
-//         }
-//         return fileids
-//     }
+    for (let i = 0; i < files.length; i++) {
+        let fileids = [];
+        try {
+            const response = await storage.createFile(
+                '658da6ec42519f39311a',//bucket id
+                ID.unique(),
+                files[i]
+            )
+            fileids.push(response.$id)
+        } catch (error: any) {
+            console.log(error)
+        }
+        return fileids
+    }
 
 
 
-// }
+}
 
 // // get download link of pdf file using id
 // export const getDownloadLink = (id: string) => {
@@ -44,7 +44,7 @@ import { ID } from "appwrite"
 
 
 
-export const uploadChatWithPdf = async (token, msgid, msgname, fileids) => {
+export const uploadChatWithPdf = async (token:string, msgid:string, msgname:string, fileids:string) => {
     // const uri = import.meta.env.VITE_APP_MONGOSTRING;
 
     try {
@@ -73,8 +73,9 @@ export const uploadChatWithPdf = async (token, msgid, msgname, fileids) => {
 
 }
 
-export const getChatWithPdfMessages = async (token,messageid) => {
-
+export const getChatWithPdfMessages = async (token:string,messageid:string) => {
+let human=[];
+let ai =[];
     // const uri = import.meta.env.VITE_APP_MONGOSTRING;
     // const uri  =  process.env.VITE_APP_MONGOSTRING;
     try {
@@ -82,11 +83,19 @@ export const getChatWithPdfMessages = async (token,messageid) => {
             'aisolution',
             'chatwithpdf',
             [
-                Query.equal('messageid',['monu'])
+              
           
             ]
         );
-        console.log(document)
+        for (let i =0; i<document.documents.length;i++){
+            if(document.documents[i].token === token && document.documents[i].messageid === messageid){
+                human = document.documents[i].human;
+                ai = document.documents[i].ai;
+
+            }
+
+        }
+        
         // const human = document.documents!.human; 
         // const ai = document.documents.!.ai;
         // return  [human, ai];
@@ -95,9 +104,11 @@ export const getChatWithPdfMessages = async (token,messageid) => {
         console.log(error)
         
     }
+    return [human,ai];
+    // console.log(human)
 }
 
-getChatWithPdfMessages("monu","monu")
+// getChatWithPdfMessages("monu","monu")
 
 //     try {
 //         await client.connect();
