@@ -110,22 +110,36 @@ let ai =[];
 
 // getChatWithPdfMessages("monu","monu")
 
-//     try {
-//         await client.connect();
 
-//         const database = client.db('testdatabase'); 
-//         const collection = database.collection('chatwithpdf'); 
 
-//         const filter = {token:token,messageid:messageid }
-//         const document =  await collection.findOne(filter)
-//         console.log(document)
-//         const human = document!.human; 
-//         const ai = document!.ai;
-//         return  [human, ai];
-//         // console.log('Array from document:', human);
-//     } catch (error) {
-//         console.error('Error occurred:', error);
-//     } finally {
-//         await client.close(); // Close the MongoDB connection
-//     }
-// }
+
+export const getAllChatWithPdf = async (token:string)=>{
+let messageid=[]
+let messagename=[]
+
+    try {
+        const document = await databases.listDocuments(
+            'aisolution',
+            'chatwithpdf',
+            [
+              
+          
+            ]
+        );
+
+        for (let i =0; i<document.documents.length;i++){
+            if(document.documents[i].token === token ){
+                messageid = document.documents[i].messageid;
+                messagename = document.documents[i].messagename;
+
+            }
+
+        }
+       
+       
+        // console.log('Array from document:', human);
+    } catch (error) {
+        console.error('Error occurred:', error);
+    } 
+return [messageid,messagename]
+}
