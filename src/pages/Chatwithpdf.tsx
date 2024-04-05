@@ -8,12 +8,29 @@ import { getAllChatWithPdf, getChatWithPdfMessages, getFileIds, uploadChatWithPd
 import { generateRandomString } from '@/utils/general';
 import { Divide } from 'lucide-react';
 
-
+import { Button } from "@/components/ui/button"
+import {
+    Card,
+    CardContent,
+    CardDescription,
+    CardFooter,
+    CardHeader,
+    CardTitle,
+} from "@/components/ui/card"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select"
 
 const chatwithpdf = () => {
     let human = []
     let ai = []
-    const [newchat,setNewChat] = useState<boolean>(true)
+    const [newchat, setNewChat] = useState<boolean>(true)
     const [currentMessages, setCurrentMessages] = useState<boolean>(false)
     const [msgid, setMsgId] = useState<string>("")
     const [previousSession, setPreviousSession] = useState<boolean>(false)
@@ -31,11 +48,11 @@ const chatwithpdf = () => {
     const getting = async (token: string) => {
         try {
             const temp = await getAllChatWithPdf(token)
-            
-                setMessageIds(temp[0])
-                setMessageNames(temp[1])
-                setPreviousSession(true)
-            
+
+            setMessageIds(temp[0])
+            setMessageNames(temp[1])
+            setPreviousSession(true)
+
         } catch (error) {
             console.log(error)
         }
@@ -95,18 +112,18 @@ const chatwithpdf = () => {
         try {
             const token = "monu"
             const msg = await getChatWithPdfMessages(token, currentSessionId)
-                human = msg[0]
-                ai = msg[1]
-                //change in ui how to set ai and human messages
-                setCurrentMessages(true)
+            human = msg[0]
+            ai = msg[1]
+            //change in ui how to set ai and human messages
+            setCurrentMessages(true)
         } catch (error) {
             console.log(error)
         }
 
     }
 
-    const getids = async (token:string,currentSessionId:string)=>{
-        const fileids =  await getFileIds(token,currentSessionId)
+    const getids = async (token: string, currentSessionId: string) => {
+        const fileids = await getFileIds(token, currentSessionId)
         handleCurrentSessionMessages(fileids)
 
     }
@@ -116,7 +133,7 @@ const chatwithpdf = () => {
         if (previousSession) {
             setCurrentSessionId(messageids[-1])
             // get all file ids from thje tokenn and messageids
-            getids(token,currentSessionId)
+            getids(token, currentSessionId)
         }
 
 
@@ -209,64 +226,64 @@ const chatwithpdf = () => {
     return (
         <>
 
-       <div className='w-full h-screen flex flex-row gap-2 md:px-40 px-3 bg-monu dark:text-white text-black '>
-       {newchat && <div className='w-screen h-screen backdrop-blur-md bg-white/10 absolute z-10 top-0 left-0 flex flex-col items-center justify-center'>
-       
-       </div>
-        
-        
-    }
+            <div className='w-full h-screen flex flex-row gap-2 md:px-40 px-3 bg-monu dark:text-white text-black '>
+                {newchat && <div className='w-screen h-screen backdrop-blur-md bg-white/10 absolute z-10 top-0 left-0 flex flex-col items-center justify-center'>
 
-            <div className='bg-blue-800 hidden p-4 md:w-1/3 md:flex md:flex-col gap-8 items-center '>
-                <form onSubmit={onsubmit}>
-                    <label className="block mb-2 mt-12 font-medium text-gray-900 dark:text-white text-2xl text-center" htmlFor="multiple_files">Upload multiple PDF files</label>
-                    <input className="block w-full text-sm  text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" onChange={(e) => { setFile(e.target.files) }} id="multiple_files" type="file" multiple />
-                    <button type="submit" className="mt-4 mx-auto dark:text-white bg-green-700 hover:bg-green-800  font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Submit</button>
-                </form>
-                <div className='0 w-full flex flex-col items-center gap-4'><h3 className='text-2xl font-semibold mt-11' id='previous-session'>previous sesions</h3>
-                    <div id='previous-session-list' className=' w-full bg-green-500 rounded-xl p-2'>tejaswee kumar singh</div>
                 </div>
+
+
+                }
+
+                <div className='bg-blue-800 hidden p-4 md:w-1/3 md:flex md:flex-col gap-8 items-center '>
+                    <form onSubmit={onsubmit}>
+                        <label className="block mb-2 mt-12 font-medium text-gray-900 dark:text-white text-2xl text-center" htmlFor="multiple_files">Upload multiple PDF files</label>
+                        <input className="block w-full text-sm  text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" onChange={(e) => { setFile(e.target.files) }} id="multiple_files" type="file" multiple />
+                        <button type="submit" className="mt-4 mx-auto dark:text-white bg-green-700 hover:bg-green-800  font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Submit</button>
+                    </form>
+                    <div className='0 w-full flex flex-col items-center gap-4'><h3 className='text-2xl font-semibold mt-11' id='previous-session'>previous sesions</h3>
+                        <div id='previous-session-list' className=' w-full bg-green-500 rounded-xl p-2'>tejaswee kumar singh</div>
+                    </div>
+
+                </div>
+                <div className='bg-purple-800 w-full h-full p-2 relative'>
+
+                    <div className="flex flex-col  h-full w-full relative overflow-y-scroll">
+                        {messages.map((value, index) => {
+
+                            if (value.fromUser === true) {
+                                return <div key={index} className=' mt-2 md:mt-7 flex w-full p-3 rounded-md justify-start items-center bg-white dark:text-white text-black text-base md:text-xl  '>User :  {value.text}</div>
+                            }
+                            else {
+
+                                return <div key={index} className=' flex w-full p-3 rounded-md justify-end items-center dark:text-white text-black text-base md:text-xl  '>AI :  {value.text}</div>
+                            }
+
+                        })
+
+                        }
+                    </div>
+                    <div className="flex items-center p-4 border-t w-full absolute bottom-0 left-0 bg-slate-400">
+                        <input id='textinput'
+                            type="text"
+                            className="flex-1 p-2 mr-2 border rounded-lg"
+                            placeholder="Type your message..."
+                            onChange={(e) => setInputText(e.target.value)}
+                            onKeyDown={(e) => e.key === 'Enter' && handleSendMessage()}
+                        />
+                        <button
+                            className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
+                            onClick={handleSendMessage}
+                        >
+                            Send
+                        </button>
+                    </div>
+
+                </div>
+
 
             </div>
-            <div className='bg-purple-800 w-full h-full p-2 relative'>
 
-                <div className="flex flex-col  h-full w-full relative overflow-y-scroll">
-                    {messages.map((value, index) => {
-
-                        if (value.fromUser === true) {
-                            return <div key={index} className=' mt-2 md:mt-7 flex w-full p-3 rounded-md justify-start items-center bg-white dark:text-white text-black text-base md:text-xl  '>User :  {value.text}</div>
-                        }
-                        else {
-
-                            return <div key={index} className=' flex w-full p-3 rounded-md justify-end items-center dark:text-white text-black text-base md:text-xl  '>AI :  {value.text}</div>
-                        }
-
-                    })
-
-                    }
-                </div>
-                <div className="flex items-center p-4 border-t w-full absolute bottom-0 left-0 bg-slate-400">
-                    <input id='textinput'
-                        type="text"
-                        className="flex-1 p-2 mr-2 border rounded-lg"
-                        placeholder="Type your message..."
-                        onChange={(e) => setInputText(e.target.value)}
-                        onKeyDown={(e) => e.key === 'Enter' && handleSendMessage()}
-                    />
-                    <button
-                        className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
-                        onClick={handleSendMessage}
-                    >
-                        Send
-                    </button>
-                </div>
-
-            </div>
-
-
-        </div>
-                
-                </>
+        </>
     )
 }
 
