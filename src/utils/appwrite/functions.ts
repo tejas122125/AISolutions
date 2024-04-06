@@ -129,8 +129,8 @@ let messagename=[]
 
         for (let i =0; i<document.documents.length;i++){
             if(document.documents[i].token === token ){
-                messageid = document.documents[i].messageid;
-                messagename = document.documents[i].messagename;
+                messageid.push(document.documents[i].messageid);
+                 messagename.push(document.documents[i].messagename);
 
             }
 

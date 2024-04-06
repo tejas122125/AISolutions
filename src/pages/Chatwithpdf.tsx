@@ -50,11 +50,11 @@ const chatwithpdf = () => {
         "blackberry",
         "plum",
         "apricot"
-      ]
+    ]
     let human = []
     let ai = []
     const [newchat, setNewChat] = useState<boolean>(false)
-    
+
     const [pdffiles, sePdftFiles] = useState<File[]>([])
     const [currentMessages, setCurrentMessages] = useState<boolean>(false)
     const [msgid, setMsgId] = useState<string>("")
@@ -73,11 +73,12 @@ const chatwithpdf = () => {
     const getting = async (token: string) => {
         console.log("second")
         try {
-            const temp = await getAllChatWithPdf(token)
-
+            const temp = await getAllChatWithPdf("monu")
+console.log(temp)
             setMessageIds(temp[0])
             setMessageNames(temp[1])
             setPreviousSession(true)
+            console.log(messageNames)
 
         } catch (error) {
             console.log(error)
@@ -325,17 +326,17 @@ const chatwithpdf = () => {
                         <div><SquarePlus /></div>
                     </div>
                     <h3 className='text-2xl bg-slate-500 w-full text-center p-2 rounded-md mt-11' id='previous-session'>Previous Sesions</h3>
- 
-                    <div className='0 w-full flex flex-col items-center md:gap-4 gap-2 h-full  overflow-y-scroll  overflow-x-hidden'>
-                        {messageNames.map((value,index)=>{
-                            return <button id='previous-session-list' key={index} className=' w-full md:mt-4 mt-4 transition-transform duration-300 transform  hover:scale-110  backdrop-blur-md bg-slate-200/60 rounded-xl p-2 hover:font-semibold text-center hover:bg-green-500/50' onClick={async()=>{
-                                const name =  value;
+
+                   {previousSession && <div className='0 w-full flex flex-col items-center md:gap-4 gap-2 h-full  overflow-y-scroll  overflow-x-hidden'>
+                        {messageNames.map((value,index) => {
+                            return <button id='previous-session-list' key={index} className=' w-full md:mt-4 mt-4 transition-transform duration-300 transform  hover:scale-110  backdrop-blur-md bg-slate-200/60 rounded-xl p-2 hover:font-semibold text-center hover:bg-green-500/50' onClick={async () => {
+                                const name = value;
                                 const id = messageids[messageNames.indexOf(name)]
-                                const ids = await getFileIds(token,id)
+                                const ids = await getFileIds(token, id)
                                 handleCurrentSessionMessages(ids)
                             }} >{value}</button>
                         })}
-                    </div>
+                    </div>}
 
                 </div>
                 <div className='bg-purple-800 w-full h-full p-2 relative'>
