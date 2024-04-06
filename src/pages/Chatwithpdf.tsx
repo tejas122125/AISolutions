@@ -28,6 +28,7 @@ import {
 } from "@/components/ui/form"
 
 const chatwithpdf = () => {
+    const token = "monu"
     const test = [
         "apple",
         "banana",
@@ -53,6 +54,7 @@ const chatwithpdf = () => {
     let human = []
     let ai = []
     const [newchat, setNewChat] = useState<boolean>(false)
+    
     const [pdffiles, sePdftFiles] = useState<File[]>([])
     const [currentMessages, setCurrentMessages] = useState<boolean>(false)
     const [msgid, setMsgId] = useState<string>("")
@@ -326,7 +328,12 @@ const chatwithpdf = () => {
  
                     <div className='0 w-full flex flex-col items-center md:gap-4 gap-2 h-full bg-gray-800 overflow-y-scroll  overflow-x-hidden'>
                         {test.map((value,index)=>{
-                            return <div id='previous-session-list' className=' w-full md:mt-4 mt-4 transition-transform duration-300 transform  hover:scale-110  backdrop-blur-md bg-slate-200/60 rounded-xl p-2 hover:font-semibold text-center hover:bg-green-500/50'>{value}</div>
+                            return <button id='previous-session-list' key={index} className=' w-full md:mt-4 mt-4 transition-transform duration-300 transform  hover:scale-110  backdrop-blur-md bg-slate-200/60 rounded-xl p-2 hover:font-semibold text-center hover:bg-green-500/50' onClick={async()=>{
+                                const name =  value;
+                                const id = messageids[test.indexOf(name)]
+                                const ids = await getFileIds(token,id)
+                                handleCurrentSessionMessages(ids)
+                            }} >{value}</button>
                         })}
                     </div>
 
