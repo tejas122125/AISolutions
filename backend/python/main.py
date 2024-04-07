@@ -160,12 +160,13 @@ def getChat():
     filename = []
     question = request.json['question']
     length = request.json['length']
+    fileid  = request.json['fileid']   
     
 
     
     
     for i in range(length):
-        filename.append(f'test{i}.pdf')
+        filename.append(f'{fileid}{i}.pdf')
 
  
     response = chat_pdf_history(filename,question,chathistory)
