@@ -179,7 +179,7 @@ console.log("hgfdhgdh",curr)
 
         console.log(inputText)
         if (inputText.trim() === '') return;
-        setMessages((prevMessages => [...prevMessages, { "text": inputText, "fromUser": true }]));
+        sethuman((prevMessages => [...prevMessages, inputText]));
         const post = {
             "length": 2,
             "question": inputText
@@ -325,7 +325,7 @@ console.log("hgfdhgdh",curr)
 
                     {previousSession && <div className='0 w-full flex flex-col items-center md:gap-4 gap-2 h-full  overflow-y-scroll  overflow-x-hidden'>
                         {[...messageNames].reverse().map((value, index) => {
-                            return <button id='previous-session-list' key={index} className=' w-full md:mt-4 mt-4 transition-transform duration-300 transform  hover:scale-110  backdrop-blur-md bg-slate-200/60 rounded-xl p-2 hover:font-semibold text-center hover:bg-green-500/50' onClick={async () => {
+                            return <button id='previous-session-list' key={index} className=' w-full md:mt-4 mt-4 transition-transform duration-300 transform  hover:scale-110  backdrop-blur-md bg-slate-200/60 rounded-xl p-2 hover:font-semibold text-center hover:bg-green-500/50'  onClick={async () => {
                                 const name = value;
                                 const id = messageids[messageNames.indexOf(name)]
                                 console.log("clicked",id)
