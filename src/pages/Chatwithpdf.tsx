@@ -51,19 +51,18 @@ const chatwithpdf = () => {
         "plum",
         "apricot"
     ]
-
+    const [filelength, setFileLength] = useState<Number>(0)
     const [newchat, setNewChat] = useState<boolean>(false)
     const [ai, setai] = useState<string[]>([])
     const [human, sethuman] = useState<string[]>([])
-    const [pdffiles, sePdftFiles] = useState<File[]>([])
+
     const [currentMessages, setCurrentMessages] = useState<boolean>(false)
     const [previousSession, setPreviousSession] = useState<boolean>(false)
     const [messageids, setMessageIds] = useState<string[]>([])
     const [messageNames, setMessageNames] = useState<string[]>([])
     const [currentSessionId, setCurrentSessionId] = useState<string>("")
-    const [downloaded, setDOwnloaded] = useState<boolean>(false)
 
-    const [files, setFile] = useState<any>([])
+
     const [messages, setMessages] = useState<{ text: string; fromUser: boolean }[]>([{ text: "dfvhdvfvfhgv", fromUser: false }]);
     const [inputText, setInputText] = useState('');
     const [submitted, setSubmitted] = useState<boolean>(false)
@@ -72,14 +71,14 @@ const chatwithpdf = () => {
     const getting = async (token: string) => {
         console.log("second")
         try {
-           
+
             const temp = await getAllChatWithPdf("monu")
             setMessageIds(temp[0])
             setMessageNames(temp[1])
             setPreviousSession(true)
             setCurrentSessionId(messageids[messageids.length - 1])
-const curr = temp[0][temp[0].length -1]
-console.log("hgfdhgdh",curr)
+            const curr = temp[0][temp[0].length - 1]
+            console.log("hgfdhgdh", curr)
             getids(token, curr)
         } catch (error) {
             console.log(error)
@@ -101,7 +100,7 @@ console.log("hgfdhgdh",curr)
             setCurrentSessionId(msgid)
             const uploadres = await uploadChatWithPdf(token, msgid, messagename, fileids)
             if (uploadres) {
-                handleCurrentSessionMessages(fileids,msgid)
+                handleCurrentSessionMessages(fileids, msgid)
             }
 
 
@@ -113,8 +112,9 @@ console.log("hgfdhgdh",curr)
     }
 
 
-    const handleCurrentSessionMessages = async (fileids: string[] ,currid:string) => {
+    const handleCurrentSessionMessages = async (fileids: string[], currid: string) => {
         // call the backend to download the files and be ready
+        setFileLength(fileids.length)
         // let reslink = []
         // for (let i = 0; i < fileids.length; i++) {
         //     const link = getDownloadLink(fileids[i])
@@ -154,9 +154,9 @@ console.log("hgfdhgdh",curr)
 
     const getids = async (token: string, currssid: string) => {
         const fileids = await getFileIds(token, currssid)
-        console.log("tejas",currssid)
+        console.log("tejas", currssid)
         console.log(fileids)
-        handleCurrentSessionMessages(fileids,currssid)
+        handleCurrentSessionMessages(fileids, currssid)
 
     }
 
@@ -178,11 +178,13 @@ console.log("hgfdhgdh",curr)
     const handleSendMessage = async () => {
 
         console.log(inputText)
+        console.log("suddeo",filelength)
         if (inputText.trim() === '') return;
         sethuman((prevMessages => [...prevMessages, inputText]));
         const post = {
-            "length": 2,
-            "question": inputText
+            "length": filelength,
+            "question": inputText,
+            "fileid":currentSessionId
 
         }
         console.log(messages)
@@ -191,13 +193,13 @@ console.log("hgfdhgdh",curr)
         if (response.data.AI) {
             const res = response.data.AI
             setAiResponse(true)
-            setMessages((prevMessages => [...prevMessages, { "text": inputText, "fromUser": false }]));
+            setai((prevMessages => [...prevMessages,res]));
             console.log(`response from ai is ${res}`)
 
             // setMessages([...messages, { text: response.data, fromUser: false }]);
-            setMessages((prv) => {
-                return [...prv, { text: res, fromUser: false }]
-            })
+            // setMessages((prv) => {
+            //     return [...prv, { text: res, fromUser: false }]
+            // })
 
             // setMessages([...messages, { text: "AIIII", fromUser: false }]);
 
@@ -325,12 +327,12 @@ console.log("hgfdhgdh",curr)
 
                     {previousSession && <div className='0 w-full flex flex-col items-center md:gap-4 gap-2 h-full  overflow-y-scroll  overflow-x-hidden'>
                         {[...messageNames].reverse().map((value, index) => {
-                            return <button id='previous-session-list' key={index} className=' w-full md:mt-4 mt-4 transition-transform duration-300 transform  hover:scale-110  backdrop-blur-md bg-slate-200/60 rounded-xl p-2 hover:font-semibold text-center hover:bg-green-500/50'  onClick={async () => {
+                            return <button id='previous-session-list' key={index} className=' w-full md:mt-4 mt-4 transition-transform duration-300 transform  hover:scale-110  backdrop-blur-md bg-slate-200/60 rounded-xl p-2 hover:font-semibold text-center hover:bg-green-500/50' onClick={async () => {
                                 const name = value;
                                 const id = messageids[messageNames.indexOf(name)]
-                                console.log("clicked",id)
+                                console.log("clicked", id)
                                 const ids = await getFileIds(token, id)
-                                handleCurrentSessionMessages(ids,id)
+                                handleCurrentSessionMessages(ids, id)
                             }} >{value}{messageids[index]}</button>
                         })}
                     </div>}
@@ -342,7 +344,7 @@ console.log("hgfdhgdh",curr)
                         {human.map((value, index) => {
                             return <div className='w-full h-fit flex-col flex bg-blue-400'> <div key={index} className=' mt-2 md:mt-7 flex w-full p-3 rounded-md justify-start items-center bg-white dark:text-white text-black text-base md:text-xl  '>User :  {value}</div>
 
-                                <div key={index+1} className=' flex w-full p-3 rounded-md justify-end items-center dark:text-white text-black text-base md:text-xl  '>AI :  {ai[index]}</div>
+                                <div key={index + 1} className=' flex w-full p-3 rounded-md justify-end items-center dark:text-white text-black text-base md:text-xl  '>AI :  {ai[index]}</div>
                             </div>
 
                         })
