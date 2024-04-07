@@ -342,7 +342,7 @@ console.log("hgfdhgdh",curr)
                         {human.map((value, index) => {
                             return <div className='w-full h-fit flex-col flex bg-blue-400'> <div key={index} className=' mt-2 md:mt-7 flex w-full p-3 rounded-md justify-start items-center bg-white dark:text-white text-black text-base md:text-xl  '>User :  {value}</div>
 
-                                <div key={index} className=' flex w-full p-3 rounded-md justify-end items-center dark:text-white text-black text-base md:text-xl  '>AI :  {ai[index]}</div>
+                                <div key={index+1} className=' flex w-full p-3 rounded-md justify-end items-center dark:text-white text-black text-base md:text-xl  '>AI :  {ai[index]}</div>
                             </div>
 
                         })
