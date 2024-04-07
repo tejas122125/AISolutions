@@ -324,7 +324,7 @@ console.log("hgfdhgdh",curr)
                     <h3 className='text-2xl bg-slate-500 w-full text-center p-2 rounded-md mt-11' id='previous-session'>Previous Sesions</h3>
 
                     {previousSession && <div className='0 w-full flex flex-col items-center md:gap-4 gap-2 h-full  overflow-y-scroll  overflow-x-hidden'>
-                        {messageNames.map((value, index) => {
+                        {[...messageNames].reverse().map((value, index) => {
                             return <button id='previous-session-list' key={index} className=' w-full md:mt-4 mt-4 transition-transform duration-300 transform  hover:scale-110  backdrop-blur-md bg-slate-200/60 rounded-xl p-2 hover:font-semibold text-center hover:bg-green-500/50' onClick={async () => {
                                 const name = value;
                                 const id = messageids[messageNames.indexOf(name)]
