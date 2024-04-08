@@ -62,7 +62,7 @@ const chatwithpdf = () => {
     const [messageids, setMessageIds] = useState<string[]>([])
     const [messageNames, setMessageNames] = useState<string[]>([])
     const [currentSessionId, setCurrentSessionId] = useState<string>("")
-
+const [count , setcount] =useState(0)
 
     const [messages, setMessages] = useState<{ text: string; fromUser: boolean }[]>([{ text: "dfvhdvfvfhgv", fromUser: false }]);
     const [inputText, setInputText] = useState('');
@@ -78,10 +78,10 @@ const chatwithpdf = () => {
             setMessageNames(temp[1])
             setPreviousSession(true)
             
-            setCurrentSessionId(messageids[messageids.length - 1])
-            const  curr = temp[0][temp[0].length - 1]
-            console.log("hgfdhgdh", curr)
-            getids(token, curr)
+           
+            // const  curr = temp[0][temp[0].length - 1]
+            console.log("session ids",currentSessionId)
+            getids(token, currentSessionId)
         } catch (error) {
             console.log(error)
         }
@@ -99,7 +99,7 @@ const chatwithpdf = () => {
             const msgid = generateRandomString(6)
             setMessageNames((prev) => { return [...prev, messagename] })
             setMessageIds((prev) => { return [...prev, msgid] })
-            setCurrentSessionId(msgid)
+            // setCurrentSessionId(msgid)
             const uploadres = await uploadChatWithPdf(token, msgid, messagename, fileids)
             if (uploadres) {
                 handleCurrentSessionMessages(fileids, msgid)
@@ -165,8 +165,16 @@ const chatwithpdf = () => {
 
     //dfkiufdheuifhufrguyefdgeuyfdveuyf
     useEffect(() => {
-        const token = "monu"
-        getting(token)
+        
+if (count == 0){
+    console.log("calling multiple timeas")
+    getting(token)
+
+}
+        setcount((prev)=>prev++)
+        if (currentSessionId && messageids.length >0){
+            setCurrentSessionId(messageids[messageids.length - 1])
+        }
         // console.log("first")
         // if (previousSession) {
         //     console.log("thitrd")
@@ -174,7 +182,7 @@ const chatwithpdf = () => {
         //     // get all file ids from thje tokenn and messageids
         //     getids(token, currentSessionId)
         // }
-    }, [])
+    }, [currentSessionId,messageids])
 
 
     const handleSendMessage = async () => {
