@@ -74,14 +74,14 @@ const [count , setcount] =useState(0)
         try {
 
             const temp = await getAllChatWithPdf("monu")
+            setPreviousSession(true)
             setMessageIds(temp[0])
             setMessageNames(temp[1])
-            setPreviousSession(true)
             
            
             // const  curr = temp[0][temp[0].length - 1]
             console.log("session ids",currentSessionId)
-            getids(token, currentSessionId)
+            // getids(token, currentSessionId)
         } catch (error) {
             console.log(error)
         }
@@ -165,16 +165,23 @@ const [count , setcount] =useState(0)
 
     //dfkiufdheuifhufrguyefdgeuyfdveuyf
     useEffect(() => {
-        
-if (count == 0){
-    getting(token)
-}
-setcount(prev => prev + 1);
- 
+
         if (previousSession && messageids.length >0){
             setCurrentSessionId(messageids[messageids.length - 1])
             console.log("sid",currentSessionId)
+            if (count == 0){
+            getids(token,currentSessionId)
+
+            }
+
+            setcount(prev => prev+1)
+
         }
+
+        if (count == 0){
+            getting(token)
+        }
+
         // console.log("first")
         // if (previousSession) {
         //     console.log("thitrd")
@@ -182,7 +189,7 @@ setcount(prev => prev + 1);
         //     // get all file ids from thje tokenn and messageids
         //     getids(token, currentSessionId)
         // }
-    }, [currentSessionId,messageids])
+    }, [messageids])
 
 
     const handleSendMessage = async () => {
