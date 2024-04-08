@@ -28,8 +28,7 @@ import {
 } from "@/components/ui/form"
 
 const chatwithpdf = () => {
-    let curr = ""
-    console.log("sudmg")
+    
     const token = "monu"
     const test = [
         "apple",
@@ -80,7 +79,7 @@ const chatwithpdf = () => {
             setPreviousSession(true)
             
             setCurrentSessionId(messageids[messageids.length - 1])
-             curr = temp[0][temp[0].length - 1]
+            const  curr = temp[0][temp[0].length - 1]
             console.log("hgfdhgdh", curr)
             getids(token, curr)
         } catch (error) {
