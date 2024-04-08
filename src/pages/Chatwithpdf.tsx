@@ -169,7 +169,8 @@ const [count , setcount] =useState(0)
         if (previousSession && messageids.length >0){
             setCurrentSessionId(messageids[messageids.length - 1])
             console.log("sid",currentSessionId)
-            if (count == 0){
+            if (count<2){
+                console.log("callfoir")
             getids(token,currentSessionId)
 
             }
