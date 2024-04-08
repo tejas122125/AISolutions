@@ -167,13 +167,13 @@ const [count , setcount] =useState(0)
     useEffect(() => {
         
 if (count == 0){
-    console.log("calling multiple timeas")
     getting(token)
-
 }
-        setcount((prev)=>prev++)
-        if (currentSessionId && messageids.length >0){
+setcount(prev => prev + 1);
+ 
+        if (previousSession && messageids.length >0){
             setCurrentSessionId(messageids[messageids.length - 1])
+            console.log("sid",currentSessionId)
         }
         // console.log("first")
         // if (previousSession) {
