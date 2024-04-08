@@ -28,6 +28,8 @@ import {
 } from "@/components/ui/form"
 
 const chatwithpdf = () => {
+    let curses = ""
+    console.log("sudmg")
     const token = "monu"
     const test = [
         "apple",
@@ -55,7 +57,7 @@ const chatwithpdf = () => {
     const [newchat, setNewChat] = useState<boolean>(false)
     const [ai, setai] = useState<string[]>([])
     const [human, sethuman] = useState<string[]>([])
-
+    const [downloaded, setDownloaded] = useState<boolean>(false)
     const [currentMessages, setCurrentMessages] = useState<boolean>(false)
     const [previousSession, setPreviousSession] = useState<boolean>(false)
     const [messageids, setMessageIds] = useState<string[]>([])
@@ -76,6 +78,7 @@ const chatwithpdf = () => {
             setMessageIds(temp[0])
             setMessageNames(temp[1])
             setPreviousSession(true)
+            curses  = messageids[messageids.length - 1]
             setCurrentSessionId(messageids[messageids.length - 1])
             const curr = temp[0][temp[0].length - 1]
             console.log("hgfdhgdh", curr)
@@ -115,27 +118,27 @@ const chatwithpdf = () => {
     const handleCurrentSessionMessages = async (fileids: string[], currid: string) => {
         // call the backend to download the files and be ready
         setFileLength(fileids.length)
-        // let reslink = []
-        // for (let i = 0; i < fileids.length; i++) {
-        //     const link = getDownloadLink(fileids[i])
-        //     reslink.push(link.href)
-        // }
-        // const data = {
-        //     "pdfid": currentSessionId,
-        //     "downloadlink": reslink
-        // }
+        let reslink = []
+        for (let i = 0; i < fileids.length; i++) {
+            const link = getDownloadLink(fileids[i])
+            reslink.push(link.href)
+        }
+        const data = {
+            "pdfid": currentSessionId,
+            "downloadlink": reslink
+        }
 
-        // try {
-        //     const response = await axios.post("http://127.0.0.1:5000/uploadpdffiles", data)
-        //     console.log(response)
-        //     if (response.data) {
-        //         //uploaded and downloaded file in backend
-        //         setDOwnloaded(true)
-        //     }
+        try {
+            const response = await axios.post("http://127.0.0.1:5000/uploadpdffiles", data)
+            console.log(response)
+            if (response.data) {
+                //uploaded and downloaded file in backend
+                setDownloaded(true)
+            }
 
-        // } catch (error) {
-        //     console.log(error)
-        // }
+        } catch (error) {
+            console.log(error)
+        }
         console.log("nindb", currid)
 
         try {
@@ -178,13 +181,13 @@ const chatwithpdf = () => {
     const handleSendMessage = async () => {
 
         console.log(inputText)
-        console.log("suddeo",filelength)
+        console.log("suddeo", currentSessionId)
         if (inputText.trim() === '') return;
         sethuman((prevMessages => [...prevMessages, inputText]));
         const post = {
             "length": filelength,
             "question": inputText,
-            "fileid":currentSessionId
+            "fileid": currentSessionId
 
         }
         console.log(messages)
@@ -193,7 +196,7 @@ const chatwithpdf = () => {
         if (response.data.AI) {
             const res = response.data.AI
             setAiResponse(true)
-            setai((prevMessages => [...prevMessages,res]));
+            setai((prevMessages => [...prevMessages, res]));
             console.log(`response from ai is ${res}`)
 
             // setMessages([...messages, { text: response.data, fromUser: false }]);
