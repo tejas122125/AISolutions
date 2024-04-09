@@ -30,28 +30,7 @@ import {
 const chatwithpdf = () => {
     
     const token = "monu"
-    const test = [
-        "apple",
-        "banana",
-        "orange",
-        "kiwi",
-        "grape",
-        "pear",
-        "pineapple",
-        "strawberry",
-        "blueberry",
-        "watermelon",
-        "mango",
-        "peach",
-        "cherry",
-        "lemon",
-        "lime",
-        "coconut",
-        "raspberry",
-        "blackberry",
-        "plum",
-        "apricot"
-    ]
+    const addurl ="&mode=admin"
     const [filelength, setFileLength] = useState<Number>(0)
     const [newchat, setNewChat] = useState<boolean>(false)
     const [ai, setai] = useState<string[]>([])
@@ -92,22 +71,22 @@ const [count , setcount] =useState(0)
         // upload and get the array of file ids
         console.log(files)
         const fileids = await uploadPdf(files)
-        console.log(fileids)
+        console.log("uploaded",fileids)
         // handle and give file ids to downloading the files
-        if (fileids) {
+
             setSubmitted(true)
             const msgid = generateRandomString(6)
             setMessageNames((prev) => { return [...prev, messagename] })
             setMessageIds((prev) => { return [...prev, msgid] })
             // setCurrentSessionId(msgid)
-            const uploadres = await uploadChatWithPdf(token, msgid, messagename, fileids)
-            if (uploadres) {
-                handleCurrentSessionMessages(fileids, msgid)
-            }
+            const uploadres = await uploadChatWithPdf(token, msgid, messagename, fileids!)
+          
+                handleCurrentSessionMessages(fileids!, msgid)
+            
 
 
 
-        }
+        
 
 
 
@@ -120,16 +99,17 @@ const [count , setcount] =useState(0)
         let reslink = []
         for (let i = 0; i < fileids.length; i++) {
             const link = getDownloadLink(fileids[i])
-            reslink.push(link.href)
+            reslink.push(`${link.href}${addurl}`)
         }
         const data = {
-            "pdfid": currentSessionId,
+            "pdfid": currid,
             "downloadlink": reslink
         }
+        console.log("download data is",data)
 
         try {
             const response = await axios.post("http://127.0.0.1:5000/uploadpdffiles", data)
-            console.log(response)
+            console.log("tejasweebackend",response)
             if (response.data) {
                 //uploaded and downloaded file in backend
                 setDownloaded(true)
@@ -170,7 +150,6 @@ const [count , setcount] =useState(0)
             setCurrentSessionId(messageids[messageids.length - 1])
             console.log("sid",currentSessionId)
             if (count<2){
-                console.log("callfoir")
             getids(token,currentSessionId)
 
             }
@@ -195,23 +174,23 @@ const [count , setcount] =useState(0)
 
     const handleSendMessage = async () => {
 
-        console.log(inputText)
-        console.log("suddeo", currentSessionId)
+
         if (inputText.trim() === '') return;
-        sethuman((prevMessages => [...prevMessages, inputText]));
+        
         const post = {
             "length": filelength,
             "question": inputText,
             "fileid": currentSessionId
 
         }
-        console.log(messages)
-
+  console.log("sending meshv ",post)
         const response = await axios.post("http://127.0.0.1:5000/chatpdffiles", post)
         if (response.data.AI) {
             const res = response.data.AI
             setAiResponse(true)
             setai((prevMessages => [...prevMessages, res]));
+            sethuman((prevMessages => [...prevMessages, inputText]));
+
             console.log(`response from ai is ${res}`)
 
             // setMessages([...messages, { text: response.data, fromUser: false }]);
@@ -347,7 +326,7 @@ const [count , setcount] =useState(0)
                         {[...messageNames].reverse().map((value, index) => {
                             return <button id='previous-session-list' key={index} className=' w-full md:mt-4 mt-4 transition-transform duration-300 transform  hover:scale-110  backdrop-blur-md bg-slate-200/60 rounded-xl p-2 hover:font-semibold text-center hover:bg-green-500/50' onClick={async () => {
                                 const name = value;
-                                const id = messageids[messageNames.indexOf(name)]
+                                const id = messageids[[...messageNames].reverse().indexOf(name)]
                                 console.log("clicked", id)
                                 const ids = await getFileIds(token, id)
                                 handleCurrentSessionMessages(ids, id)

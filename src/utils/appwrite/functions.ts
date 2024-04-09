@@ -38,11 +38,12 @@ export const uploadPdf = async (files: File[]): Promise<string[] | undefined> =>
 
 // get download link of pdf file using id
 export const getDownloadLink = (id: string) => {
-    const result = storage.getFileDownload("658da6ec42519f39311a", id);
+    const result = storage.getFileView("660e8aa1521417614a44", id);
+    // console.log(result)
     return result
 }
 
-
+// getDownloadLink("661195a4cc490261d2b1")
 
 export const uploadChatWithPdf = async (token:string, msgid:string, msgname:string, fileids:string[]) => {
     // const uri = import.meta.env.VITE_APP_MONGOSTRING;

@@ -136,8 +136,7 @@ def download_pdf(url, filename):
         print(f"PDF downloaded successfully and saved as '{filename}'")
     else:
         print(f"Failed to download PDF. Status code: {response.status_code}")
-
-
+        
 app = Flask(__name__)
 
 CORS(app)
@@ -184,17 +183,23 @@ def getChat():
 def getlink():
     links = request.json["downloadlink"]
     pdfids = request.json["pdfid"]
+
     for i in range(len(links)):
         filename = f"{pdfids}{i}.pdf"
+        print(filename)
         link = links[i]
+        print(link)
         download_pdf(link,filename)
-       
+  
+
+ 
     return jsonify({"download" : "successfull"})
 
-@app.before_first_request
-def initialize():
-    client  = connect_to_mongodb()
-    app.config['client'] = client
+
+# @app.before_first_request
+# def initialize():
+#     client  = connect_to_mongodb()
+#     app.config['client'] = client
     
     
 
