@@ -131,9 +131,13 @@ def download_pdf(url, filename):
     # Check if the request was successful (status code 200)
     if response.status_code == 200:
         # Open the file in binary write mode and write the response content (PDF data) to it
-        with open(filename, 'wb') as file:
-            file.write(response.content)
-        print(f"PDF downloaded successfully and saved as '{filename}'")
+        if not os.path.exists(filename):
+            
+            with open(filename, 'wb') as file:
+                file.write(response.content)
+            print(f"PDF downloaded successfully and saved as '{filename}'")
+        else:
+            print("NO need to download file it already exist")    
     else:
         print(f"Failed to download PDF. Status code: {response.status_code}")
         

@@ -53,10 +53,11 @@ const [count , setcount] =useState(0)
         try {
 
             const temp = await getAllChatWithPdf("monu")
+            if (temp[0].length > 0){
             setPreviousSession(true)
             setMessageIds(temp[0])
             setMessageNames(temp[1])
-            
+            }
            
             // const  curr = temp[0][temp[0].length - 1]
             console.log("session ids",currentSessionId)
@@ -82,14 +83,6 @@ const [count , setcount] =useState(0)
             const uploadres = await uploadChatWithPdf(token, msgid, messagename, fileids!)
           
                 handleCurrentSessionMessages(fileids!, msgid)
-            
-
-
-
-        
-
-
-
     }
 
 
