@@ -130,7 +130,7 @@ def download_pdf(url, filename):
     
 
     if response.status_code == 200:
-        # Open the file in binary write mode and write the response content (PDF data) to it
+ 
         if not os.path.exists(filename):
             
             with open(filename, 'wb') as file:
