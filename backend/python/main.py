@@ -107,7 +107,7 @@ def chat_pdf_history(pdf_docs_path,question,chathistory):
     retriever_chain = create_history_aware_retriever(llm, retriever, prompt)
         
     # llm = ChatOpenAI(api_key=openaikey)
-    
+    # get another apikey from open ai
     prompt = ChatPromptTemplate.from_messages([
       ("system", "Answer the user's questions based on the below context:\n\n{context}"),
       MessagesPlaceholder(variable_name="chat_history"),
