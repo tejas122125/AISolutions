@@ -207,7 +207,7 @@ def getlink():
     
     
 
-
+#  here we want to store vectore only once per session according to the current session optimization
 
 if __name__ == '__main__':
     app.run(debug=True,port=5000)
