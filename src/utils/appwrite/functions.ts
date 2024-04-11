@@ -1,12 +1,12 @@
 
 import { Client, Databases, Storage } from "appwrite";
 
- const client = new Client()
+const client = new Client()
     .setEndpoint('https://cloud.appwrite.io/v1')
     .setProject('660e8a4baeaf25149b31');
 
- const storage = new Storage(client);
- const databases = new Databases(client);
+const storage = new Storage(client);
+const databases = new Databases(client);
 
 // import {databases} from "./config"
 
@@ -18,7 +18,7 @@ import { ID } from "appwrite"
 export const uploadPdf = async (files: File[]): Promise<string[] | undefined> => {
     let fileids = [];
     for (let i = 0; i < files.length; i++) {
-        
+
         try {
             const response = await storage.createFile(
                 '660e8aa1521417614a44',//bucket id
@@ -29,7 +29,7 @@ export const uploadPdf = async (files: File[]): Promise<string[] | undefined> =>
         } catch (error: any) {
             console.log(error)
         }
-       
+
     }
 
     return fileids
@@ -45,7 +45,7 @@ export const getDownloadLink = (id: string) => {
 
 // getDownloadLink("661195a4cc490261d2b1")
 
-export const uploadChatWithPdf = async (token:string, msgid:string, msgname:string, fileids:string[]) => {
+export const uploadChatWithPdf = async (token: string, msgid: string, msgname: string, fileids: string[]) => {
     // const uri = import.meta.env.VITE_APP_MONGOSTRING;
 
     try {
@@ -61,7 +61,7 @@ export const uploadChatWithPdf = async (token:string, msgid:string, msgname:stri
             'aisolution',
             'chatwithpdf',
             ID.unique(),
-            
+
             document
         );
         return result.$id
@@ -74,9 +74,9 @@ export const uploadChatWithPdf = async (token:string, msgid:string, msgname:stri
 
 }
 
-export const getChatWithPdfMessages = async (token:string,messageid:string) => {
-let human=[];
-let ai =[];
+export const getChatWithPdfMessages = async (token: string, messageid: string) => {
+    let human = [];
+    let ai = [];
     // const uri = import.meta.env.VITE_APP_MONGOSTRING;
     // const uri  =  process.env.VITE_APP_MONGOSTRING;
     try {
@@ -84,28 +84,28 @@ let ai =[];
             'aisolution',
             'chatwithpdf',
             [
-              
-          
+
+
             ]
         );
-        for (let i =0; i<document.documents.length;i++){
-            if(document.documents[i].token === token && document.documents[i].messageid === messageid){
+        for (let i = 0; i < document.documents.length; i++) {
+            if (document.documents[i].token === token && document.documents[i].messageid === messageid) {
                 human = document.documents[i].human;
                 ai = document.documents[i].ai;
 
             }
 
         }
-        
+
         // const human = document.documents!.human; 
         // const ai = document.documents.!.ai;
         // return  [human, ai];
-        
+
     } catch (error) {
         console.log(error)
-        
+
     }
-    return [human,ai];
+    return [human, ai];
     // console.log(human)
 }
 
@@ -114,61 +114,84 @@ let ai =[];
 
 
 
-export const getAllChatWithPdf = async (token:string)=>{
-let messageid=[]
-let messagename=[]
+export const getAllChatWithPdf = async (token: string) => {
+    let messageid = []
+    let messagename = []
 
     try {
         const document = await databases.listDocuments(
             'aisolution',
             'chatwithpdf',
             [
-              
-          
+
+
             ]
         );
 
-        for (let i =0; i<document.documents.length;i++){
-            if(document.documents[i].token === token ){
+        for (let i = 0; i < document.documents.length; i++) {
+            if (document.documents[i].token === token) {
                 messageid.push(document.documents[i].messageid);
-                 messagename.push(document.documents[i].messagename);
+                messagename.push(document.documents[i].messagename);
 
             }
 
         }
-       
-       
+
+
         // console.log('Array from document:', human);
     } catch (error) {
         console.error('Error occurred:', error);
-    } 
-return [messageid,messagename]
+    }
+    return [messageid, messagename]
 }
 
 
-export const getFileIds = async (token:string,messageid:string):Promise<string[]> =>{
-    let fileid =[]
+export const getFileIds = async (token: string, messageid: string): Promise<string[]> => {
+    let fileid = []
     try {
+
         const document = await databases.listDocuments(
             'aisolution',
             'chatwithpdf',
             [
-              
-          
+
+
             ]
         );
 
-        for (let i =0; i<document.documents.length;i++){
-            if(document.documents[i].token === token && document.documents[i].messageid === messageid){
+        for (let i = 0; i < document.documents.length; i++) {
+            if (document.documents[i].token === token && document.documents[i].messageid === messageid) {
                 fileid = document.documents[i].fileid;
 
             }
 
         }
-       
+
     } catch (error) {
         console.log(error)
     }
     return fileid;
-// console.log(fileid)
+    // console.log(fileid)
 }
+
+
+
+const updateChat = async()=>{
+    try {
+
+        const document = await databases.updateDocument(
+            'aisolution',
+            'chatwithpdf',
+            "6614d27a5d8736c4d9aa",
+            {
+                "ai":["tejasweee"]
+            }
+        );
+        console.log(document)
+
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+updateChat()
