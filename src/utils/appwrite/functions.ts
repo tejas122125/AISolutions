@@ -176,22 +176,24 @@ export const getFileIds = async (token: string, messageid: string): Promise<stri
 
 
 
-const updateChat = async()=>{
+const updateChat = async(documentid : string,aichat:string[],humanchat:string[])=>{
+    
+    const data ={
+        "human":humanchat,
+        "ai":aichat
+    }
+    
     try {
-
         const document = await databases.updateDocument(
             'aisolution',
             'chatwithpdf',
-            "6614d27a5d8736c4d9aa",
-            {
-                "ai":["tejasweee"]
-            }
+            documentid,
+            data
         );
-        console.log(document)
+        // console.log(document)
 
     } catch (error) {
         console.log(error)
     }
 }
 
-updateChat()
