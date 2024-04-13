@@ -120,7 +120,7 @@ const [count , setcount] =useState(0)
             console.log(msg)
             sethuman(msg[0])
             setai(msg[1])
-            //change in ui how to set ai and human messages
+     
             setCurrentMessages(true)
         } catch (error) {
             console.log(error)
