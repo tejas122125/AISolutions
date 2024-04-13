@@ -138,7 +138,7 @@ const [count , setcount] =useState(0)
   
     // useBeforeunload(true ? (event:any) => {
     //     console.log("reloasededededededed")
-    //     return event.preventDefault()} : null);
+   
     
     useEffect(() => {
     
