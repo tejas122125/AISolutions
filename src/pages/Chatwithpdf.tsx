@@ -105,7 +105,7 @@ const [count , setcount] =useState(0)
             const response = await axios.post("http://127.0.0.1:5000/uploadpdffiles", data)
             console.log("tejasweebackend",response)
             if (response.data) {
-                //uploaded and downloaded file in backend
+          
                 setDownloaded(true)
             }
 
