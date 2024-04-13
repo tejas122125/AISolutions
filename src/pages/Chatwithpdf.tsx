@@ -1,4 +1,5 @@
 import React, { FormEventHandler, useEffect, useState } from 'react'
+// import { useBeforeunload } from 'react-beforeunload';
 import { SquarePlus } from 'lucide-react';
 import axios from 'axios';
 import { Button } from "@/components/ui/button"
@@ -134,11 +135,14 @@ const [count , setcount] =useState(0)
         handleCurrentSessionMessages(fileids, currssid)
 
     }
-
-
-    //dfkiufdheuifhufrguyefdgeuyfdveuyf
+  
+    // useBeforeunload(true ? (event:any) => {
+    //     console.log("reloasededededededed")
+    //     return event.preventDefault()} : null);
+    
     useEffect(() => {
-
+    
+          
         if (previousSession && messageids.length >0){
             setCurrentSessionId(messageids[messageids.length - 1])
             console.log("sid",currentSessionId)
@@ -151,17 +155,11 @@ const [count , setcount] =useState(0)
 
         }
 
+
         if (count == 0){
             getting(token)
         }
-
-        // console.log("first")
-        // if (previousSession) {
-        //     console.log("thitrd")
-        //     setCurrentSessionId(messageids[-1])
-        //     // get all file ids from thje tokenn and messageids
-        //     getids(token, currentSessionId)
-        // }
+        
     }, [messageids])
 
 
