@@ -69,7 +69,7 @@ const Chatwithcsv = () => {
             const data = XLSX.utils.sheet_to_json(worksheet);
             console.log(data)
             setViewData(true)
-            setExcelData(data.slice(0, 10));
+            setExcelData(data);
         }
     }
 
@@ -142,48 +142,55 @@ const Chatwithcsv = () => {
             }
 
             {viewdata && <div className='w-screen h-screen backdrop-blur-md bg-white/10 backdrop-brightness-50 absolute z-10 top-0 left-0 flex flex-col items-center justify-center '>
-         
-                    <div className='bg-purple-400 w-3/4
-                    h-3/4 overflow-scroll p-2'>
-                
-                        {excelData ? (
-                            <div className='w-full p-2 bg-green-300' >
-                                <table className='p-2 bg-blue-400 w-full rounded-md'>
 
-                                    <thead className=' rounded-md '>
-                                        <tr>
-                                            {Object.keys(excelData[0]).map((key,index)=>{
-                                                if(index %2 == 0 ){
-                                                    return  <th className='bg-slate-200 p-2  ' key={key}>{key}</th>
+                <div className='bg-purple-400 w-3/4
+                    h-3/4  p-2  '>
+
+                    {excelData ? (
+                        <div className=' h-full overflow-y-scroll'>
+                            <table className='p-2 bg-blue-400 w-full rounded-md  h-full '>
+
+                                <thead className=' rounded-md '>
+                                    <tr>
+                                        {Object.keys(excelData[0]).map((key, index) => {
+                                            if (index % 2 == 0) {
+                                                return <th className='bg-slate-200 p-2  ' key={key}>{key}</th>
+                                            }
+                                            else {
+                                                return <th className='bg-slate-50 p-2 ' key={key}>{key}</th>
+                                            }
+
+                                        })}
+                                    </tr>
+                                </thead>
+
+                                <tbody className='overflow-scroll '>
+                                    {excelData.map((individualExcelData, index) => (
+                                        <tr key={index}>
+                                            {Object.keys(individualExcelData).map((key, index) => {
+                                                console.log(individualExcelData[key])
+                                                if (index % 2 == 0) {
+                                                    return <td className='p-1 text-center bg-blue-200' key={key}>{individualExcelData[key]}</td>
                                                 }
-                                                else{
-                                                    return  <th  className='bg-slate-400 p-2 ' key={key}>{key}</th>
+                                                else {
+                                                    return <td className='p-1 text-center bg-blue-300' key={key}>{individualExcelData[key]}</td>
                                                 }
 
-                                            })}
+                                            }
+
+                                            )}
                                         </tr>
-                                    </thead>
+                                    ))}
+                                </tbody>
 
-                                    <tbody>
-                                        {excelData.map((individualExcelData, index) => (
-                                            <tr key={index}>
-                                                {Object.keys(individualExcelData).map((key,index) => {
-                                                    if
-return  <td key={key}>{individualExcelData[key]}</td>
-                                                }
-                                                   
-                                                )}
-                                            </tr>
-                                        ))}
-                                    </tbody>
-
-                                </table>
+                            </table>
                             </div>
-                        ) : (
-                            <div>No File is uploaded yet!</div>
-                        )}
-               
-                    </div>
+                  
+                    ) : (
+                        <div>No File is uploaded yet!</div>
+                    )}
+
+                </div>
 
             </div>
 
