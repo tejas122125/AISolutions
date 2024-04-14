@@ -68,6 +68,7 @@ const Chatwithcsv = () => {
             const worksheet = workbook.Sheets[worksheetName];
             const data = XLSX.utils.sheet_to_json(worksheet);
             console.log(data)
+            setViewData(true)
             setExcelData(data.slice(0, 10));
         }
     }
@@ -140,43 +141,50 @@ const Chatwithcsv = () => {
             </div>
             }
 
-            {viewdata && <div className='w-screen h-screen backdrop-blur-md bg-white/10 backdrop-brightness-50 absolute z-10 top-0 left-0 flex flex-col items-center justify-center'>
-                <Card className='w-3/4 h-1/2'>
-                    <CardHeader>
-                        <CardTitle className='text-xl text-center text'> Create New Chat</CardTitle>
+            {viewdata && <div className='w-screen h-screen backdrop-blur-md bg-white/10 backdrop-brightness-50 absolute z-10 top-0 left-0 flex flex-col items-center justify-center '>
+         
+                    <div className='bg-purple-400 w-3/4
+                    h-3/4 overflow-scroll p-2'>
+                
+                        {excelData ? (
+                            <div className='w-full p-2 bg-green-300' >
+                                <table className='p-2 bg-blue-400 w-full rounded-md'>
 
-                    </CardHeader>
-                    <CardContent className='bg-purple-800 p-2 '>
-                    {excelData ? (
-                    <div className="table-responsive">
-                        <table className="table">
+                                    <thead className=' rounded-md '>
+                                        <tr>
+                                            {Object.keys(excelData[0]).map((key,index)=>{
+                                                if(index %2 == 0 ){
+                                                    return  <th className='bg-slate-200 p-2  ' key={key}>{key}</th>
+                                                }
+                                                else{
+                                                    return  <th  className='bg-slate-400 p-2 ' key={key}>{key}</th>
+                                                }
 
-                            <thead>
-                                <tr>
-                                    {Object.keys(excelData[0]).map((key) => (
-                                        <th key={key}>{key}</th>
-                                    ))}
-                                </tr>
-                            </thead>
+                                            })}
+                                        </tr>
+                                    </thead>
 
-                            <tbody>
-                                {excelData.map((individualExcelData, index) => (
-                                    <tr key={index}>
-                                        {Object.keys(individualExcelData).map((key) => (
-                                            <td key={key}>{individualExcelData[key]}</td>
+                                    <tbody>
+                                        {excelData.map((individualExcelData, index) => (
+                                            <tr key={index}>
+                                                {Object.keys(individualExcelData).map((key,index) => {
+                                                    if
+return  <td key={key}>{individualExcelData[key]}</td>
+                                                }
+                                                   
+                                                )}
+                                            </tr>
                                         ))}
-                                    </tr>
-                                ))}
-                            </tbody>
+                                    </tbody>
 
-                        </table>
+                                </table>
+                            </div>
+                        ) : (
+                            <div>No File is uploaded yet!</div>
+                        )}
+               
                     </div>
-                ) : (
-                    <div>No File is uploaded yet!</div>
-                )}
-                    </CardContent>
 
-                </Card>
             </div>
 
             }
