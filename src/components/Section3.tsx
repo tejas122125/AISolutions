@@ -66,8 +66,9 @@ const Section3 = () => {
                 <div className='flex flex-col justify-center items-center gap-4'>
                     <h3 className='text-3xl '>Document Analysis</h3>
                     <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Deleniti nesciunt magnam laborum et, velit quas odit, nemo possimus inventore aperiam distinctio.</p>
+                <a href="/chatwithcsv">
                     <Button className='bg-green-600 dark:text-white text-blue-900  hover:bg-green-300'> Learb More</Button>
-
+                    </a>
                 </div>
             </div>}
             {section === 'Text' && <div className=' mt-14 content w-full flex flex-col md:flex-row gap-4 justify-center items-center ' >

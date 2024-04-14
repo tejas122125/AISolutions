@@ -5,6 +5,7 @@ import { Route, Routes } from "react-router-dom";
 import GenerativeAI from "./pages/GenerativeAI";
 import Text from "./pages/Text";
 import Chatwithpdf from "./pages/Chatwithpdf"
+import Chatwithcsv from "./pages/Chatwithcsv";
 
 
 
@@ -16,6 +17,8 @@ function App() {
       <Route path="/GenerativeAI" element={<GenerativeAI/>}/>   
       <Route path="/Text" element={<Text/>}/>   
       <Route path="/chatwithhpdf" element={<Chatwithpdf/>}/>   
+      <Route path="/chatwithcsv" element={<Chatwithcsv/>}/>   
+
 
 
 
