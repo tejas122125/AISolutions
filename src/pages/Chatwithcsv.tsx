@@ -58,6 +58,63 @@ const Chatwithcsv = () => {
       )}
     </form>
 
+    {newchat && <div className='w-screen h-screen backdrop-blur-md bg-white/10 backdrop-brightness-50 absolute z-10 top-0 left-0 flex flex-col items-center justify-center'>
+                    <Card className="w-[350px]">
+                        <CardHeader>
+                            <CardTitle className='text-xl text-center text'> Create New Chat</CardTitle>
+
+                        </CardHeader>
+                        <CardContent>
+                            <Form {...form}>
+                                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+                                    <FormField
+                                        control={form.control}
+                                        name="chatname"
+                                        render={({ field }) => (
+                                            <FormItem>
+                                                <FormLabel>Chatname</FormLabel>
+                                                <FormControl>
+                                                    <Input placeholder="Enter the name of chat" {...field} required />
+                                                </FormControl>
+
+                                                <FormMessage />
+                                            </FormItem>
+                                        )}
+                                    />
+                                    <FormField
+                                        control={form.control}
+                                        name="pdffiles"
+                                        render={({ field }) => (
+                                            <FormItem>
+                                                <FormLabel>Pdf-Files</FormLabel>
+                                                <FormControl>
+                                                    <Input placeholder="Select one or more pdfs" {...field} type='file' required multiple onChange={(e: any) => {
+                                                        pdffile = e.target.files
+                                                    }} />
+                                                </FormControl>
+                                                <FormDescription>
+                                                    Select one or more pdf documents
+                                                </FormDescription>
+                                                <FormMessage />
+                                            </FormItem>
+                                        )}
+                                    />
+                                    <CardFooter className="flex justify-between">
+                                        <Button variant="outline" onClick={() => {
+                                            setNewChat(false)
+                                        }}>Cancel</Button>
+                                        <Button type='submit'  >Submit</Button>
+
+                                    </CardFooter>
+                                </form>
+                            </Form>
+                        </CardContent>
+
+                    </Card>
+                </div>
+                }
+
+
     {/* view data */}
     <div className="viewer">
       {excelData?(
