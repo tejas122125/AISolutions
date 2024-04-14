@@ -25,57 +25,60 @@ import {
 
 const Chatwithcsv = () => {
     const form = useForm()
+    const [viewdata, setViewData] = useState<boolean>(false)
 
+    const [excelFile, setExcelFile] = useState<string | ArrayBuffer | null>(null);
+    const [typeError, setTypeError] = useState<string | null>(null);
+    const [newchat, setNewChat] = useState<boolean>(true)
 
-    const [excelFile, setExcelFile] = useState<string|ArrayBuffer|null>(null);
-    const [typeError, setTypeError] = useState<string|null>(null);
-    const [newchat,setNewChat] = useState<boolean>(false)
-  
     // submit state
-    const [excelData, setExcelData] = useState<unknown[]|null|string[]>(null);
-  
+    const [excelData, setExcelData] = useState<unknown[] | null>(null);
+
     // onchange event
-    const handleFile=(e:any)=>{
-      let fileTypes = ['application/vnd.ms-excel','application/vnd.openxmlformats-officedocument.spreadsheetml.sheet','text/csv'];
-      let selectedFile = e.target.files[0];
-      if(selectedFile){
-        if(selectedFile&&fileTypes.includes(selectedFile.type)){
-          setTypeError(null);
-          let reader = new FileReader();
-          reader.readAsArrayBuffer(selectedFile);
-          reader.onload=(e)=>{
-            setExcelFile(e.target!.result);
-          }
+    const handleFile = (e: any) => {
+        let fileTypes = ['application/vnd.ms-excel', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'text/csv'];
+        let selectedFile = e.target.files[0];
+        console.log(selectedFile)
+        if (selectedFile) {
+            if (selectedFile && fileTypes.includes(selectedFile.type)) {
+                setTypeError(null);
+                let reader = new FileReader();
+                reader.readAsArrayBuffer(selectedFile);
+                reader.onload = (e) => {
+                    setExcelFile(e.target.result);
+                }
+            }
+            else {
+                setTypeError('Please select only excel file types');
+                setExcelFile(null);
+            }
         }
-        else{
-          setTypeError('Please select only excel file types');
-          setExcelFile(null);
+        else {
+            console.log('Please select your file');
         }
-      }
-      else{
-        console.log('Please select your file');
-      }
     }
-    
+
     // submit event
-    const handleFileSubmit=(e:any)=>{
-      e.preventDefault();
-      if(excelFile!==null){
-        const workbook = XLSX.read(excelFile,{type: 'buffer'});
-        const worksheetName = workbook.SheetNames[0];
-        const worksheet = workbook.Sheets[worksheetName];
-        const data = XLSX.utils.sheet_to_json(worksheet);
-        setExcelData(data.slice(0,10));
-      }
+    const handleFileSubmit = (e: any) => {
+        setNewChat(false)
+
+        if (excelFile !== null) {
+            const workbook = XLSX.read(excelFile, { type: 'buffer' });
+            const worksheetName = workbook.SheetNames[0];
+            const worksheet = workbook.Sheets[worksheetName];
+            const data = XLSX.utils.sheet_to_json(worksheet);
+            console.log(data)
+            setExcelData(data.slice(0, 10));
+        }
     }
-  
-  return (
-    <div className="wrapper">
 
-    <h3>Upload & View Excel Sheets</h3>
+    return (
+        <div className="wrapper">
 
-    {/* form */}
-    {/* <form className="form-group custom-form" onSubmit={handleFileSubmit}>
+            <h3>Upload & View Excel Sheets</h3>
+
+            {/* form */}
+            {/* <form className="form-group custom-form" onSubmit={handleFileSubmit}>
       <input type="file" className="form-control" required onChange={handleFile} />
       <button type="submit" className="btn btn-success btn-md">UPLOAD</button>
       {typeError&&(
@@ -83,94 +86,135 @@ const Chatwithcsv = () => {
       )}
     </form> */}
 
-    {newchat && <div className='w-screen h-screen backdrop-blur-md bg-white/10 backdrop-brightness-50 absolute z-10 top-0 left-0 flex flex-col items-center justify-center'>
-                    <Card className="w-[350px]">
-                        <CardHeader>
-                            <CardTitle className='text-xl text-center text'> Create New Chat</CardTitle>
+            {newchat && <div className='w-screen h-screen backdrop-blur-md bg-white/10 backdrop-brightness-50 absolute z-10 top-0 left-0 flex flex-col items-center justify-center'>
+                <Card className="w-[350px]">
+                    <CardHeader>
+                        <CardTitle className='text-xl text-center text'> Create New Chat</CardTitle>
 
-                        </CardHeader>
-                        <CardContent>
-                            <Form {...form}>
-                                <form onSubmit={form.handleSubmit(handleFileSubmit)} className="space-y-8">
-                                    <FormField
-                                        control={form.control}
-                                        name="chatname"
-                                        render={({ field }) => (
-                                            <FormItem>
-                                                <FormLabel>Chatname</FormLabel>
-                                                <FormControl>
-                                                    <Input placeholder="Enter the name of chat" {...field} required />
-                                                </FormControl>
+                    </CardHeader>
+                    <CardContent>
+                        <Form {...form}>
+                            <form onSubmit={form.handleSubmit(handleFileSubmit)} className="space-y-8">
+                                <FormField
+                                    control={form.control}
+                                    name="chatname"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel>Chatname</FormLabel>
+                                            <FormControl>
+                                                <Input placeholder="Enter the name of chat" {...field} required />
+                                            </FormControl>
 
-                                                <FormMessage />
-                                            </FormItem>
-                                        )}
-                                    />
-                                    <FormField
-                                        control={form.control}
-                                        name="csvfile"
-                                        render={({ field }) => (
-                                            <FormItem>
-                                                <FormLabel>Pdf-Files</FormLabel>
-                                                <FormControl>
-                                                    <Input placeholder="Select Only CSV file" {...field} type='file' required  onChange={handleFile} />
-                                                </FormControl>
-                                                <FormDescription>
-                                                    Select one or more pdf documents
-                                                </FormDescription>
-                                                <FormMessage />
-                                            </FormItem>
-                                        )}
-                                    />
-                                    <CardFooter className="flex justify-between">
-                                        <Button variant="outline" onClick={() => {
-                                            setNewChat(false)
-                                        }}>Cancel</Button>
-                                        <Button type='submit'  >Submit</Button>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+                                <FormField
+                                    control={form.control}
+                                    name="csvfile"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel>Pdf-Files</FormLabel>
+                                            <FormControl>
+                                                <Input placeholder="Select Only CSV file" {...field} type='file' required onChange={handleFile} />
+                                            </FormControl>
+                                            <FormDescription>
+                                                Select one or more pdf documents
+                                            </FormDescription>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+                                <CardFooter className="flex justify-between">
+                                    <Button variant="outline" onClick={() => {
+                                        setNewChat(false)
+                                    }}>Cancel</Button>
+                                    <Button type='submit'  >Submit</Button>
 
-                                    </CardFooter>
-                                </form>
-                            </Form>
-                        </CardContent>
+                                </CardFooter>
+                            </form>
+                        </Form>
+                    </CardContent>
 
-                    </Card>
-                </div>
-                }
+                </Card>
+            </div>
+            }
+
+            {viewdata && <div className='w-screen h-screen backdrop-blur-md bg-white/10 backdrop-brightness-50 absolute z-10 top-0 left-0 flex flex-col items-center justify-center'>
+                <Card className='w-3/4 h-1/2'>
+                    <CardHeader>
+                        <CardTitle className='text-xl text-center text'> Create New Chat</CardTitle>
+
+                    </CardHeader>
+                    <CardContent className='bg-purple-800 p-2 '>
+                    {excelData ? (
+                    <div className="table-responsive">
+                        <table className="table">
+
+                            <thead>
+                                <tr>
+                                    {Object.keys(excelData[0]).map((key) => (
+                                        <th key={key}>{key}</th>
+                                    ))}
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                {excelData.map((individualExcelData, index) => (
+                                    <tr key={index}>
+                                        {Object.keys(individualExcelData).map((key) => (
+                                            <td key={key}>{individualExcelData[key]}</td>
+                                        ))}
+                                    </tr>
+                                ))}
+                            </tbody>
+
+                        </table>
+                    </div>
+                ) : (
+                    <div>No File is uploaded yet!</div>
+                )}
+                    </CardContent>
+
+                </Card>
+            </div>
+
+            }
 
 
-    {/* view data */}
-    <div className="viewer">
-      {excelData?(
-        <div className="table-responsive">
-          <table className="table">
+            {/* view data */}
+            <div className="viewer">
+                {excelData ? (
+                    <div className="table-responsive">
+                        <table className="table">
 
-            <thead>
-              <tr>
-                {Object.keys(excelData[0]).map((key)=>(
-                  <th key={key}>{key}</th>
-                ))}
-              </tr>
-            </thead>
+                            <thead>
+                                <tr>
+                                    {Object.keys(excelData[0]).map((key) => (
+                                        <th key={key}>{key}</th>
+                                    ))}
+                                </tr>
+                            </thead>
 
-            <tbody>
-              {excelData.map((individualExcelData, index)=>(
-                <tr key={index}>
-                  {Object.keys(individualExcelData).map((key)=>(
-                    <td key={key}>{individualExcelData[key]}</td>
-                  ))}
-                </tr>
-              ))}
-            </tbody>
+                            <tbody>
+                                {excelData.map((individualExcelData, index) => (
+                                    <tr key={index}>
+                                        {Object.keys(individualExcelData).map((key) => (
+                                            <td key={key}>{individualExcelData[key]}</td>
+                                        ))}
+                                    </tr>
+                                ))}
+                            </tbody>
 
-          </table>
+                        </table>
+                    </div>
+                ) : (
+                    <div>No File is uploaded yet!</div>
+                )}
+            </div>
+
         </div>
-      ):(
-        <div>No File is uploaded yet!</div>
-      )}
-    </div>
-
-  </div>
-  )
+    )
 }
 
 export default Chatwithcsv
