@@ -3,7 +3,7 @@ import * as XLSX from 'xlsx';
 import { useState } from "react";
 import { useForm } from "react-hook-form"
 import { Button } from "@/components/ui/button"
-
+import fs from 'fs';
 import {
     Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle,
 } from "@/components/ui/card"
@@ -58,16 +58,26 @@ const Chatwithcsv = () => {
         }
     }
 
-    // submit event
+    
     const handleFileSubmit = (e: any) => {
         setNewChat(false)
+        // try {
+        //     const buffer = fs.readFileSync("../Player.csv");
+        //     const blob = new Blob([buffer], { type: 'text/plain' }); // Adjust type based on file
+        //     return blob;
+        //   } catch (error) {
+        //     console.error("Error creating Blob:", error);
+        //     return null;
+        //   }
+        
+        
 
         if (excelFile !== null) {
             const workbook = XLSX.read(excelFile, { type: 'buffer' });
             const worksheetName = workbook.SheetNames[0];
             const worksheet = workbook.Sheets[worksheetName];
             const data = XLSX.utils.sheet_to_json(worksheet);
-            console.log(data)
+            // console.log(data)
             setViewData(true)
             setExcelData(data);
         }
@@ -140,17 +150,17 @@ const Chatwithcsv = () => {
                 </Card>
             </div>
             }
-
+ {/* view data */}
             {viewdata && <div className='w-screen h-screen backdrop-blur-md bg-white/10 backdrop-brightness-50 absolute z-10 top-0 left-0 flex flex-col items-center justify-center '>
 
-                <div className='bg-purple-400 w-3/4
+                <div className=' w-3/4
                     h-3/4  p-2  '>
 
                     {excelData ? (
-                        <div className=' h-full overflow-y-scroll'>
-                            <table className='p-2 bg-blue-400 w-full rounded-md  h-full '>
+                        <div className=' h-full overflow-y-scroll rounded-md border-4 border-blue-500'>
+                            <table className='p-2 w-full rounded-md  h-full '>
 
-                                <thead className=' rounded-md '>
+                                <thead className=' sticky top-0 rounded-md z-10'>
                                     <tr>
                                         {Object.keys(excelData[0]).map((key, index) => {
                                             if (index % 2 == 0) {
@@ -164,7 +174,7 @@ const Chatwithcsv = () => {
                                     </tr>
                                 </thead>
 
-                                <tbody className='overflow-scroll '>
+                                <tbody className=' '>
                                     {excelData.map((individualExcelData, index) => (
                                         <tr key={index}>
                                             {Object.keys(individualExcelData).map((key, index) => {
@@ -197,36 +207,8 @@ const Chatwithcsv = () => {
             }
 
 
-            {/* view data */}
-            <div className="viewer">
-                {excelData ? (
-                    <div className="table-responsive">
-                        <table className="table">
-
-                            <thead>
-                                <tr>
-                                    {Object.keys(excelData[0]).map((key) => (
-                                        <th key={key}>{key}</th>
-                                    ))}
-                                </tr>
-                            </thead>
-
-                            <tbody>
-                                {excelData.map((individualExcelData, index) => (
-                                    <tr key={index}>
-                                        {Object.keys(individualExcelData).map((key) => (
-                                            <td key={key}>{individualExcelData[key]}</td>
-                                        ))}
-                                    </tr>
-                                ))}
-                            </tbody>
-
-                        </table>
-                    </div>
-                ) : (
-                    <div>No File is uploaded yet!</div>
-                )}
-            </div>
+           
+           
 
         </div>
     )
