@@ -86,14 +86,7 @@ const Chatwithcsv = () => {
 
             <h3>Upload & View Excel Sheets</h3>
 
-            {/* form */}
-            {/* <form className="form-group custom-form" onSubmit={handleFileSubmit}>
-      <input type="file" className="form-control" required onChange={handleFile} />
-      <button type="submit" className="btn btn-success btn-md">UPLOAD</button>
-      {typeError&&(
-        <div className="alert alert-danger" role="alert">{typeError}</div>
-      )}
-    </form> */}
+           
 
             {newchat && <div className='w-screen h-screen backdrop-blur-md bg-white/10 backdrop-brightness-50 absolute z-10 top-0 left-0 flex flex-col items-center justify-center'>
                 <Card className="w-[350px]">
