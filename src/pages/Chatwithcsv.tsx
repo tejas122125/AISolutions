@@ -60,16 +60,9 @@ const Chatwithcsv = () => {
 
     const handleFileSubmit = (e: any) => {
         setNewChat(false)
-        // try {
-        //     const buffer = fs.readFileSync("../Player.csv");
-        //     const blob = new Blob([buffer], { type: 'text/plain' }); // Adjust type based on file
-        //     return blob;
-        //   } catch (error) {
-        //     console.error("Error creating Blob:", error);
-        //     return null;
-        //   }
-        
-        
+
+
+
 
         if (excelFile !== null) {
             const workbook = XLSX.read(excelFile, { type: 'buffer' });
@@ -86,7 +79,7 @@ const Chatwithcsv = () => {
 
             <h3>Upload & View Excel Sheets</h3>
 
-           
+
 
             {newchat && <div className='w-screen h-screen backdrop-blur-md bg-white/10 backdrop-brightness-50 absolute z-10 top-0 left-0 flex flex-col items-center justify-center'>
                 <Card className="w-[350px]">
@@ -141,7 +134,7 @@ const Chatwithcsv = () => {
                 </Card>
             </div>
             }
- {/* view data */}
+            {/* view data */}
             {viewdata && <div className='w-screen h-screen backdrop-blur-md bg-white/10 backdrop-brightness-50 absolute z-10 top-0 left-0 flex flex-col items-center justify-center '>
 
                 <div className=' w-3/4
@@ -185,8 +178,8 @@ const Chatwithcsv = () => {
                                 </tbody>
 
                             </table>
-                            </div>
-                  
+                        </div>
+
                     ) : (
                         <div>No File is uploaded yet!</div>
                     )}
@@ -198,8 +191,8 @@ const Chatwithcsv = () => {
             }
 
 
-           
-           
+
+
 
         </div>
     )
