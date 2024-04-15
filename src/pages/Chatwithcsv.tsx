@@ -75,7 +75,7 @@ const Chatwithcsv = () => {
     }
 
     return (
-        <div className="wrapper">
+        <div>
 
             <h3>Upload & View Excel Sheets</h3>
 
