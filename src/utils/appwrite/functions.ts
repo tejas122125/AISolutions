@@ -245,3 +245,28 @@ export const getCsvDownloadLink = (id: string) => {
     // console.log(result)
     return result
 }
+
+
+export const uploadChatWithCsv = async (token: string, msgid: string, msgname: string, fileid: string) => {
+    // const uri = import.meta.env.VITE_APP_MONGOSTRING;
+
+    try {
+        const document = {
+            token: token,
+            messageid: msgid,
+            messagename: msgname,
+            fileid: fileid,
+            human: [],
+            ai: []
+        };
+        const result = await databases.createDocument(
+            'aisolution',
+            'chatwithcsv',
+            ID.unique(),
+            document
+        );
+        return result.$id
+    } catch (error) {
+        console.log(error)
+    }
+}
