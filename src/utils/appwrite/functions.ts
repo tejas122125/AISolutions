@@ -239,3 +239,9 @@ export const getCsvFileIds = async (token: string, messageid: string): Promise<s
     return fileid;
     // console.log(fileid)
 }
+
+export const getCsvDownloadLink = (id: string) => {
+    const result = storage.getFileView("661e68f25c8def076aa2", id);
+    // console.log(result)
+    return result
+}
