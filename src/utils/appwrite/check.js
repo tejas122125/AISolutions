@@ -1,6 +1,6 @@
 
 import { Client, Databases, Storage } from "appwrite";
-
+import { Query } from "appwrite";
  const client = new Client()
     .setEndpoint('https://cloud.appwrite.io/v1')
     .setProject('660e8a4baeaf25149b31');
@@ -34,4 +34,20 @@ const updateChat = async()=>{
     }
 }
 
-updateChat()
+// updateChat()
+
+
+const getimage64 = async() => {
+    try {
+        const docu = await databases.listDocuments(
+            'aisolution',
+            'testcollection',
+        );
+        console.log(docu.documents)
+        
+    } catch (error) {
+        console.log(error)
+    }
+
+}
+getimage64()

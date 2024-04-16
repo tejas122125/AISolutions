@@ -47,13 +47,13 @@ const Chatwithcsv = () => {
 
     // onchange event
 
-const dnld  =  async ()=>{
-    try {
-        
-    } catch (error) {
-        console.log(error)
+    const dnld = async () => {
+        try {
+
+        } catch (error) {
+            console.log(error)
+        }
     }
-}
 
 
     const handleFile = async (e: any) => {
@@ -107,13 +107,9 @@ const dnld  =  async ()=>{
 
     return (
         <div>
-           
-            <DownloadFile/>
-           
+
+            <DownloadFile />
             <h3>Upload & View Excel Sheets</h3>
-
-
-
             {newchat && <div className='w-screen h-screen backdrop-blur-md bg-white/10 backdrop-brightness-50 absolute z-10 top-0 left-0 flex flex-col items-center justify-center'>
                 <Card className="w-[350px]">
                     <CardHeader>

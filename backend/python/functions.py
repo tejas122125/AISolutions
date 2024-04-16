@@ -4,6 +4,24 @@ import secrets
 from PIL import Image
 import base64
 from datetime import datetime,timedelta
+from langchain.agents.agent_types import AgentType
+from langchain_experimental.agents import create_pandas_dataframe_agent
+from langchain_openai import ChatOpenAI
+from langchain import hub
+import os
+from langchain.agents import AgentExecutor, create_openai_tools_agent
+from langchain_experimental.tools import PythonREPLTool
+from langchain.agents import create_openai_functions_agent
+import pandas as pd
+from langchain_openai import OpenAI
+from langchain.prompts import PromptTemplate
+from langchain.chains import ConversationChain
+from langchain.memory import ConversationBufferWindowMemory
+from langchain_community.llms import HuggingFaceEndpoint
+
+
+
+
 def download_pdf(url, filename):
     # Send a GET request to the URL
     response = requests.get(url)
@@ -93,4 +111,7 @@ def get_file(filepath):
     base64_image = encode_image_as_base64(filepath)
     print(base64_image)
     # return base64_image
-get_file("csv/player.png")    
+# get_file("csv/player.png")    
+
+def visualizecsv (question,filepath,imagename):
+    
