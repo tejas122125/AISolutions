@@ -54,3 +54,10 @@ def check_expiry(date):
     else: 
         return False
       
+
+
+
+def stringrun (code):
+    code = code
+    exec(code)
+    return True

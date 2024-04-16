@@ -1,9 +1,11 @@
 import React from 'react'
 import * as XLSX from 'xlsx';
+import DocViewer, { DocViewerRenderers } from "react-doc-viewer";
 import { useState } from "react";
 import { useForm } from "react-hook-form"
 import { Button } from "@/components/ui/button"
 import fs from 'fs';
+import { CSVReader } from 'react-papaparse';
 import {
     Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle,
 } from "@/components/ui/card"
@@ -21,6 +23,8 @@ import {
     FormLabel,
     FormMessage,
 } from "@/components/ui/form"
+import DownloadFile from '@/components/downloadfile';
+
 
 
 const Chatwithcsv = () => {
@@ -29,15 +33,42 @@ const Chatwithcsv = () => {
 
     const [excelFile, setExcelFile] = useState<string | ArrayBuffer | null>(null);
     const [typeError, setTypeError] = useState<string | null>(null);
-    const [newchat, setNewChat] = useState<boolean>(true)
-
+    const [newchat, setNewChat] = useState<boolean>(false)
     // submit state
     const [excelData, setExcelData] = useState<unknown[] | null>(null);
 
+    const docs = [
+        {
+            uri: "https://cloud.appwrite.io/v1/storage/buckets/660e8aa1521417614a44/files/661d72c884fc3d119c93/view?project=660e8a4baeaf25149b31&mode=admin"
+
+        },
+    ]
+
+
     // onchange event
-    const handleFile = (e: any) => {
+
+const dnld  =  async ()=>{
+    try {
+        
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+
+    const handleFile = async (e: any) => {
+        let blob;
+        try {
+            const res = await fetch("https://cloud.appwrite.io/v1/storage/buckets/660e8aa1521417614a44/files/661d72c884fc3d119c93/view?project=660e8a4baeaf25149b31&mode=admin")
+            blob = await res.blob()
+            console.log(blob)
+
+        } catch (error) {
+            console.log(error)
+        }
         let fileTypes = ['application/vnd.ms-excel', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'text/csv'];
-        let selectedFile = e.target.files[0];
+        // let selectedFile = e.target.files[0];
+        let selectedFile = blob;
         console.log(selectedFile)
         if (selectedFile) {
             if (selectedFile && fileTypes.includes(selectedFile.type)) {
@@ -76,7 +107,8 @@ const Chatwithcsv = () => {
 
     return (
         <div>
-
+            <DownloadFile/>
+           
             <h3>Upload & View Excel Sheets</h3>
 
 
