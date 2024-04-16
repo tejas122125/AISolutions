@@ -163,7 +163,7 @@ def helpcsv (question,filepath,imagename):
     
 #QUERY ABOUT CSV
 
-def querycsv(question,filepath):
+def chatcsv(question,filepath):
     openaikey = os.environ.get("OPENAI_API_KEY")
     llm = ChatOpenAI(model="gpt-3.5-turbo-1106", temperature=0,api_key=openaikey)
     pythontools = [PythonREPLTool()]

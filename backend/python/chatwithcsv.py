@@ -37,7 +37,7 @@
 
 
 from flask import Flask, jsonify,request,session
-from  functions import download_csv,helpcsv
+from  functions import download_csv,helpcsv,chatcsv
 
 app = Flask(__name__)
 
@@ -67,7 +67,9 @@ def visualizecsv ():
 def querycsv():
     question = request.json['question']
     fileid  = request.json['fileid']  
-    answer = chatcsv(question,fileid)
+    filepath = f'csv/{fileid}.csv'
+    answer = chatcsv(question= question,filepath=filepath)
+    return jsonify({"answer":answer})
     
     
 if __name__ == '__main__':

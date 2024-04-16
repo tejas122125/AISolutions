@@ -197,3 +197,45 @@ const updateChat = async(documentid : string,aichat:string[],humanchat:string[])
     }
 }
 
+export const uploadCsv = async (file:File): Promise<string | undefined> => {
+        try {
+            const response = await storage.createFile(
+                '661e68f25c8def076aa2',//bucket id
+                ID.unique(),
+                file
+            )
+            return response.$id
+            
+        } catch (error: any) {
+            console.log(error)
+        }
+}
+
+
+export const getCsvFileIds = async (token: string, messageid: string): Promise<string[]> => {
+    let fileid = []
+    try {
+
+        const document = await databases.listDocuments(
+            'aisolution',
+            'chatwithpdf',
+            [
+
+
+            ]
+        );
+
+        for (let i = 0; i < document.documents.length; i++) {
+            if (document.documents[i].token === token && document.documents[i].messageid === messageid) {
+                fileid = document.documents[i].fileid;
+
+            }
+
+        }
+
+    } catch (error) {
+        console.log(error)
+    }
+    return fileid;
+    // console.log(fileid)
+}
