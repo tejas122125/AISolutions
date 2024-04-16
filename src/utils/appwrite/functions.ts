@@ -270,3 +270,76 @@ export const uploadChatWithCsv = async (token: string, msgid: string, msgname: s
         console.log(error)
     }
 }
+
+
+export const getChatWithCsvMessages = async (token: string, messageid: string) => {
+    let human = [];
+    let ai = [];
+    // const uri = import.meta.env.VITE_APP_MONGOSTRING;
+    // const uri  =  process.env.VITE_APP_MONGOSTRING;
+    try {
+        const document = await databases.listDocuments(
+            'aisolution',
+            'chatwithpdf',
+            [
+
+
+            ]
+        );
+        for (let i = 0; i < document.documents.length; i++) {
+            if (document.documents[i].token === token && document.documents[i].messageid === messageid) {
+                human = document.documents[i].human;
+                ai = document.documents[i].ai;
+
+            }
+
+        }
+
+        // const human = document.documents!.human; 
+        // const ai = document.documents.!.ai;
+        // return  [human, ai];
+
+    } catch (error) {
+        console.log(error)
+
+    }
+    return [human, ai];
+    // console.log(human)
+}
+
+// getChatWithPdfMessages("monu","monu")
+
+
+
+
+export const getAllChatWithCsv = async (token: string) => {
+    let messageid = []
+    let messagename = []
+
+    try {
+        const document = await databases.listDocuments(
+            'aisolution',
+            'chatwithcsv',
+            [
+
+
+            ]
+        );
+
+        for (let i = 0; i < document.documents.length; i++) {
+            if (document.documents[i].token === token) {
+                messageid.push(document.documents[i].messageid);
+                messagename.push(document.documents[i].messagename);
+
+            }
+
+        }
+
+
+        // console.log('Array from document:', human);
+    } catch (error) {
+        console.error('Error occurred:', error);
+    }
+    return [messageid, messagename]
+}
+
