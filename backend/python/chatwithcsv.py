@@ -50,5 +50,7 @@ def visualizecsv ():
     base_64 = helpcsv(question=question,filepath=filepath,imagename=fileid)
     return jsonify({"imagesrc": base_64})
     
+if __name__ == '__main__':
+    app.run(debug=True,port=5000)
     
 
