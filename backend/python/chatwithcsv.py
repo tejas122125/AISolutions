@@ -29,5 +29,5 @@ res = storage.get_file(
     bucket_id="660e8aa1521417614a44",
     file_id="661d72c884fc3d119c93"
 )
-
+res = storage.create_file()
 print(res)

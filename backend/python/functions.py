@@ -1,7 +1,8 @@
 
 import requests
 import secrets
-
+from PIL import Image
+import base64
 from datetime import datetime,timedelta
 def download_pdf(url, filename):
     # Send a GET request to the URL
@@ -76,4 +77,18 @@ def download_csv(fileurl = 'https://cloud.appwrite.io/v1/storage/buckets/658da6e
             print(f"Failed to download CSV file. Status code: {response.status_code}")
 
 
-download_csv()
+# download_csv()
+def encode_image_as_base64(image_path):
+    with open(image_path, "rb") as img_file:
+        encoded_string = base64.b64encode(img_file.read()).decode('utf-8')
+    return encoded_string
+
+def get_file(filepath):
+    # Replace 'path/to/your/image.png' with the actual path to your PNG image fil
+
+    # Open the PNG image file
+    image = Image.open(filepath)
+
+    # Convert the image to a base64 string
+    base64_image = encode_image_as_base64(filepath)
+    return base64_image
