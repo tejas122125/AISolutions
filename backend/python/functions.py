@@ -115,14 +115,32 @@ def get_file(filepath):
 
 # configuratrion for visualizing csv
 
-pythontools = [PythonREPLTool()]
 from dotenv import load_dotenv
 load_dotenv()
 
-openaikey = os.environ.get("OPENAI_API_KEY")
-llm = ChatOpenAI(model="gpt-3.5-turbo-1106", temperature=0,api_key=openaikey)
 
 
 
 def visualizecsv (question,filepath,imagename):
-    
+    openaikey = os.environ.get("OPENAI_API_KEY")
+llm = ChatOpenAI(model="gpt-3.5-turbo-1106", temperature=0,api_key=openaikey)
+pythontools = [PythonREPLTool()]
+conversation_with_summary = ConversationChain(
+    llm=llm,    
+    memory=ConversationBufferWindowMemory(k=2),
+    verbose=True
+)
+
+prompt_visualize_csv = PromptTemplate.from_template(
+    "you are skillfull csv reader using pandas and pythons tools. GENERATE the necessary python code for the query {question} assuming name of file is {name} and to save the figure of plot  use the filename as {image}."
+)
+
+
+df = pd.read_csv(filepath)
+agent_pandas = create_pandas_dataframe_agent(
+    llm=llm,
+    df=df,
+    verbose=True,
+    agent_type=AgentType.OPENAI_FUNCTIONS,
+   
+)
