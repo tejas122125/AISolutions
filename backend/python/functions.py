@@ -75,7 +75,5 @@ def download_csv(fileurl = 'https://cloud.appwrite.io/v1/storage/buckets/658da6e
         else:
             print(f"Failed to download CSV file. Status code: {response.status_code}")
 
-    # Example usage:
- # Replace with the path where you want to save the file
 
 download_csv()
