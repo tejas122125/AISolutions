@@ -117,7 +117,7 @@ load_dotenv()
 
 
 
-def visualizecsv (question,filepath,imagename):
+def helpcsv (question,filepath,imagename):
     openaikey = os.environ.get("OPENAI_API_KEY")
     llm = ChatOpenAI(model="gpt-3.5-turbo-1106", temperature=0,api_key=openaikey)
     pythontools = [PythonREPLTool()]
@@ -149,7 +149,8 @@ def visualizecsv (question,filepath,imagename):
     print(res)
     stringrun(res)
     img = f"{imagepath}.png"
-    get_base_64(img)
+    base_64 = get_base_64(img)
+    return base_64
     
-visualizecsv(question="create a histogram plot of first column",filepath="csv/data.csv",imagename="sudeep")    
+# visualizecsv(question="create a histogram plot of first column",filepath="csv/data.csv",imagename="sudeep")    
     

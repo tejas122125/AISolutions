@@ -35,7 +35,7 @@
 
 
 from flask import Flask, jsonify,request,session
-from  functions import get_file,download_csv
+from  functions import download_csv,helpcsv
 
 app = Flask(__name__)
 
@@ -47,6 +47,8 @@ def visualizecsv ():
     link =request.json['downloadlink']
     filepath = f'csv/{fileid}.csv'
     download_csv(fileurl=link,filepath=filepath)
+    base_64 = helpcsv(question=question,filepath=filepath,imagename=fileid)
+    return jsonify({"imagesrc": base_64})
     
     
 
