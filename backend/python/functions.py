@@ -144,3 +144,6 @@ agent_pandas = create_pandas_dataframe_agent(
     agent_type=AgentType.OPENAI_FUNCTIONS,
    
 )
+agent = prompt_visualize_csv  | agent_pandas 
+response = agent.invoke({"question":"create a histogram plot of first column","name":"Player.csv","image":"player"})
+print (response["output"])
