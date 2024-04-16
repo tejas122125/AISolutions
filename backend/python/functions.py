@@ -1,4 +1,4 @@
-
+import io
 import requests
 import secrets
 from PIL import Image
@@ -85,10 +85,12 @@ def encode_image_as_base64(image_path):
 
 def get_file(filepath):
     # Replace 'path/to/your/image.png' with the actual path to your PNG image fil
-
-    # Open the PNG image file
-    image = Image.open(filepath)
+    with open(filepath, 'rb') as img_file:
+        image_data = img_file.read()
+        
 
     # Convert the image to a base64 string
     base64_image = encode_image_as_base64(filepath)
-    return base64_image
+    print(base64_image)
+    # return base64_image
+get_file("csv/player.png")    

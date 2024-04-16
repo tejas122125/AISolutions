@@ -4,6 +4,7 @@ from appwrite.services.databases import Databases
 from appwrite.services.storage import Storage
 
 from appwrite.id import ID
+from  functions import get_file
 
 appwritekey = os.environ.get("APPWRITE_API_KEY")
 client = Client()
@@ -25,9 +26,10 @@ testTodo1 = {
 #     data=testTodo1
 #   )
 
-res = storage.get_file(
-    bucket_id="660e8aa1521417614a44",
-    file_id="661d72c884fc3d119c93"
-)
-res = storage.create_file()
+# res = storage.get_file(
+#     bucket_id="660e8aa1521417614a44",
+#     file_id="661d72c884fc3d119c93"
+# )
+file = get_file("csv/player.png")
+res = storage.create_file(bucket_id="",file_id=ID.unique(),file=file)
 print(res)

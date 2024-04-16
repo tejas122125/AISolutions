@@ -282,6 +282,7 @@ const [count , setcount] =useState(0)
                                                 <FormControl>
                                                     <Input placeholder="Select one or more pdfs" {...field} type='file' required multiple onChange={(e: any) => {
                                                         pdffile = e.target.files
+                                                        console.log("testinhg here ", pdffile)
                                                     }} />
                                                 </FormControl>
                                                 <FormDescription>
