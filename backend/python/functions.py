@@ -113,5 +113,16 @@ def get_file(filepath):
     # return base64_image
 # get_file("csv/player.png")    
 
+# configuratrion for visualizing csv
+
+pythontools = [PythonREPLTool()]
+from dotenv import load_dotenv
+load_dotenv()
+
+openaikey = os.environ.get("OPENAI_API_KEY")
+llm = ChatOpenAI(model="gpt-3.5-turbo-1106", temperature=0,api_key=openaikey)
+
+
+
 def visualizecsv (question,filepath,imagename):
     
