@@ -101,17 +101,13 @@ def encode_image_as_base64(image_path):
         encoded_string = base64.b64encode(img_file.read()).decode('utf-8')
     return encoded_string
 
-def get_file(filepath):
+def get_base_64(filepath):
     # Replace 'path/to/your/image.png' with the actual path to your PNG image fil
     with open(filepath, 'rb') as img_file:
         image_data = img_file.read()
-        
-
     # Convert the image to a base64 string
     base64_image = encode_image_as_base64(filepath)
-    print(base64_image)
-    # return base64_image
-# get_file("csv/player.png")    
+    return base64_image
 
 # configuratrion for visualizing csv
 
@@ -123,27 +119,37 @@ load_dotenv()
 
 def visualizecsv (question,filepath,imagename):
     openaikey = os.environ.get("OPENAI_API_KEY")
-llm = ChatOpenAI(model="gpt-3.5-turbo-1106", temperature=0,api_key=openaikey)
-pythontools = [PythonREPLTool()]
-conversation_with_summary = ConversationChain(
-    llm=llm,    
-    memory=ConversationBufferWindowMemory(k=2),
-    verbose=True
-)
+    llm = ChatOpenAI(model="gpt-3.5-turbo-1106", temperature=0,api_key=openaikey)
+    pythontools = [PythonREPLTool()]
+    conversation_with_summary = ConversationChain(
+        llm=llm,    
+        memory=ConversationBufferWindowMemory(k=2),
+        verbose=True
+    )
 
-prompt_visualize_csv = PromptTemplate.from_template(
-    "you are skillfull csv reader using pandas and pythons tools. GENERATE the necessary python code for the query {question} assuming name of file is {name} and to save the figure of plot  use the filename as {image}."
-)
+    prompt_visualize_csv = PromptTemplate.from_template(
+        "you are skillfull csv reader using pandas and pythons tools. GENERATE the necessary python code for the query {question} donot write the string python at the starting assuming name of file is {name} and to save the figure of plot  use the filename as {image} and also give the output in python multiline string format  ."
+    )
 
 
-df = pd.read_csv(filepath)
-agent_pandas = create_pandas_dataframe_agent(
-    llm=llm,
-    df=df,
-    verbose=True,
-    agent_type=AgentType.OPENAI_FUNCTIONS,
-   
-)
-agent = prompt_visualize_csv  | agent_pandas 
-response = agent.invoke({"question":"create a histogram plot of first column","name":"Player.csv","image":"player"})
-print (response["output"])
+    df = pd.read_csv(filepath)
+    agent_pandas = create_pandas_dataframe_agent(
+        llm=llm,
+        df=df,
+        verbose=True,
+        agent_type=AgentType.OPENAI_FUNCTIONS,
+    
+    )
+    imagepath = f"csv/{imagename}"
+    agent = prompt_visualize_csv  | agent_pandas 
+    response = agent.invoke({"question":question,"name":filepath,"image":imagepath})
+    # print (response["output"])
+    res = response["output"]
+    res =  res.replace("python", "")
+    print(res)
+    stringrun(res)
+    img = f"{imagepath}.png"
+    get_base_64(img)
+    
+visualizecsv(question="create a histogram plot of first column",filepath="csv/data.csv",imagename="sudeep")    
+    
