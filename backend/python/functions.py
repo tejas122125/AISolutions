@@ -61,3 +61,21 @@ def stringrun (code):
     code = code
     exec(code)
     return True
+
+def download_csv(fileurl = 'https://cloud.appwrite.io/v1/storage/buckets/658da6ec42519f39311a/files/65fdc0a5cd567a08f5ce/view?project=658c3e666ed66b56edb7&mode=admin',filepath ='csv/data.csv'):
+        # Send a GET request to the URL to download the file
+        response = requests.get(fileurl)
+
+        # Check if the request was successful (status code 200)
+        if response.status_code == 200:
+            # Open the local file in binary write mode and write the content of the response
+            with open(filepath, 'wb') as f:
+                f.write(response.content)
+            print(f"CSV file downloaded successfully and saved as {filepath}")
+        else:
+            print(f"Failed to download CSV file. Status code: {response.status_code}")
+
+    # Example usage:
+ # Replace with the path where you want to save the file
+
+download_csv()
