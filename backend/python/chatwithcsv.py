@@ -34,23 +34,43 @@
 # print(res)
 
 
+
+
 from flask import Flask, jsonify,request,session
 from  functions import download_csv,helpcsv
 
 app = Flask(__name__)
 
-
-@app.route('/visualizecsv', methods=['POST'])
-def visualizecsv ():
-    question = request.json['question']
+@app.route("/downloadcsv",methods=["POST"])
+def downloadcsv():
     fileid  = request.json['fileid']   
     link =request.json['downloadlink']
     filepath = f'csv/{fileid}.csv'
     download_csv(fileurl=link,filepath=filepath)
+    
+    
+    
+    
+@app.route('/visualizecsv', methods=['POST'])
+def visualizecsv ():
+    question = request.json['question']
+    fileid  = request.json['fileid']   
+    # link =request.json['downloadlink']
+    filepath = f'csv/{fileid}.csv'
+    # download_csv(fileurl=link,filepath=filepath)
     base_64 = helpcsv(question=question,filepath=filepath,imagename=fileid)
+    print(base_64[1:6])
     return jsonify({"imagesrc": base_64})
+
+
+@app.route("/querycsv",methods=['POST'])
+def querycsv():
+    question = request.json['question']
+    fileid  = request.json['fileid']  
+    answer = chatcsv(question,fileid)
+    
     
 if __name__ == '__main__':
-    app.run(debug=True,port=5000)
+    app.run(debug=True,port=6000)
     
 

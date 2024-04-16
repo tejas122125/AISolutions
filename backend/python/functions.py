@@ -77,9 +77,16 @@ def check_expiry(date):
 
 
 def stringrun (code):
-    code = code
-    exec(code)
-    return True
+    try:
+        code = code
+        exec(code)
+    except:
+        print("execptiopn occured no worry")    
+        
+        
+    # code = code
+    # exec(code)
+    # return True
 
 def download_csv(fileurl = 'https://cloud.appwrite.io/v1/storage/buckets/658da6ec42519f39311a/files/65fdc0a5cd567a08f5ce/view?project=658c3e666ed66b56edb7&mode=admin',filepath ='csv/data.csv'):
         # Send a GET request to the URL to download the file
@@ -153,4 +160,33 @@ def helpcsv (question,filepath,imagename):
     return base_64
     
 # visualizecsv(question="create a histogram plot of first column",filepath="csv/data.csv",imagename="sudeep")    
+    
+#QUERY ABOUT CSV
+
+def querycsv(question,filepath):
+    openaikey = os.environ.get("OPENAI_API_KEY")
+    llm = ChatOpenAI(model="gpt-3.5-turbo-1106", temperature=0,api_key=openaikey)
+    pythontools = [PythonREPLTool()]
+    conversation_with_summary = ConversationChain(
+        llm=llm,    
+        memory=ConversationBufferWindowMemory(k=2),
+        verbose=True
+    )
+    query_prompt_template = PromptTemplate.from_template(
+    """you are skillfull csv reader using pandas and pythons tools. So answer the question {question} based on the csv file given.name of the csv file is {filepath}
+    if you need any further information to answer the question please ask 
+    """)
+    df = pd.read_csv(filepath)
+    agent_pandas = create_pandas_dataframe_agent(
+        llm=llm,
+        df=df,
+        verbose=True,
+        agent_type=AgentType.OPENAI_FUNCTIONS,
+    
+    )
+    agent = query_prompt_template  | agent_pandas 
+    response = agent.invoke({"question":question,"filepath":filepath})
+    print (response["output"])
+    res = response["output"]
+    return  res
     
