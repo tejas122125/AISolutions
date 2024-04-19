@@ -224,9 +224,14 @@ console.log("sending meshv ",post)
 
     console.log(messages)
 
+    // Simulate AI response (replace this with actual AI response logic)
 
 };
 
+// const onSubmit = async (values: any) => {
+//     setNewChat(false)
+//     newChatHandle(pdffile, values.chatname)
+// }
 
 
 
