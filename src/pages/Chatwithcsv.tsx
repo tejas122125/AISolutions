@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import * as XLSX from 'xlsx';
 import DocViewer, { DocViewerRenderers } from "react-doc-viewer";
 import { useState } from "react";
@@ -25,6 +25,9 @@ import {
 } from "@/components/ui/form"
 import DownloadFile from '@/components/downloadfile';
 import { SquarePlus } from 'lucide-react';
+import axios from 'axios';
+import { getAllChatWithCsv, getChatWithCsvMessages, getCsvDownloadLink, getCsvFileId, uploadChatWithCsv, uploadCsv } from '@/utils/appwrite/functions';
+import { generateRandomString } from '@/utils/general';
 
 
 
@@ -107,7 +110,7 @@ const getting = async (token: string) => {
     console.log("second")
     try {
 
-        const temp = await getAllChatWithPdf("monu")
+        const temp = await getAllChatWithCsv(token)
         if (temp[0].length > 0){
         setPreviousSession(true)
         setMessageIds(temp[0])
@@ -123,11 +126,11 @@ const getting = async (token: string) => {
 }
 
 
-const newChatHandle = async (files: File[], messagename: string) => {
+const newChatHandle = async (file: File, messagename: string) => {
     console.log("fourth")
     // upload and get the array of file ids
-    console.log(files)
-    const fileids = await uploadPdf(files)
+    console.log(file)
+    const fileids = await uploadCsv(file)
     console.log("uploaded",fileids)
     // handle and give file ids to downloading the files
 
@@ -136,45 +139,43 @@ const newChatHandle = async (files: File[], messagename: string) => {
         setMessageNames((prev) => { return [...prev, messagename] })
         setMessageIds((prev) => { return [...prev, msgid] })
         // setCurrentSessionId(msgid)
-        const uploadres = await uploadChatWithPdf(token, msgid, messagename, fileids!)
+        const uploadres = await uploadChatWithCsv(token, msgid, messagename, fileids!)
       
             handleCurrentSessionMessages(fileids!, msgid)
 }
 
-const handleCurrentSessionMessages = async (fileids: string[], currid: string) => {
+const handleCurrentSessionMessages = async (fileid: string, currid: string) => {
     // call the backend to download the files and be ready
-    setFileLength(fileids.length)
-    let reslink = []
-    for (let i = 0; i < fileids.length; i++) {
-        const link = getDownloadLink(fileids[i])
-        reslink.push(`${link.href}${addurl}`)
-    }
+    // setFileLength(fileids.length)
+    let reslink = ""
+
+        const link = getCsvDownloadLink(fileid)
+        reslink = `${link.href}${addurl}`
+    
     const data = {
-        "pdfid": currid,
+        "fileid": currid,
         "downloadlink": reslink
     }
-    console.log("download data is",data)
+    console.log("download data to downloadcsv is",data)
 
     try {
-        const response = await axios.post("http://127.0.0.1:5000/uploadpdffiles", data)
+        const response = await axios.post("http://127.0.0.1:6000/downloadcsv", data)
         console.log("tejasweebackend",response)
         if (response.data) {
-      
             setDownloaded(true)
         }
 
     } catch (error) {
         console.log(error)
     }
-    console.log("nindb", currid)
+
 
     try {
-        const token = "monu"
-        const msg = await getChatWithPdfMessages(token, currid)
+        const msg = await getChatWithCsvMessages(token, currid)
         console.log(msg)
         sethuman(msg[0])
         setai(msg[1])
- 
+
         setCurrentMessages(true)
     } catch (error) {
         console.log(error)
@@ -184,10 +185,10 @@ const handleCurrentSessionMessages = async (fileids: string[], currid: string) =
 
 
 const getids = async (token: string, currssid: string) => {
-    const fileids = await getFileIds(token, currssid)
+    const fileid = await getCsvFileId(token, currssid)
     console.log("tejas", currssid)
-    console.log(fileids)
-    handleCurrentSessionMessages(fileids, currssid)
+    console.log(fileid)
+    handleCurrentSessionMessages(fileid[0], currssid)
 
 }
 
@@ -223,14 +224,13 @@ console.log("sending meshv ",post)
 
     console.log(messages)
 
-    // Simulate AI response (replace this with actual AI response logic)
 
 };
 
-const onSubmit = async (values: any) => {
-    setNewChat(false)
-    newChatHandle(pdffile, values.chatname)
-}
+// const onSubmit = async (values: any) => {
+//     setNewChat(false)
+//     newChatHandle(pdffile, values.chatname)
+// }
 
 
 
@@ -326,7 +326,7 @@ const onSubmit = async (values: any) => {
                             const name = value;
                             const id = messageids[[...messageNames].reverse().indexOf(name)]
                             console.log("clicked", id)
-                            const ids = await getFileIds(token, id)
+                            const ids = await getCsvFileId(token, id)
                             handleCurrentSessionMessages(ids, id)
                         }} >{value}{messageids[index]}</button>
                     })}

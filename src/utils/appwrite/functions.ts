@@ -212,13 +212,13 @@ export const uploadCsv = async (file:File): Promise<string | undefined> => {
 }
 
 
-export const getCsvFileIds = async (token: string, messageid: string): Promise<string[]> => {
-    let fileid = []
+export const getCsvFileId = async (token: string, messageid: string): Promise<string> => {
+    let fileid = ""
     try {
 
         const document = await databases.listDocuments(
             'aisolution',
-            'chatwithpdf',
+            'chatwithcsv',
             [
 
 
@@ -227,9 +227,10 @@ export const getCsvFileIds = async (token: string, messageid: string): Promise<s
 
         for (let i = 0; i < document.documents.length; i++) {
             if (document.documents[i].token === token && document.documents[i].messageid === messageid) {
-                fileid = document.documents[i].fileid;
+             const   fileid = document.documents[i].fileid;
 
             }
+          
 
         }
 
@@ -237,6 +238,7 @@ export const getCsvFileIds = async (token: string, messageid: string): Promise<s
         console.log(error)
     }
     return fileid;
+  
     // console.log(fileid)
 }
 

@@ -95,9 +95,13 @@ def download_csv(fileurl = 'https://cloud.appwrite.io/v1/storage/buckets/658da6e
         # Check if the request was successful (status code 200)
         if response.status_code == 200:
             # Open the local file in binary write mode and write the content of the response
-            with open(filepath, 'wb') as f:
-                f.write(response.content)
-            print(f"CSV file downloaded successfully and saved as {filepath}")
+             if not os.path.exists(filepath):
+                with open(filepath, 'wb') as f:
+                    f.write(response.content)
+                print(f"CSV file downloaded successfully and saved as {filepath}")
+             else:
+                print("NO need to download file it already exist")    
+                
         else:
             print(f"Failed to download CSV file. Status code: {response.status_code}")
 
