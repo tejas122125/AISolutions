@@ -230,7 +230,6 @@ console.log("sending meshv ",post)
 // const onSubmit = async (values: any) => {
 //     setNewChat(false)
 //     newChatHandle(pdffile, values.chatname)
-// }
 
 
 
