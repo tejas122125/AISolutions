@@ -33,6 +33,8 @@ import { generateRandomString } from '@/utils/general';
 
 
 const Chatwithcsv = () => {
+    const [csvFile,setCsvFile] =  useState<File|null>(null)
+
     const form = useForm()
     const token = "monu"
     const addurl ="&mode=admin"
@@ -68,7 +70,7 @@ const [count , setcount] =useState(0)
     const handleFile = async (e: any) => {
         let fileTypes = ['application/vnd.ms-excel', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'text/csv'];
         let selectedFile = e.target.files[0];
-
+        setCsvFile(selectedFile)
         console.log(selectedFile)
         if (selectedFile) {
             if (selectedFile && fileTypes.includes(selectedFile.type)) {
@@ -89,12 +91,11 @@ const [count , setcount] =useState(0)
         }
     }
 
-    const handleFileSubmit = (e: any) => {
+    const handleFileSubmit = (data: any) => {
+
+console.log("tesdting zod",data)
+
         setNewChat(false)
-
-
-
-
         if (excelFile !== null) {
             const workbook = XLSX.read(excelFile, { type: 'buffer' });
             const worksheetName = workbook.SheetNames[0];
@@ -398,7 +399,7 @@ console.log("sending meshv ",post)
                                     {excelData.map((individualExcelData, index) => (
                                         <tr key={index}>
                                             {Object.keys(individualExcelData).map((key, index) => {
-                                                console.log(individualExcelData[key])
+                                                // console.log(individualExcelData[key])
                                                 if (index % 2 == 0) {
                                                     return <td className='p-1 text-center bg-blue-200' key={key}>{individualExcelData[key]}</td>
                                                 }
