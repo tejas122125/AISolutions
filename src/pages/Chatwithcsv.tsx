@@ -34,7 +34,8 @@ import { generateRandomString } from '@/utils/general';
 
 const Chatwithcsv = () => {
     const [csvFile, setCsvFile] = useState<File | null>(null)
-
+const [visualize,setVisualize] = useState<Boolean>(true)
+const [modify,setModify] = useState<Boolean>(false)
     const form = useForm()
     const token = "monu"
     const addurl = "&mode=admin"
@@ -335,6 +336,11 @@ const Chatwithcsv = () => {
                     }}>View</Button>
                 </div>}
                 
+                <div className='bg-white mt-12 flex flex-row gap-3 p-2 w-full rounded-md backdrop-blur-md bg-white/30 text-xl justify-between items-center hover:bg-blue-300 hover:cursor-pointer' onClick={() => { setNewChat(true) }} >
+                    <div className=' p-2 w-full rounded-r-full  rounded-l-md' id='modify'   >Modify</div>
+                    <div className=' p-2 w-full rounded-l-full  rounded-r-md' id='visualize' >Visualize</div>
+                </div>
+
 
                 {/* {previousSession && <div className='0 w-full flex flex-col items-center md:gap-4 gap-2 h-full  overflow-y-scroll  overflow-x-hidden'>
                     {[...messageNames].reverse().map((value, index) => {
