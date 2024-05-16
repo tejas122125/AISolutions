@@ -33,11 +33,11 @@ import { generateRandomString } from '@/utils/general';
 
 
 const Chatwithcsv = () => {
-    const [csvFile,setCsvFile] =  useState<File|null>(null)
+    const [csvFile, setCsvFile] = useState<File | null>(null)
 
     const form = useForm()
     const token = "monu"
-    const addurl ="&mode=admin"
+    const addurl = "&mode=admin"
     const [filelength, setFileLength] = useState<Number>(0)
     const [newchat, setNewChat] = useState<boolean>(false)
     const [ai, setai] = useState<string[]>([])
@@ -48,7 +48,7 @@ const Chatwithcsv = () => {
     const [messageids, setMessageIds] = useState<string[]>([])
     const [messageNames, setMessageNames] = useState<string[]>([])
     const [currentSessionId, setCurrentSessionId] = useState<string>("")
-const [count , setcount] =useState(0)
+    const [count, setcount] = useState(0)
 
     const [messages, setMessages] = useState<{ text: string; fromUser: boolean }[]>([{ text: "dfvhdvfvfhgv", fromUser: false }]);
     const [inputText, setInputText] = useState('');
@@ -57,7 +57,7 @@ const [count , setcount] =useState(0)
     const [viewdata, setViewData] = useState<boolean>(false)
     const [excelFile, setExcelFile] = useState<string | ArrayBuffer | null>(null);
     const [typeError, setTypeError] = useState<string | null>(null);
-  
+
     // submit state
     const [excelData, setExcelData] = useState<unknown[] | null>(null);
 
@@ -93,8 +93,7 @@ const [count , setcount] =useState(0)
 
     const handleFileSubmit = (data: any) => {
 
-console.log("tesdting zod",data)
-
+        newChatHandle(csvFile!, data.chatname)
         setNewChat(false)
         if (excelFile !== null) {
             const workbook = XLSX.read(excelFile, { type: 'buffer' });
@@ -106,157 +105,164 @@ console.log("tesdting zod",data)
         }
     }
 
-// refine from herre
+    // refine from herre
 
-const getting = async (token: string) => {
-    console.log("second")
-    try {
+    const getting = async (token: string) => {
+        console.log("second")
+        try {
 
-        const temp = await getAllChatWithCsv(token)
-        if (temp[0].length > 0){
-        setPreviousSession(true)
-        setMessageIds(temp[0])
-        setMessageNames(temp[1])
+            const temp = await getAllChatWithCsv(token)
+            if (temp[0].length > 0) {
+                setPreviousSession(true)
+                setMessageIds(temp[0])
+                setMessageNames(temp[1])
+            }
+
+            // const  curr = temp[0][temp[0].length - 1]
+            console.log("session ids", currentSessionId)
+            // getids(token, currentSessionId)
+        } catch (error) {
+            console.log(error)
         }
-       
-        // const  curr = temp[0][temp[0].length - 1]
-        console.log("session ids",currentSessionId)
-        // getids(token, currentSessionId)
-    } catch (error) {
-        console.log(error)
     }
-}
 
 
-const newChatHandle = async (file: File, messagename: string) => {
-    console.log("fourth")
-    // upload and get the array of file ids
-    console.log(file)
-    const fileids = await uploadCsv(file)
-    console.log("uploaded",fileids)
-    // handle and give file ids to downloading the files
+    const newChatHandle = async (file: File, messagename: string) => {
+        console.log("fourth")
+        // upload and get the array of file ids
+        console.log(file)
+        try {
+            const fileids = await uploadCsv(file)
+            console.log("uploaded", fileids)
+            // handle and give file ids to downloading the files
 
-        setSubmitted(true)
-        const msgid = generateRandomString(6)
-        setMessageNames((prev) => { return [...prev, messagename] })
-        setMessageIds((prev) => { return [...prev, msgid] })
-        // setCurrentSessionId(msgid)
-        const uploadres = await uploadChatWithCsv(token, msgid, messagename, fileids!)
-      
-            handleCurrentSessionMessages(fileids!, msgid)
-}
+            setSubmitted(true)
+            const msgid = generateRandomString(6)
+            setMessageNames((prev) => { return [...prev, messagename] })
+            setMessageIds((prev) => { return [...prev, msgid] })
+            // setCurrentSessionId(msgid)
+            const uploadres = await uploadChatWithCsv(token, msgid, messagename, fileids!)
 
-const handleCurrentSessionMessages = async (fileid: string, currid: string) => {
-    // call the backend to download the files and be ready
-    // setFileLength(fileids.length)
-    let reslink = ""
+            handleCurrentSessionMessages(fileids!, msgid) 
+
+        } catch (error) {
+            console.log(error)
+
+        }
+
+    }
+
+    const handleCurrentSessionMessages = async (fileid: string, currid: string) => {
+        // call the backend to download the files and be ready
+        // setFileLength(fileids.length)
+        let reslink = ""
 
         const link = getCsvDownloadLink(fileid)
         reslink = `${link.href}${addurl}`
-    
-    const data = {
-        "fileid": currid,
-        "downloadlink": reslink
-    }
-    console.log("download data to downloadcsv is",data)
 
-    try {
-        const response = await axios.post("http://127.0.0.1:6000/downloadcsv", data)
-        console.log("tejasweebackend",response)
-        if (response.data) {
-            setDownloaded(true)
+        const data = {
+            "fileid": currid,
+            "downloadlink": reslink
+        }
+        console.log("download data to downloadcsv is", data)
+
+        try {
+            const response = await axios.post("http://127.0.0.1:6000/downloadcsv", data)
+            console.log("tejasweebackend", response)
+            if (response.data) {
+                setDownloaded(true)
+            }
+
+        } catch (error) {
+            console.log(error)
         }
 
-    } catch (error) {
-        console.log(error)
-    }
 
+        try {
+            const msg = await getChatWithCsvMessages(token, currid)
+            console.log(msg)
+            sethuman(msg[0])
+            setai(msg[1])
 
-    try {
-        const msg = await getChatWithCsvMessages(token, currid)
-        console.log(msg)
-        sethuman(msg[0])
-        setai(msg[1])
-
-        setCurrentMessages(true)
-    } catch (error) {
-        console.log(error)
-    }
-
-}
-
-
-const getids = async (token: string, currssid: string) => {
-    const fileid = await getCsvFileId(token, currssid)
-    console.log("tejas", currssid)
-    console.log(fileid)
-    handleCurrentSessionMessages(fileid[0], currssid)
-
-}
-
-const handleSendMessage = async () => {
-
-
-    if (inputText.trim() === '') return;
-    
-    const post = {
-        "length": filelength,
-        "question": inputText,
-        "fileid": currentSessionId
-
-    }
-console.log("sending meshv ",post)
-    const response = await axios.post("http://127.0.0.1:5000/chatpdffiles", post)
-    if (response.data.AI) {
-        const res = response.data.AI
-        setAiResponse(true)
-        setai((prevMessages => [...prevMessages, res]));
-        sethuman((prevMessages => [...prevMessages, inputText]));
-
-        console.log(`response from ai is ${res}`)
-
-        // setMessages([...messages, { text: response.data, fromUser: false }]);
-        // setMessages((prv) => {
-        //     return [...prv, { text: res, fromUser: false }]
-        // })
-
-        // setMessages([...messages, { text: "AIIII", fromUser: false }]);
+            setCurrentMessages(true)
+        } catch (error) {
+            console.log(error)
+        }
 
     }
 
-    console.log(messages)
 
-    // Simulate AI response (replace this with actual AI response logic)
+    const getids = async (token: string, currssid: string) => {
+        const fileid = await getCsvFileId(token, currssid)
+        console.log("tejas", currssid)
+        console.log(fileid)
+        handleCurrentSessionMessages(fileid[0], currssid)
 
-};
+    }
 
-// const onSubmit = async (values: any) => {
-//     setNewChat(false)
-//     newChatHandle(pdffile, values.chatname)
-// }
+    const handleSendMessage = async () => {
+
+
+        if (inputText.trim() === '') return;
+
+        const post = {
+            "length": filelength,
+            "question": inputText,
+            "fileid": currentSessionId
+
+        }
+        console.log("sending meshv ", post)
+        const response = await axios.post("http://127.0.0.1:5000/chatpdffiles", post)
+        if (response.data.AI) {
+            const res = response.data.AI
+            setAiResponse(true)
+            setai((prevMessages => [...prevMessages, res]));
+            sethuman((prevMessages => [...prevMessages, inputText]));
+
+            console.log(`response from ai is ${res}`)
+
+            // setMessages([...messages, { text: response.data, fromUser: false }]);
+            // setMessages((prv) => {
+            //     return [...prv, { text: res, fromUser: false }]
+            // })
+
+            // setMessages([...messages, { text: "AIIII", fromUser: false }]);
+
+        }
+
+        console.log(messages)
+
+        // Simulate AI response (replace this with actual AI response logic)
+
+    };
+
+    // const onSubmit = async (values: any) => {
+    //     setNewChat(false)
+    //     newChatHandle(pdffile, values.chatname)
+    // }
 
 
 
     useEffect(() => {
-    
-          
-        if (previousSession && messageids.length >0){
+
+
+        if (previousSession && messageids.length > 0) {
             setCurrentSessionId(messageids[messageids.length - 1])
-            console.log("sid",currentSessionId)
-            if (count<2){
-            getids(token,currentSessionId)
+            console.log("sid", currentSessionId)
+            if (count < 2) {
+                getids(token, currentSessionId)
 
             }
 
-            setcount(prev => prev+1)
+            setcount(prev => prev + 1)
 
         }
 
 
-        if (count == 0){
+        if (count == 0) {
             getting(token)
         }
-        
+
     }, [messageids])
 
     return (
@@ -339,41 +345,41 @@ console.log("sending meshv ",post)
 
             <div className='bg-purple-800 w-full h-full p-2 relative'>
 
-                    <div className="flex flex-col  h-full w-full relative overflow-y-scroll">
-                        {human.map((value, index) => {
-                            return <div className='w-full h-fit flex-col flex bg-blue-400'> <div key={index} className=' mt-2 md:mt-7 flex w-full p-3 rounded-md justify-start items-center bg-white dark:text-white text-black text-base md:text-xl  '>User :  {value}</div>
+                <div className="flex flex-col  h-full w-full relative overflow-y-scroll">
+                    {human.map((value, index) => {
+                        return <div className='w-full h-fit flex-col flex bg-blue-400'> <div key={index} className=' mt-2 md:mt-7 flex w-full p-3 rounded-md justify-start items-center bg-white dark:text-white text-black text-base md:text-xl  '>User :  {value}</div>
 
-                                <div key={index + 1} className=' flex w-full p-3 rounded-md justify-end items-center dark:text-white text-black text-base md:text-xl  '>AI :  {ai[index]}</div>
-                            </div>
+                            <div key={index + 1} className=' flex w-full p-3 rounded-md justify-end items-center dark:text-white text-black text-base md:text-xl  '>AI :  {ai[index]}</div>
+                        </div>
 
-                        })
+                    })
 
-                        }
-                    </div>
-                    <div className="flex items-center p-4 border-t w-full absolute bottom-0 left-0 bg-slate-400">
-                        <input id='textinput'
-                            type="text"
-                            className="flex-1 p-2 mr-2 border rounded-lg"
-                            placeholder="Type your message..."
-                            onChange={(e) => setInputText(e.target.value)}
-                            onKeyDown={(e) => e.key === 'Enter' && handleSendMessage()}
-                        />
-                        <button
-                            className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
-                            onClick={handleSendMessage}
-                        >
-                            Send
-                        </button>
-                    </div>
-
+                    }
                 </div>
+                <div className="flex items-center p-4 border-t w-full absolute bottom-0 left-0 bg-slate-400">
+                    <input id='textinput'
+                        type="text"
+                        className="flex-1 p-2 mr-2 border rounded-lg"
+                        placeholder="Type your message..."
+                        onChange={(e) => setInputText(e.target.value)}
+                        onKeyDown={(e) => e.key === 'Enter' && handleSendMessage()}
+                    />
+                    <button
+                        className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
+                        onClick={handleSendMessage}
+                    >
+                        Send
+                    </button>
+                </div>
+
+            </div>
 
             {/* view data */}
             {viewdata && <div className='w-screen h-screen backdrop-blur-md bg-white/10 backdrop-brightness-50 absolute z-10 top-0 left-0 flex flex-col items-center justify-center '>
-<div className='absolute top-10 right-56    ' onClick={()=>{
-    setViewData(false)
-}}   >
-   <svg  xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" className="lucide lucide-circle-x"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></svg></div>
+                <div className='absolute top-10 right-56    ' onClick={() => {
+                    setViewData(false)
+                }}   >
+                    <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" className="lucide lucide-circle-x"><circle cx="12" cy="12" r="10" /><path d="m15 9-6 6" /><path d="m9 9 6 6" /></svg></div>
                 <div className=' w-3/4
                     h-3/4  p-2  '>
 
