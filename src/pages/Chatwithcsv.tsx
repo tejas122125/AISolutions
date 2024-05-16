@@ -110,7 +110,6 @@ const Chatwithcsv = () => {
     const getting = async (token: string) => {
         console.log("second")
         try {
-
             const temp = await getAllChatWithCsv(token)
             if (temp[0].length > 0) {
                 setPreviousSession(true)
@@ -135,15 +134,15 @@ const Chatwithcsv = () => {
             const fileids = await uploadCsv(file)
             console.log("uploaded", fileids)
             // handle and give file ids to downloading the files
-
             setSubmitted(true)
             const msgid = generateRandomString(6)
             setMessageNames((prev) => { return [...prev, messagename] })
             setMessageIds((prev) => { return [...prev, msgid] })
             // setCurrentSessionId(msgid)
+
             const uploadres = await uploadChatWithCsv(token, msgid, messagename, fileids!)
 
-            handleCurrentSessionMessages(fileids!, msgid) 
+            handleCurrentSessionMessages(fileids!, msgid)
 
         } catch (error) {
             console.log(error)
@@ -327,9 +326,17 @@ const Chatwithcsv = () => {
                     <p>New Chat</p>
                     <div><SquarePlus /></div>
                 </div>
-                <h3 className='text-2xl bg-slate-500 w-full text-center p-2 rounded-md mt-11' id='previous-session'>Previous Sesions</h3>
+                <h3 className='text-2xl bg-slate-500 w-full text-center p-2 rounded-md mt-11' id='previous-session'>Current Session</h3>
 
-                {previousSession && <div className='0 w-full flex flex-col items-center md:gap-4 gap-2 h-full  overflow-y-scroll  overflow-x-hidden'>
+               {submitted && <div className='bg-white mt-2 flex flex-row gap-3 p-2 w-full rounded-md backdrop-blur-md bg-white/30 text-xl justify-between items-center hover:bg-blue-300 hover:cursor-pointer' onClick={() => { setNewChat(true) }} >
+                    <p>{csvFile?.name}</p>
+                    <Button onClick={()=>{
+                        setViewData(true)
+                    }}>View</Button>
+                </div>}
+                
+
+                {/* {previousSession && <div className='0 w-full flex flex-col items-center md:gap-4 gap-2 h-full  overflow-y-scroll  overflow-x-hidden'>
                     {[...messageNames].reverse().map((value, index) => {
                         return <button id='previous-session-list' key={index} className=' w-full md:mt-4 mt-4 transition-transform duration-300 transform  hover:scale-110  backdrop-blur-md bg-slate-200/60 rounded-xl p-2 hover:font-semibold text-center hover:bg-green-500/50' onClick={async () => {
                             const name = value;
@@ -339,7 +346,7 @@ const Chatwithcsv = () => {
                             handleCurrentSessionMessages(ids, id)
                         }} >{value}{messageids[index]}</button>
                     })}
-                </div>}
+                </div>} */}
 
             </div>
 
