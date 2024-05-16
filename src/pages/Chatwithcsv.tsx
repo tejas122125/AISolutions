@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react'
+import { MessageCircleX } from 'lucide-react';
 import * as XLSX from 'xlsx';
 import DocViewer, { DocViewerRenderers } from "react-doc-viewer";
 import { useState } from "react";
@@ -99,7 +100,7 @@ const [count , setcount] =useState(0)
             const worksheetName = workbook.SheetNames[0];
             const worksheet = workbook.Sheets[worksheetName];
             const data = XLSX.utils.sheet_to_json(worksheet);
-            // setViewData(true)
+            setViewData(true)
             setExcelData(data);
         }
     }
@@ -368,7 +369,10 @@ console.log("sending meshv ",post)
 
             {/* view data */}
             {viewdata && <div className='w-screen h-screen backdrop-blur-md bg-white/10 backdrop-brightness-50 absolute z-10 top-0 left-0 flex flex-col items-center justify-center '>
-
+<div className='absolute top-10 right-56    ' onClick={()=>{
+    setViewData(false)
+}}   >
+   <svg  xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" className="lucide lucide-circle-x"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></svg></div>
                 <div className=' w-3/4
                     h-3/4  p-2  '>
 
