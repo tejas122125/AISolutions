@@ -350,7 +350,6 @@ const [modify,setModify] = useState<Boolean>(false)
                             console.log("clicked", id)
                             const ids = await getCsvFileId(token, id)
                             handleCurrentSessionMessages(ids, id)
-                        }} >{value}{messageids[index]}</button>
                     })}
                 </div>} */}
 
