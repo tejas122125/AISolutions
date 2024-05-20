@@ -1,4 +1,5 @@
 import io
+import psutil
 import requests
 import secrets
 from PIL import Image
@@ -25,6 +26,12 @@ from langchain_community.agent_toolkits import create_sql_agent
 from langchain_core.output_parsers import StrOutputParser
 
 
+def memory_usage():
+    memory_info = psutil.virtual_memory()
+    print(f"Total: {memory_info.total / (1024 ** 3):.2f} GB")
+    print(f"Available: {memory_info.available / (1024 ** 3):.2f} GB")
+    print(f"Used: {memory_info.used / (1024 ** 3):.2f} GB")
+    print(f"Percentage: {memory_info.percent}%")
 
 def download_pdf(url, filename):
     # Send a GET request to the URL
@@ -199,6 +206,7 @@ def chatcsv(question,filepath):
     return  res
     
 def chatwithsql(uri_string = "sqlite:///Chinook.db" , connection_name = "monu"):
+    # here we would async run a function to delete all the connections
     
     db = SQLDatabase.from_uri("sqlite:///Chinook.db")
     schema = db.get_table_info()
