@@ -22,6 +22,7 @@ from langchain_community.llms import HuggingFaceEndpoint
 
 from langchain_community.utilities.sql_database import SQLDatabase
 from langchain_community.agent_toolkits import create_sql_agent
+from langchain_core.output_parsers import StrOutputParser
 
 
 
@@ -197,7 +198,7 @@ def chatcsv(question,filepath):
     res = response["output"]
     return  res
     
-def chatwithsql():
+def chatwithsql(uri_string = "sqlite:///Chinook.db" , connection_name = "monu"):
     
     db = SQLDatabase.from_uri("sqlite:///Chinook.db")
     schema = db.get_table_info()
@@ -211,8 +212,8 @@ def chatwithsql():
     # check_chain = prompt_checking_write | llm
     
     prompt_query_sql = PromptTemplate.from_template(
-        """It is a very Serious Job you have to do.You are excellent Sql query creator.Be Precise while generating any code .Now Check if {Question} is about to modify something in Sql Database or not. if it tells that no it is not going to modify the database the generate the response by running the query on the given sql database for the question {Question}.If {Question} tells that it is going  to modify something in Sql Database then do not never ever run the query on database just give the warning that modifying data is not allowed."""
+        """It is a very Serious Job you have to do.You are excellent Sql query creator.Be Precise while generating any code .Now Check if {Question} is about to modify something in Sql Database or not. if it tells that no it is not going to modify the database then generate the response by running the query on the given sql database for the question {Question} and database schema {schema}.If {Question} tells that it is going  to modify something in Sql Database then do not never ever run the query on database just give the warning that modifying data is not allowed."""
     )
 
-    agent_executor = create_sql_agent(llm, db=db, agent_type="openai-tools", verbose=True)
-    chain = prompt_query_sql | agent_executor
+    agent_executor = create_sql_agent(llm.bind(stop=["\nSQLResult:"]), db=db, agent_type="openai-tools", verbose=True)
+    chain = prompt_query_sql | agent_executor | StrOutputParser()
