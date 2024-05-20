@@ -205,10 +205,14 @@ def chatwithsql():
     
     openaikey = os.environ.get("OPENAI_API_KEY")
     llm = ChatOpenAI(model="gpt-3.5-turbo", temperature=0)
-    prompt_checking_write = PromptTemplate.from_template(
-        "It is a very Serious Job you have to do.You are excellent Sql query checker .Now Check if {Question} is about to modify something in Sql Database or not . If it is going to modify then simply give response yes it is going to  modify Sql database and if not then simply give response no it is not going to modify anything in Sql database"
+    # prompt_checking_write = PromptTemplate.from_template(
+    #     "It is a very Serious Job you have to do.You are excellent Sql query checker .Now Check if {Question} is about to modify something in Sql Database or not . If it is going to modify then simply give response yes it is going to  modify Sql database and if not then simply give response no it is not going to modify anything in Sql database"
+    # )
+    # check_chain = prompt_checking_write | llm
+    
+    prompt_query_sql = PromptTemplate.from_template(
+        """It is a very Serious Job you have to do.You are excellent Sql query creator.Be Precise while generating any code .Now Check if {Question} is about to modify something in Sql Database or not. if it tells that no it is not going to modify the database the generate the response by running the query on the given sql database for the question {Question}.If {Question} tells that it is going  to modify something in Sql Database then do not never ever run the query on database just give the warning that modifying data is not allowed."""
     )
-    check_chain = prompt_checking_write | llm
-    
-    
+
     agent_executor = create_sql_agent(llm, db=db, agent_type="openai-tools", verbose=True)
+    chain = prompt_query_sql | agent_executor
