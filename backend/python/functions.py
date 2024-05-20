@@ -20,6 +20,9 @@ from langchain.memory import ConversationBufferWindowMemory
 from langchain_community.llms import HuggingFaceEndpoint
 
 
+from langchain_community.utilities.sql_database import SQLDatabase
+from langchain_community.agent_toolkits import create_sql_agent
+
 
 
 def download_pdf(url, filename):
@@ -194,3 +197,6 @@ def chatcsv(question,filepath):
     res = response["output"]
     return  res
     
+def chatwithsql():
+    openaikey = os.environ.get("OPENAI_API_KEY")
+    llm = ChatOpenAI(model="gpt-3.5-turbo-1106", temperature=0,api_key=openaikey)
