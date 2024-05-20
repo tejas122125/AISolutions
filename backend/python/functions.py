@@ -202,4 +202,8 @@ def chatwithsql():
     db = SQLDatabase.from_uri("sqlite:///Chinook.db")
     openaikey = os.environ.get("OPENAI_API_KEY")
     llm = ChatOpenAI(model="gpt-3.5-turbo", temperature=0)
+    prompt_checking_write = PromptTemplate.from_template(
+        "It is a very Serious Job you have to do.You are excellent Sql query checker .Now Check if the written query is about to modify something in Sql Database or not . If it is going to modify then simply give response yes it is going to  modify Sql database and if not then simply give response no it is not going to modify anything in Sql database"
+    )
+    
     agent_executor = create_sql_agent(llm, db=db, agent_type="openai-tools", verbose=True)
