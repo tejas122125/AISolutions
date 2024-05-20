@@ -198,5 +198,8 @@ def chatcsv(question,filepath):
     return  res
     
 def chatwithsql():
+    
+    db = SQLDatabase.from_uri("sqlite:///Chinook.db")
     openaikey = os.environ.get("OPENAI_API_KEY")
-    llm = ChatOpenAI(model="gpt-3.5-turbo-1106", temperature=0,api_key=openaikey)
+    llm = ChatOpenAI(model="gpt-3.5-turbo", temperature=0)
+    agent_executor = create_sql_agent(llm, db=db, agent_type="openai-tools", verbose=True)
