@@ -209,6 +209,7 @@ def initializedb():
 
 @app.route('/chatwithsql', methods=['POST'])
 def getlink():
+    res =""
     question = request.json["question"]
     connectionname = request.json["connectionname"]
     if connectionname in globals.dbmap.keys :
@@ -218,20 +219,11 @@ def getlink():
     # uristring = request.json["uristring"]
     # db = SQLDatabase.from_uri("sqlite:///Chinook.db")
     # db = SQLDatabase.from_uri(uristring)
-    
-    
-    
+    return jsonify({"response" :res })
 
-    for i in range(len(links)):
-        filename = f"{pdfids}{i}.pdf"
-        print(filename)
-        link = links[i]
-        print(link)
-        download_pdf(link,filename)
-  
 
- 
-    return jsonify({"download" : "successfull"})
+
+
 # @app.before_first_request
 # def initialize():
 #     client  = connect_to_mongodb()
