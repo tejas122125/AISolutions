@@ -28,6 +28,7 @@ from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 from langchain.prompts.prompt import PromptTemplate
 from langchain_community.llms import HuggingFaceEndpoint
 from langchain_community.embeddings import HuggingFaceInferenceAPIEmbeddings
+from langchain_community.utilities.sql_database import SQLDatabase
 
 from mongo import connect_to_mongodb, create_chathistory, get_chathistory
 
@@ -198,7 +199,25 @@ def getlink():
  
     return jsonify({"download" : "successfull"})
 
+@app.route('/chatwithsql', methods=['POST'])
+def getlink():
+    question = request.json["question"]
+    uristring = request.json["uristring"]
+    connectionname = request.json["connectionname"]
+    db = SQLDatabase.from_uri("sqlite:///Chinook.db")
+    
+    
 
+    for i in range(len(links)):
+        filename = f"{pdfids}{i}.pdf"
+        print(filename)
+        link = links[i]
+        print(link)
+        download_pdf(link,filename)
+  
+
+ 
+    return jsonify({"download" : "successfull"})
 # @app.before_first_request
 # def initialize():
 #     client  = connect_to_mongodb()

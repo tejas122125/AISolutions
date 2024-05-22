@@ -208,10 +208,10 @@ def chatcsv(question,filepath):
     res = response["output"]
     return  res
     
-def chatwithsql(uri_string = "sqlite:///Chinook.db" , connection_name = "monu",question=""):
+def chatwithsql(db,uri_string = "sqlite:///Chinook.db" , connection_name = "monu",question=""):
     # here we would async run a function to delete all the connections
     
-    db = SQLDatabase.from_uri("sqlite:///Chinook.db")
+    # db = SQLDatabase.from_uri("sqlite:///Chinook.db")
     schema = db.get_table_info()
     
     
