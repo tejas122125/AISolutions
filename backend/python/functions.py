@@ -26,13 +26,16 @@ from langchain_community.agent_toolkits import create_sql_agent
 from langchain_core.output_parsers import StrOutputParser
 
 
-def memory_usage():
+def memory_usage()->float:
     memory_info = psutil.virtual_memory()
-    print(f"Total: {memory_info.total / (1024 ** 3):.2f} GB")
-    print(f"Available: {memory_info.available / (1024 ** 3):.2f} GB")
-    print(f"Used: {memory_info.used / (1024 ** 3):.2f} GB")
-    print(f"Percentage: {memory_info.percent}%")
+    # print(f"Total: {memory_info.total / (1024 ** 3):.2f} GB")
+    # print(f"Available: {memory_info.available / (1024 ** 3):.2f} GB")
+    # print(f"Used: {memory_info.used / (1024 ** 3):.2f} GB")
+    # print(f"Percentage: {memory_info.percent}%")
+    return memory_info.percent
 
+
+memory_usage()
 def download_pdf(url, filename):
     # Send a GET request to the URL
     response = requests.get(url)
@@ -205,7 +208,7 @@ def chatcsv(question,filepath):
     res = response["output"]
     return  res
     
-def chatwithsql(uri_string = "sqlite:///Chinook.db" , connection_name = "monu"):
+def chatwithsql(uri_string = "sqlite:///Chinook.db" , connection_name = "monu",question=""):
     # here we would async run a function to delete all the connections
     
     db = SQLDatabase.from_uri("sqlite:///Chinook.db")
@@ -225,3 +228,6 @@ def chatwithsql(uri_string = "sqlite:///Chinook.db" , connection_name = "monu"):
 
     agent_executor = create_sql_agent(llm.bind(stop=["\nSQLResult:"]), db=db, agent_type="openai-tools", verbose=True)
     chain = prompt_query_sql | agent_executor | StrOutputParser()
+    res = chain.invoke({"Question":question,"schema":schema})
+    print(res)
+    return res["output"]
