@@ -29,7 +29,7 @@ from langchain.prompts.prompt import PromptTemplate
 from langchain_community.llms import HuggingFaceEndpoint
 from langchain_community.embeddings import HuggingFaceInferenceAPIEmbeddings
 from langchain_community.utilities.sql_database import SQLDatabase
-import globals
+import globals,functions
 from mongo import connect_to_mongodb, create_chathistory, get_chathistory
 
 
@@ -210,6 +210,11 @@ def initializedb():
 @app.route('/chatwithsql', methods=['POST'])
 def getlink():
     question = request.json["question"]
+    connectionname = request.json["connectionname"]
+    if connectionname in globals.dbmap.keys :
+        db = globals.dbmap[connectionname]
+        res = functions.chatwithsql(db = db,question=question)
+    
     # uristring = request.json["uristring"]
     # db = SQLDatabase.from_uri("sqlite:///Chinook.db")
     # db = SQLDatabase.from_uri(uristring)
