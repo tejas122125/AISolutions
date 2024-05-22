@@ -29,7 +29,7 @@ from langchain.prompts.prompt import PromptTemplate
 from langchain_community.llms import HuggingFaceEndpoint
 from langchain_community.embeddings import HuggingFaceInferenceAPIEmbeddings
 from langchain_community.utilities.sql_database import SQLDatabase
-
+import globals
 from mongo import connect_to_mongodb, create_chathistory, get_chathistory
 
 
@@ -198,13 +198,22 @@ def getlink():
 
  
     return jsonify({"download" : "successfull"})
+@app.route('/chatwithsql', methods=['POST'])
+def initializedb():
+    uristring = request.json["uristring"]
+    connectionname = request.json["connectionname"]
+    
+    db =  SQLDatabase.from_uri(uristring)
+    globals.dbmap[connectionname] =db
+
 
 @app.route('/chatwithsql', methods=['POST'])
 def getlink():
     question = request.json["question"]
-    uristring = request.json["uristring"]
-    connectionname = request.json["connectionname"]
-    db = SQLDatabase.from_uri("sqlite:///Chinook.db")
+    # uristring = request.json["uristring"]
+    # db = SQLDatabase.from_uri("sqlite:///Chinook.db")
+    # db = SQLDatabase.from_uri(uristring)
+    
     
     
 
@@ -226,6 +235,7 @@ def getlink():
     
 
 #  here we want to store vectore only once per session according to the current session optimization
+
 
 if __name__ == '__main__':
     app.run(debug=True,port=5000)
