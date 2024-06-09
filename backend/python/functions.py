@@ -31,6 +31,7 @@ def memory_usage()->float:
     # print(f"Total: {memory_info.total / (1024 ** 3):.2f} GB")
     # print(f"Available: {memory_info.available / (1024 ** 3):.2f} GB")
     # print(f"Used: {memory_info.used / (1024 ** 3):.2f} GB")
+    # print(f"Percentage: {memory_info.percent}%")
     return memory_info.percent
 
 
