@@ -15,9 +15,9 @@ from dotenv import load_dotenv
 from langchain.chains import create_history_aware_retriever, create_retrieval_chain
 from langchain_text_splitters import CharacterTextSplitter
 from langchain_community.vectorstores import FAISS
-from langchain.memory import ConversationBufferMemory
-from langchain.chains import conversational_retrieval
-from langchain_openai import OpenAIEmbeddings,ChatOpenAI
+# from langchain.memory import ConversationBufferMemory
+# from langchain.chains import conversational_retrieval
+# from langchain_openai import OpenAIEmbeddings,ChatOpenAI
 from langchain_community.document_loaders import PyPDFLoader
 from langchain.chains import ConversationChain
 from langchain_core.output_parsers import StrOutputParser
@@ -232,7 +232,7 @@ def getlink():
     
 
 #  here we want to store vectore only once per session according to the current session optimization
-
+#  here there is scope of cleanup function when server storage is almost full
 
 if __name__ == '__main__':
     app.run(debug=True,port=5000)
