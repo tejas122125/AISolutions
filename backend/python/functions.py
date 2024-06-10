@@ -134,6 +134,7 @@ def get_base_64(filepath):
     base64_image = encode_image_as_base64(filepath)
     return base64_image
 
+# configuratrion for visualizing csv
 
 from dotenv import load_dotenv
 load_dotenv()
