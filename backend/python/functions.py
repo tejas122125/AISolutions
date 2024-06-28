@@ -87,7 +87,7 @@ def check_expiry(date):
     else: 
         return False
       
-# tes
+# testing
 
 
 def stringrun (code):
